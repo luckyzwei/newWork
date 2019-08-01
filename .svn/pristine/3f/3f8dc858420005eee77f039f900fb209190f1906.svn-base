@@ -1,0 +1,81 @@
+<!--分销中心页面-->
+<view class='salecenter global-pageFont'>
+  <!-- 个人信息 -->
+  <view class='sale-userInfo global-column2 '>
+    <view class='global-rowStart'>
+      <image src='{{userInfo.wx_headimg}}' class='wx_headimg'></image>
+      <view class='global-column2 userInfo-right'>
+        <text class='wx_nickname'>{{userInfo.wx_nickname}}</text>
+        <text>当前店铺:小伴宠物生活馆</text>
+      </view>
+      <!-- 推广等级 -->
+      <view class='right-level themeBg  global-rowCenter'>
+        <image src='/images/bq.png' class='level-bq'></image>
+        <text>普通推广</text>
+      </view>
+    </view>
+    <!-- 升级提示 -->
+    <view class='level-tips global-rowBtw '>
+      <text>累计客户数在增加{{}}66人即可升级为中级分销员</text>
+      <image src='/images/nav2.png' class='nav-right'></image>
+    </view>
+  </view>
+  <!-- 收益展示 -->
+  <view class='Profit global-column2'>
+    <!-- 当前收益 -->
+    <view class='Profit-total global-column1'>
+      <text class='tit'>当前店铺累计收益(元)</text>
+      <text class='money'>666.00</text>
+      <text class='jiesuan'>包含待结算11.11元</text>
+    </view>
+    <!-- 昨日收益 -->
+    <view class='yesterday-profit global-rowCenter'>
+      <view class='yesterday-profit-items global-column1'>
+        <text class='tit'>昨日收益(元)</text>
+        <text class='money1'>22.22</text>
+        <text class='jiesuan'>待结算0.00元</text>
+      </view>
+      <view class='yesterday-profit-items global-column1'>
+        <text class='tit'>昨日新增客户(人)</text>
+        <text class='money1'>0</text>
+        <text class='jiesuan'>需要加油哦</text>
+      </view>
+    </view>
+    <!-- 可提现佣金 -->
+    <view class='getCash  global-rowBtw '>
+      <text>可提现佣金22元</text>
+      <view class='global-rowStart' bindtap='goGetCash'>
+        <text>立即提现</text>
+        <image src='/images/nav-right.png' class='nav-right'></image>
+      </view>
+    </view>
+    <!-- 分销数据展示 -->
+    <view class='sale-data  global-rowStart'>
+      <view class='data-items global-column1'>
+        <text class='items-txt1'>11</text>
+        <text class='items-txt2'>累计客户</text>
+      </view>
+      <view class='data-items global-column1'>
+        <text class='items-txt1'>6</text>
+        <text class='items-txt2'>累计邀请</text>
+      </view>
+      <view class='data-items global-column1'>
+        <text class='items-txt1'>11</text>
+        <text class='items-txt2'>推广订单</text>
+      </view>
+
+    </view>
+    <!-- 推广 -->
+    <view class="extend global-flexWrap ">
+      <view class='extend-items global-rowCenter'>
+        <image src='{{}}' class='items-bg'></image>
+      </view>
+      <view class='extend-items global-rowCenter'>
+        <image src='{{}}' class='items-bg'></image>
+      </view>
+      <view class='extend-items global-rowCenter'>
+        <image src='{{}}' class='items-bg'></image>
+      </view>
+    </view>
+  </view>
+</view>

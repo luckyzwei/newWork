@@ -1,0 +1,83 @@
+﻿商城系统简单实用版
+前端API域名 https://shopbaseapi.zzzzshop.com
+后台地址：shopbaseadmin.zzzzshop.com 账号：root 密码：admin_root
+数据库：47.92.33.81 shopbase_db 远程账号：zhimo 密码：zhandi1949
+
+svn地址
+svn://47.92.33.81/shopbase
+
+账号密码和以前一样
+
+
+
+//-------------------------------------------------------
+系统更新
+1.在控制器的getModuleInfo方法增加hidden属性，如果该属性为真，则在权限分配中隐藏该模块eg.:
+public static function getModuleInfo() {
+        return array(
+            "moduleName" => "博客管理",
+            "controller" => "BlogController",
+            "author" => "知默科技-liujiaqi@hnzhimo.com",
+            //"hidden"=>true,
+            "operation" => array(
+                "index" => "博客列表",
+                "addblog" => "博客添加",
+                "deleteblog" => "博客删除",
+                "editblog" => "博客修改",
+            )
+        );
+    }
+
+
+//系统更新2019-07-09：增加数据统计钩子函数埋点
+需要创建表
+CREATE TABLE `NewTable` (
+`datatime`  varchar(14) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`visited`  int(14) NOT NULL DEFAULT 0 COMMENT '用户访问量' ,
+`newuser`  int(14) NOT NULL DEFAULT 0 COMMENT '新增用户' ,
+`pays`  int(14) NOT NULL DEFAULT 0 COMMENT '支付订单数量' ,
+`orders`  int(14) NOT NULL DEFAULT 0 COMMENT '订单数量' ,
+`totalfee`  float(10,2) NOT NULL DEFAULT 0.00 COMMENT '订单总金额' ,
+`payfee`  float(10,2) NOT NULL DEFAULT 0.00 COMMENT '支付金额' ,
+PRIMARY KEY (`datatime`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+ROW_FORMAT=COMPACT
+;
+
+在checkout.php创建订单完成后增加215行后
+$this->load->model("staticsModel");
+$this->staticsModel->update(array("totalfee",$data['total_amount']));
+在支付回调函数中增加215行后
+
+$this->load->model("staticsModel");
+            $this->staticsModel->update(array("payfee",$order_info["order_amount"]));
+			$this->staticsModel->update(array("pays",1));
+			
+//修改后台首页文件：直接覆盖即可
+
+修改数据库：store_product表中的store_id为user_id
+修改配置：分销商是否需要审核位:1
+增加配置项：是否启用分销商自动升级 agent_auto_level 配置项位:1
+代理分组表增加字段：
+ALTER TABLE `zm_agent_group`
+ADD COLUMN `need_member`  int(10) NULL AFTER `commission_rate`,
+ADD COLUMN `condation`  int(1) NULL AFTER `need_member`,
+ADD COLUMN `need_reward`  int(10) NULL AFTER `condation`;
+
+ALTER TABLE `zm_agent_group`
+MODIFY COLUMN `need_member`  int(10) NULL DEFAULT 0 AFTER `commission_rate`,
+MODIFY COLUMN `condation`  int(1) NULL DEFAULT 0 AFTER `need_member`,
+MODIFY COLUMN `need_reward`  int(10) NULL DEFAULT 0 AFTER `condation`;
+
+//-----修改奖金表
+ALTER TABLE `zm_user_reward`
+MODIFY COLUMN `createtime`  varchar(14) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `reward_type`,
+ADD COLUMN `selement_time`  int(14) NULL COMMENT '结算时间' AFTER `reward_type`;
+
+
+
+
+47.100.122.66
+Szn931210@

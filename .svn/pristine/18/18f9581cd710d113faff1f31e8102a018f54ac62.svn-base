@@ -1,0 +1,170 @@
+<!--订单提交 -->
+<view class="checkout global-pageFont">
+  <!-- 拼团玩法 -->
+  <view class="tuan-style global-rowAround" wx:if="{{product_type=='G'}}">
+    <view class='global-column1 style1'>
+      <image src="/images/group1.png" class='styleImg'></image>
+      <text>1.选择商品开团/参团</text>
+    </view>>
+    <view class='global-column1 style1'>
+      <image src="/images/group2.png" class='styleImg'></image>
+      <text>2.邀请好友参团</text>
+    </view>>
+    <view class='global-column1 style1'>
+      <image src="/images/group3.png" class='styleImg radius'></image>
+      <text>3.人满成团</text>
+    </view>
+
+  </view>
+  <!-- 收货地址 -->
+  <view class="confirm-address">
+    <view class='address-icon'>
+      <image src="/images/address.png" class='address-iconImg'></image>
+    </view>
+    <block wx:if="{{showAddress}}">
+      <view class='address-show global-column2'>
+        <view class="address-contact global-rowStart" bindtap="selectadddress">
+          <text> {{userAddress.name}}</text>
+          <text> {{userAddress.telephone}}</text>
+        </view>
+        <view class="address-detail" bindtap="selectadddress">
+          <text>收货地址:</text> {{userAddress.province_name}}{{userAddress.city_name}}{{userAddress.district_name}}{{userAddress.address}}
+        </view>
+      </view>
+    </block>
+    <!-- 地址为空 添加收货地址 -->
+    <block wx:else>
+      <view class="address-create" wx:if="{{userAddress}}" bindtap='addaddress'>
+        <text>  点此添加收货地址</text>
+      </view>
+    </block>
+    <view class='address-rightIcon'>
+      <image src='/images/nav-right.png' class='global-rightImg'></image>
+    </view>
+  </view>
+  <!-- ------ 拼团成员 ------->
+  <view class='checkout-tuan global-column2' wx:if="{{product_type=='G'}}">
+    <view class='global-rowStart'>
+      <text class="themeColor"> [正在开团] </text>
+      <text class=' '>  立即支付,即可开团成功</text>
+    </view>
+    <view class='tuan-headimg global-flexWrap ' wx:if="{{groupbuy.length>0}}">
+      <view class='tuan-leader global-column2 ' wx:for="{{groupbuy}}" wx:for-item="item" wx:key="">
+        <image src='{{item.wx_headimg}}' class='headimg-member'></image>
+        <text class="is_leader">{{item.wx_nickname}}</text>
+      </view>
+    </view>
+  </view>
+  <!-- 商品清单列表 -->
+  <view class="confirm-goods">
+    <view class="goods-item" wx:for="{{products}}" wx:for-item="product" wx:key="prokey">
+      <view class='global-rowStart '>
+        <image src='{{product.thumb}} ' class='item-img '> </image>
+      </view>
+      <view class="item-info global-column2 ">
+        <view class="info-name global-overHidden ">
+          <text class='pin-title' wx:if="{{product_type=='G'}}">团购</text> {{product.product_name}}
+        </view>
+        <view class='info-price global-rowBtw '>
+          <text class='product-price '><text wx:if="{{product.is_timelimit==1}}">限时秒杀价 </text>￥{{product.product_price}}</text>
+          <text class='product-number '> x {{product.product_number}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 优惠券-->
+  <view class="confirm-form">
+    <view class="form-item" bindtap="showCashgift" wx:if="{{coupons.length>0}}">
+      <view class="item-title" wx:if="{{coupons.length>0}}">
+        {{useCoupon.coupon_name?useCoupon.coupon_name:"使用优惠券"}}
+      </view>
+      <image wx:if="{{coupons.length>0}}" class="global-rightImg" src="/images/nav-right.png"></image>
+      <view class="item-title" wx:else>
+        没有可用优惠券
+      </view>
+    </view>
+    <!-- 可用优惠券 -->
+    <block wx:if="{{showCashgift}}">
+      <view class="cashgift-list" wx:for="{{coupons}}" wx:for-item="coupon" wx:key="couponkey">
+        <image src='/images/coupon.png ' class='couponBg '></image>
+        <view class="list-item readonly">
+          <view class="item-info">
+            <view class="info-condition">{{coupon.coupon_name}}</view>
+            <view class="info-expires">有效期：{{coupon.end_time}}</view>
+          </view>
+        </view>
+        <button bindtap="useCoupon" data-coupon_id="{{coupon.coupon_id}}" class='themeBg '>
+          <block wx:if="{{coupon.coupon_id==useCoupon.coupon_id}}">
+            取消使用
+          </block>
+          <block wx:else>
+            去使用
+          </block>
+        </button>
+      </view>
+    </block>
+    <!-- 优惠券end -->
+    <!-- Total -->
+    <view class="confirm-summury">
+      <view class="summury-total ">
+        订单总额
+        <text class="total-price">￥{{checkOut.total_price}}</text>
+      </view>
+      <view class="summury-detail">
+        商品总额
+        <text class="total-price">￥{{checkOut.product_price}}</text>
+      </view>
+      <view class="summury-detail">
+        运费金额
+        <text class="total-price">{{checkOut.shipping_fee==' '?'包邮':'+ ￥'+checkOut.shipping_fee}}</text>
+      </view>
+      <view class="summury-detail" wx:if="{{checkOut.coupon_discount>0}}">
+        优惠券
+        <text class="total-price">- ￥{{checkOut.coupon_discount}}</text>
+      </view>
+      <view class="summury-detail" wx:if="{{marketings.discount>0}}">
+        优惠活动
+        <text class="total-price">- ￥{{marketings.discount}}</text>
+      </view>
+      <view class="summury-detail" wx:if="{{marketings.freeshipping>0}}">
+        运费优惠
+        <text class="total-price">- ￥{{marketings.freeshipping}}</text>
+      </view>
+      <view class="summury-total" wx:if="{{marketings.coupon.length>0||marketing.rewards>0}}">
+        完成订单奖励
+      </view>
+      <view class="summury-detail" wx:for="{{marketings.coupon}}" wx:for-item="coupon" wx:key="coukey">
+        红包
+        <text class="total-price">{{coupon.coupon_name}}</text>
+      </view>
+      <view class="summury-detail" wx:if="{{marketing.rewards>0}}">
+        积分
+        <text class="total-price">{{marketing.rewards}}</text>
+      </view>
+      <!----------------- 积分兑换 ------------->
+      <block wx:if="{{product_type=='O' &&can_use_integral}}">
+      <view class='summury-detail themeColor'>
+        <text class='jifen'>是否用{{can_use_integral}}积分兑换{{checkOut.is_exchange}}元</text>
+        <checkbox-group bindchange="changeBox">
+          <checkbox name="use_integral" value="{{use_integral}}" checked="{{use_integral}}" color='#ff8284' />
+        </checkbox-group>
+      </view>
+      </block>
+    </view>
+    <view class="textarea">
+      <view class="text-textarea">
+        <textarea type="text" bindinput='remark ' placeholder="买家留言"></textarea>
+      </view>
+    </view>
+  </view>
+  <!-- 提交订单 -->
+  <view class="confirm-submit global-rowBtw">
+    <view class="submit-total">
+      <view class="total-price">实付:
+        <text class='pay-money themeColor '>￥{{checkOut.amount_price}}</text> </view>
+    </view>
+    <view class="submit-button themeBg" bindtap='wxPay'>
+      订单支付
+    </view>
+  </view>
+</view>

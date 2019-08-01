@@ -1,0 +1,464 @@
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+/**
+ * 商品函数主要实现显示商品列表，商品详情 
+ * 
+ * @author wangxiangshuai@hnzhimo.com
+ * @copyright (c) 2017, 河南知默网络科技有限公司
+ * @since	Version 1.0.0
+ */
+class Product extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('ProductModel');
+        $this->load->helper("string");
+        $this->load->model("storeProductModel");
+         $this->load->model("MarketingModel");
+    }
+
+    /**
+     * 获取商品列表信息
+     */
+    public function get_products() {
+        $keyword = $this->input->post("keyword");
+        $page = $this->input->post('page') ? $this->input->post('page') : 1;
+        $limit = $this->input->post('limit') ? $this->input->post('limit') : 10;
+        $category_id = $this->input->post('category_id');
+        $supplier_id = $this->input->post('supplier_id');
+        $user_id = $this->session->user_info['user_id'];
+        $goods_type = $this->input->post('goods_type') ? $this->input->post('goods_type') : "";
+
+        $store_id = $this->input->post("store_id");
+        if (!empty($this->session->user_info['store_id'])) {//如果是店主登陆则强制为自己的店铺
+            $store_id = $this->session->user_info['store_id'];
+        }
+
+        $diytype = $this->input->post('diytype'); //依生貳 专用值 是否接受定制
+
+        $orderby = $this->input->post('orderby'); // new最新 sale销量 hot人气
+        if (!in_array($orderby, array("new", "hot", "sale", "price"))) {
+            $orderby = "sort";
+        }
+        $order = $this->input->post('order'); //DESC ASC
+        if (!in_array($order, array("ASC", "DESC"))) {
+            $order = "DESC";
+        }
+        $json['error_code'] = 0;
+        if ($goods_type == "spike") {
+            $productList = $this->ProductModel->getTimelimitProducts($page, $limit, $category_id, $keyword, $orderby, $order, $supplier_id, $diytype);
+        } elseif($goods_type == "reduce"){
+             $productList = $this->ProductModel->getReduceProducts($page, $limit, $category_id, $keyword, $orderby, $order, $supplier_id, $diytype);
+        }else {
+            $productList = $this->ProductModel->getProductList($page, $limit, $category_id, $keyword, $orderby, $order, $supplier_id, $diytype);
+        }
+        //获取商品的默认规格和会员价格
+        foreach ($productList['list'] as $key=> &$product) {
+            $default_special = $this->ProductModel->getSpecial($product['product_id']);
+            $product['default_special'] = $default_special;
+            $user_price = $this->ProductModel->getUserDiscountPrice($user_id, $product['product_id']);
+            //获取限时秒杀信息
+            $product["timelimit"] = $this->ProductModel->getTimelimitInfo($product['product_id']);
+            $product['user_price'] = $user_price;
+            $product['thumb'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $product['thumb']);
+            //判断是否是满减商品
+            
+            $product['is_market'] = $this->MarketingModel->checkMarketing($product['product_id']);
+            
+            //如果是店铺模式
+//            if (!empty($store_id)) {
+//                $store_product = $this->storeProductModel->getStoreProductById($product['product_id'], $store_id);
+//                if (!empty($store_product)) {
+//                    $product['user_price']['user_price'] = $product['user_price']['user_price'] + ($store_product['store_product_price'] - $product['price']);
+//                    $product['user_price']['product_price'] = $store_product['store_product_price'];
+//                    $product["store_product"] = $store_product;
+//                    $product['explain'] = $store_product['store_product_breif'];
+//                } else {
+//                    $product["store_product"] = null;
+//                }
+//            }
+        }
+
+        if (!empty($supplier_id)) {
+            $this->load->model('SupplierModel');
+            $supplier = $this->SupplierModel->getSupplierInfo($supplier_id);
+            $names = explode('-', $supplier['name']);
+            if (count($names) > 1) {
+                $supplier['fastname'] = $names[0];
+                $supplier['lastname'] = $names[1];
+            }
+            $supplier['images'] = explode(",", $supplier['images']);
+            foreach ($supplier['images'] as $key => $value) {
+                $supplier['images'][$key] = reduce_double_slashes($this->systemsetting->get("api_url") . $value);
+            }
+            $json['supplier'] = $supplier;
+        }
+        $json['data'] = $productList['list'];
+        $json['total'] = $productList['total'];
+//        $this->hooks->call_hook("add_product_footprint");
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+    /**
+     * 获取商品的默认规格：暂时取第一个商品规格为默认
+     */
+    public function get_product_defalut_special() {
+        $product_id = $this->input->post("product_id");
+        $default_special = $this->ProductModel->getSpecial($product_id);
+        $this->output->set_content_type("json/application")->set_output(json_encode($default_special));
+    }
+
+    /**
+     * 获取商品所有的规格和属性
+     */
+    public function get_product_attr_special() {
+        $product_id = $this->input->post("product_id");
+        $specialAndAttr = $this->ProductModel->getAttrAndSpecial($product_id);
+        $this->output->set_content_type("json/application")->set_output(json_encode($specialAndAttr));
+    }
+
+    /**
+     * 获取商品的关联商品
+     * zu   2018/8/17
+     * 需要的数据，product_id,
+     */
+    public function get_link_products() {
+        $product_id = $this->input->post('product_id');
+        $user_id = $this->session->user_info['user_id'];
+        $productList = $this->ProductModel->getLinkProducts($product_id);
+        if ($productList) {
+            //获取商品的默认规格和会员价格
+            foreach ($productList as &$product) {
+                $default_special = $this->ProductModel->getSpecial($product['product_id']);
+                $product['default_special'] = $default_special;
+                $user_price = $this->ProductModel->getUserDiscountPrice($user_id, $product['product_id']);
+                $product['user_price'] = $user_price;
+                $product['thumb'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $product['thumb']);
+            }
+            $json['error_code'] = 0;
+            $json['data'] = $productList;
+        } else {
+            $json['error_code'] = 1;
+        }
+        $this->output->set_content_type("json/application")->set_output(json_encode($json));
+    }
+
+    /**
+     * 获取标签商品
+     * zu   2018/8/17
+     * 需要的数据有，tagid，
+     */
+    public function get_tag_products() {
+        $product_tag_id = $this->input->post('product_tag_id');
+        $user_id = $this->session->user_info['user_id'];
+        ;
+        $limit = $this->input->post('limit');
+        $limit = $limit ? $limit : '20';
+        $page = $this->input->post('page');
+        $page = $page ? $page : '1';
+
+        $orderby = $this->input->post('orderby'); // new最新 sale销量 hot人气
+        if (!in_array($orderby, array("new", "hot", "sale", "price"))) {
+            $orderby = "sort";
+        }
+        $order = $this->input->post('orderby'); //DESC ASC
+        if (!in_array($orderby, array("ASC", "DESC"))) {
+            $order = "DESC";
+        }
+        $res = $this->ProductModel->getProductInfoByTagId($product_tag_id, $limit, $page, $orderby, $order);
+
+        if ($res) {
+            //获取商品的默认规格和会员价格
+            foreach ($res as &$product) {
+                $default_special = $this->ProductModel->getSpecial($product['product_id']);
+                $product['default_special'] = $default_special;
+                $user_price = $this->ProductModel->getUserDiscountPrice($user_id, $product['product_id']);
+                $product['user_price'] = $user_price;
+                $product['thumb'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $product['thumb']);
+            }
+            $json['error_code'] = 0;
+            $json['data'] = $res;
+        } else {
+            $json['error_code'] = 1;
+        }
+        $this->output->set_content_type("json/application")->set_output(json_encode($json));
+    }
+
+    /**
+     * 获取猜你喜欢商品
+     * zu   2018/8/17
+     * 接收，用户id 数据数量 然后通过userid 查询订单表，查出一个月内购买过的商品，通过这些商品id 查关联商品。
+     */
+    public function get_user_like_products() {
+        $user_id = $this->session->user_info['user_id'];
+        $limit = $this->input->post('limit');
+        $limit = $limit ? $limit : 20;
+
+        $orderby = $this->input->post('orderby'); // new最新 sale销量 hot人气
+        if (!in_array($orderby, array("new", "hot", "sale", "price"))) {
+            $orderby = "sort";
+        }
+        $order = $this->input->post('orderby'); //DESC ASC
+        if (!in_array($orderby, array("ASC", "DESC"))) {
+            $order = "DESC";
+        }
+
+        //获取用户订单商品
+        $res = $this->ProductModel->getUserLikeProducts($user_id, $limit, $orderby, $order);
+        if ($res) {
+            //获取商品的默认规格和会员价格
+            foreach ($res as &$product) {
+                $product['default_special'] = $this->ProductModel->getSpecial($product['product_id']);
+                $product['user_price'] = $this->ProductModel->getUserDiscountPrice($user_id, $product['product_id']);
+                $product['thumb'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $product['thumb']);
+                $json['data'][] = $product;
+            }
+            $json['error_code'] = 0;
+            $limit = $limit - count($json['data']);
+        }
+        //获取用户收藏商品
+        if (empty($json) || $limit > 0) {
+            $res = $this->ProductModel->getCollectProduct($user_id, $limit);
+            if ($res) {
+                foreach ($res as &$product) {
+                    $product['default_special'] = $this->ProductModel->getSpecial($product['product_id']);
+                    $product['user_price'] = $this->ProductModel->getUserDiscountPrice($user_id, $product['product_id']);
+                    $product['thumb'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $product['thumb']);
+                    $json['data'][] = $product;
+                }
+                $json['error_code'] = 0;
+                $limit = $limit - count($json['data']);
+            }
+        }
+        //获取商城商品
+        if (empty($json) || $limit > 0) {
+            $res = $this->ProductModel->getProductList(1, $limit);
+            if ($res['list']) {
+                foreach ($res['list'] as &$product) {
+                    $product['default_special'] = $this->ProductModel->getSpecial($product['product_id']);
+                    $product['user_price'] = $this->ProductModel->getUserDiscountPrice($user_id, $product['product_id']);
+                    $product['thumb'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $product['thumb']);
+                    $json['data'][] = $product;
+                }
+                $json['error_code'] = 0;
+            }
+        }
+        $this->output->set_content_type("json/application")->set_output(json_encode($json));
+    }
+
+    /*
+      商品详情方法 error_code = 0 获取成功
+      error_code = 1 商品不存在
+     */
+
+    public function get_product_info() {
+        $product_id = $this->input->post('product_id');
+        $user_id = $this->session->user_info['user_id'];
+
+        if (empty($product_id)) {
+            $json['error_code'] = 1;
+        }
+        if (empty($json)) {
+            $product = $this->ProductModel->getProductInfo($product_id);
+            if (empty($product)) {
+                $json['error_code'] = 1;
+            } else {
+                $data['product_id'] = $product_id;
+                $data['product_name'] = $product['product_name'];
+                $data['description'] = $product['description'];
+                $data['ratio_intergal'] = $product['ratio_intergal']; //为衣生贰加入显示定制按钮控制
+                //商品会员价格和默认规格价格
+                $prices = $this->ProductModel->getUserDiscountPrice($user_id, $product_id);
+
+                $data['user_price'] = $prices['user_price'];
+                $data['default_special_price'] = $prices['product_price'];
+                $data['price'] = $product['price'];
+                $data['mktprice'] = $product['market_price'];
+                $data['store_number'] = $product['store_number'];
+                $data['explain'] = $product['explain'];
+                //分销佣金
+                $agent_commission = $this->ProductModel->getAgentCommission($user_id, $product_id);
+                if ($agent_commission !== false) {
+                    $data['agent_commission'] = $agent_commission;
+                }
+                //商品规格
+                $product_special = $this->ProductModel->getAttrAndSpecial($product_id);
+                $data['product_special'] = $product_special;
+                if (!empty($product_special['specifications'])) {
+                    foreach ($product_special['specifications'] as $key => $value) {
+                        if (!empty($value['specialimg']))
+                            $data['product_special']['specifications'][$key]["specialimg"] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $value['specialimg']);
+                    }
+                }
+                //获取限时秒杀信息
+                $data['timelimit'] = $this->ProductModel->getTimelimitInfo($product_id);
+                 $data['is_market'] = $this->MarketingModel->checkMarketing($product_id);
+                //主图和详情图
+                $data['thumb'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $product['thumb']);
+                $images = unserialize($product['images']);
+                if (!empty($images)) {
+                    foreach ($images as $value) {
+                        $data['images'][] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $value);
+                    }
+                }
+
+                //-------------------店铺模式(分销商)下数据处理:商品价格和描述---------
+//                $store_id = $this->input->post("store_id");
+//                if (!empty($this->session->user_info['store_id'])) {
+//                    $store_id = $this->session->user_info['store_id'];
+//                }
+//                if (!empty($store_id)) {
+//                    $store_product = $this->storeProductModel->getStoreProductById($product['product_id'], $store_id);
+//                    if (!empty($store_product)) {
+//                        $data['user_price'] = $prices['user_price'] + ($store_product['store_product_price'] - $product['price']);
+//                        $data['default_special_price'] = $prices['product_price'] + ($store_product['store_product_price'] - $product['price']);
+//                        $data['price'] = $product['price'];
+//
+//                        $product['user_price']['product_price'] = $store_product['store_product_price'];
+//                        $product["store_product"] = $store_product;
+//                        $product['explain'] = $store_product['store_product_breif'];
+//                    } else {
+//                        $product["store_product"] = null;
+//                    }
+//                }
+                //-------------end--------------------------------------------------
+
+                /* 计算出售该商品可以获取的佣金 */
+                $data['reward'] = $this->ProductModel->calculateProductReward($product['product_id'], $this->session->user_id);
+
+                $preg = '/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg]))[\'|\"].*?[\/]?>/';
+                preg_match_all($preg, html_entity_decode($product['description'], ENT_QUOTES, 'UTF-8'), $imgs);
+                $data['detailimages'] = $imgs['1'];
+                $json['error_code'] = 0;
+                $data['evalgood'] = '98%';
+                $json['data'] = $data;
+            }
+        }
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+    /*
+     * 商品优惠策略
+     */
+
+    public function get_marketing() {
+        $product_id = $this->input->post('product_id');
+        $user_group_id = $this->session->user_info['user_group_id'];
+        $this->load->model('MarketingModel');
+        //商品策略
+        $markinglist = $this->MarketingModel->getMPLbyProduct_id($product_id, $user_group_id);
+        if (!empty($markinglist)) {
+            $error_code = 0;
+            $data['freepost'] = array(
+                'title' => $markinglist['marketing_group'],
+                'content' => $markinglist['marketing_name']
+            );
+        } else {
+            $error_code = 1;
+        }
+        if (empty($markinglist['marketing_parallel'])) {
+            $marking = $this->MarketingModel->getMOLbyProduct_id($product_id, $user_group_id);
+            if (empty($marking)) {
+                $error_code = 1;
+            } else {
+                $error_code = 0;
+                foreach ($marking as $key => $value) {
+                    $data['marketings'][] = array(
+                        'title' => $value['marketing_group'],
+                        'content' => $value['marketing_name']
+                    );
+                }
+            }
+        }
+        $json = array("error_code" => $error_code, "data" => $data);
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+    /*
+     * 限时秒杀商品
+     */
+
+    public function get_time_limit() {
+        
+    }
+
+    /**
+     * 获取推荐商品
+     */
+    public function get_recommends() {
+        $num = $this->input->post("limit");
+        $datas = $this->ProductModel->getRecommends($num);
+        foreach ($datas as &$sp) {
+            $sp['thumb'] = $this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $sp['thumb'];
+        }
+        $result = array("error_code" => 0, "data" => $datas);
+        $this->output->set_content_type("application/json")->set_output(json_encode($result));
+    }
+
+    /*
+     * 获取用户收藏商品
+     * zu   2018/8/20
+     * 需要的数据    user_id
+     */
+
+    public function get_collect_product() {
+        $user_id = $this->session->user_info['user_id'];
+        $limit = $this->input->post('limit');
+        $limit = $limit ? $limit : '10';
+        $page = $this->input->post('page');
+        $page = $page ? $page : '1';
+        $productList = $this->ProductModel->getCollectProduct($user_id, $limit, $page);
+        if ($productList) {
+            //获取商品的默认规格和会员价格
+            foreach ($productList as &$product) {
+                $default_special = $this->ProductModel->getSpecial($product['product_id']);
+                $product['default_special'] = $default_special;
+                $user_price = $this->ProductModel->getUserDiscountPrice($user_id, $product['product_id']);
+                $product['user_price'] = $user_price;
+                $product['thumb'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $product['thumb']);
+            }
+            $json['error_code'] = 0;
+            $json['data'] = $productList;
+        } else {
+            $json['error_code'] = 1;
+        }
+        $this->output->set_content_type("json/application")->set_output(json_encode($json));
+    }
+
+    /*
+     * 收藏、取消收藏商品,查询商品收藏状态
+     * zu   2018/8/20
+     * 需要的数据    user_id product_id type(add/del);
+     */
+
+    public function collect_product() {
+        $user_id = $this->session->user_info['user_id'];
+        $product_id = $this->input->post('product_id');
+        $type = $this->input->post('type');
+        $res = $this->ProductModel->collectProduct($user_id, $product_id, $type);
+        $data['status'] = '0';
+        $data['error_code'] = 0;
+        if ($res === 'exist' || is_array($res)) {
+            $data['status'] = 1;
+        } else {
+            $data['error_code'] = 2;
+        }
+        $this->output->set_content_type("json/application")->set_output(json_encode($data));
+    }
+
+    public function addProductData() {
+        $user_id = $this->session->user_info['user_id'];
+        $product_id = $this->input->post('product_id');
+        $type = $this->input->post('type');
+        $res = $this->ProductModel->addProductData($product_id, $type);
+        if ($res) {
+            $data['error_code'] = 0;
+        } else {
+            $data['error_code'] = 1;
+        }
+        $this->output->set_content_type("json/application")->set_output(json_encode($data));
+    }
+
+}

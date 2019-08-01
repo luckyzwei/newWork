@@ -1,0 +1,23 @@
+/*累计客户.wxss */
+
+.totalCustomer {
+  width: 95%;
+  margin: 0 auto;
+}
+
+/* 客户列表信息 */
+
+.totalCustomer-list {
+  padding: 15rpx 0;
+  border-bottom: 1px solid #f8f8f8;
+}
+
+/* 客户头像 */
+
+.totalCustomer  .totalCustomer-list .customer-headimg {
+  width: 85rpx;
+  height: 85rpx;
+  border-radius: 50%;
+  border: 1px solid #f8f8f8;
+  margin-right: 20rpx;
+}

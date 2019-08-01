@@ -1,0 +1,823 @@
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\login.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 1.6823
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+ERROR - 2019-05-23 --> 404 Page Not Found: Faviconico/index
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> Language file loaded: language/zh_cn/form_validation_lang.php
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\index.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 1.2155
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\logistics_list.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.3919
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\logistics_add.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 9.5436
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> Language file loaded: language/zh_cn/form_validation_lang.php
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\logistics_list.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.3305
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\logistics_add.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 8.9508
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> Language file loaded: language/zh_cn/form_validation_lang.php
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\logistics_list.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.3494
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\logistics_edit.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 8.9964
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\logistics_list.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.3028
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Language file loaded: language/zh_cn/pagination_lang.php
+INFO - 2019-05-23 --> Pagination Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\setting_list.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.5149
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\setting_add.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.3857
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> Language file loaded: language/zh_cn/form_validation_lang.php
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Language file loaded: language/zh_cn/pagination_lang.php
+INFO - 2019-05-23 --> Pagination Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\setting_list.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.3637
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\setting.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.6415
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Language file loaded: language/zh_cn/pagination_lang.php
+INFO - 2019-05-23 --> Pagination Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\setting_list.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.3241
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Language file loaded: language/zh_cn/pagination_lang.php
+INFO - 2019-05-23 --> Pagination Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\setting_list.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.3576
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.2937
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\setting.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.5356
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\setting.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.5994
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Language file loaded: language/zh_cn/pagination_lang.php
+INFO - 2019-05-23 --> Pagination Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\setting_list.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.3097
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Language file loaded: language/zh_cn/pagination_lang.php
+INFO - 2019-05-23 --> Pagination Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\setting_list.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.3750
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\setting_edit.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.4640
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\setting_edit.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.3286
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\logistics_list.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.3104
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\logistics_list.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.3264
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\logistics_edit.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 9.1038
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Language file loaded: language/zh_cn/pagination_lang.php
+INFO - 2019-05-23 --> Pagination Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\order.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.4981
+INFO - 2019-05-23 --> Config Class Initialized
+INFO - 2019-05-23 --> Hooks Class Initialized
+DEBUG - 2019-05-23 --> UTF-8 Support Enabled
+INFO - 2019-05-23 --> Utf8 Class Initialized
+INFO - 2019-05-23 --> URI Class Initialized
+INFO - 2019-05-23 --> Router Class Initialized
+INFO - 2019-05-23 --> Output Class Initialized
+INFO - 2019-05-23 --> Security Class Initialized
+DEBUG - 2019-05-23 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-05-23 --> Input Class Initialized
+INFO - 2019-05-23 --> Language Class Initialized
+INFO - 2019-05-23 --> Loader Class Initialized
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-05-23 --> Config file loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\config/pagination.php
+INFO - 2019-05-23 --> Helper loaded: url_helper
+INFO - 2019-05-23 --> Helper loaded: array_helper
+INFO - 2019-05-23 --> Database Driver Class Initialized
+INFO - 2019-05-23 --> Session: Class initialized using 'database' driver.
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Controller Class Initialized
+INFO - 2019-05-23 --> Model Class Initialized
+INFO - 2019-05-23 --> Language file loaded: language/zh_cn/pagination_lang.php
+INFO - 2019-05-23 --> Pagination Class Initialized
+INFO - 2019-05-23 --> Helper loaded: form_helper
+INFO - 2019-05-23 --> Form Validation Class Initialized
+INFO - 2019-05-23 --> File loaded: D:\webroot\project_svn\shopbase\controllCenter\zmcc\views\order_info.php
+INFO - 2019-05-23 --> Final output sent to browser
+DEBUG - 2019-05-23 --> Total execution time: 0.7890

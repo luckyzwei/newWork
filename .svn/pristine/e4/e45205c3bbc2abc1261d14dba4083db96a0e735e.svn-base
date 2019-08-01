@@ -1,0 +1,9 @@
+// 邀请推广.js
+Page({
+  data: {
+    invitedFriends: []
+  },
+  onLoad: function(options) {},
+  onReady: function() {},
+  onShow: function() {},
+})

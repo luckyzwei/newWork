@@ -1,0 +1,22 @@
+// 分销中心
+const App = getApp()
+Page({
+  data: {
+    userInfo: {},
+  },
+  onLoad: function (options) {
+    var that = this;
+    App.initialize(function (res) {
+      that.setData({
+        "userInfo": wx.getStorageSync("user_data"),
+      });
+    });
+  },
+  onShow: function () {
+
+  },
+  /** */
+  goGetCash:function(){
+
+  }
+})

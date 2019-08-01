@@ -1,0 +1,101 @@
+<!--个人信息-->
+<view class='userInfo global-pageFont'>
+  <!-- 会员信息 -->
+  <form report-submit='true' bindsubmit='saveUserInfo'>
+    <view class="form-list">
+      <text class='vip-title themeColor'>会员信息</text>
+      <view class="form-item">
+        <view class="form-item-hd">姓名：</view>
+        <view class="form-item-bd">
+          <input type="text" name="name" value="{{}}" placeholder="请输入姓名" />
+        </view>
+      </view>
+      <view class="form-item">
+        <view class="form-item-hd">号码：</view>
+        <view class="form-item-bd">
+          <input type="number" placeholder-class="input-placeholder" name="tel" placeholder="请输入手机号码" maxlength="11" value="{{}}" />
+        </view>
+      </view>
+      <view class="form-item" bindtap="translate">
+        <view class="form-item-hd">常居地：</view>
+        <view class="infoText">
+          <block wx:if="{{provinceName[provinceSelIndex]}}">{{provinceName[provinceSelIndex]}} {{cityName[citySelIndex]}} {{districtName[districtSelIndex]}}
+            <input type="text" name="province" value="{{provinceCode[provinceSelIndex]}}" hidden='true' placeholder-class='inputColor' />
+            <input type="text" name="city" value="{{cityCode[citySelIndex]}}" hidden='true' placeholder-class='inputColor' />
+            <input type="text" name="district" value="{{districtCode[districtSelIndex]}}" hidden='true' placeholder-class='inputColor' />
+          </block>
+          <block wx:else>
+            <text class='input-placeholder' style='padding:0 15rpx;'> 请点击选择常居地</text>
+          </block>
+        </view>
+      </view>
+      <text class='vip-title themeColor'>爱宠信息</text>
+      <view class="form-item">
+        <view class="form-item-hd">类别：</view>
+        <view class="form-item-bd">
+          <input type="text" name="name" value="{{}}" placeholder="请输入爱宠类别" />
+        </view>
+      </view>
+      <view class="form-item">
+        <view class="form-item-hd">名字：</view>
+        <view class="form-item-bd">
+          <input type="" placeholder-class="input-placeholder" name="tel" placeholder="请输入宠物名字~" maxlength="" value="{{}}" />
+        </view>
+      </view>
+      <view class="form-item">
+        <view class="form-item-hd">品种：</view>
+        <view class="form-item-bd">
+          <input type="" placeholder-class="input-placeholder" name="tel" placeholder="请输入宠物品种柯基、加菲~" maxlength="" value="{{}}" />
+        </view>
+      </view>
+      <view class="form-item">
+        <view class="form-item-hd">性别：</view>
+        <view class="form-item-bd">
+          <picker bindchange='bindPickerChange' value="{{index}}" range='{{sex}}'>
+            <block wx:if="{{sex[index]}}">
+              <text class="input">{{sex[index]}}</text>
+            </block>
+            <block wx:else> 
+            <text class='input-placeholder input'>请点击选择宠物性别</text>
+              
+            </block>
+          </picker>
+        </view>
+      </view>
+      <view class="form-item">
+        <view class="form-item-hd">年龄：</view>
+        <view class="form-item-bd">
+          <input type="number" placeholder-class="input-placeholder" name="tel" placeholder="请输入爱宠年龄(1个月-15岁)~" maxlength="" value="{{}}" />
+        </view>
+      </view>
+    </view>
+    <button formType="submit" class="save-btn themeBg">保 存</button>
+  </form>
+   <view class="animation-element-wrapper" animation="{{animation}}" style="visibility:{{show ? 'visible':'hidden'}}" bindtap="hiddenFloatView" data-id="444">
+    <view class="animation-element" catchtap="nono">
+      <text class="left-bt" catchtap="hiddenFloatView" data-id="555">取消</text>
+      <text class="right-bt" catchtap="hiddenFloatView" data-id="666">确定</text>
+      <view class="line"></view>
+      <picker-view indicator-style="height: 50rpx;" value="{{value}}" bindchange="changeArea" catchtap="">
+        <!--省-->
+        <picker-view-column>
+          <view wx:for="{{provinceName}}" wx:for-item="sheng" wx:key="pkey">
+            {{sheng}}
+          </view>
+        </picker-view-column>
+        <!--地级市-->
+        <picker-view-column>
+          <view wx:for="{{cityName}}" wx:key="ckey">
+            {{item}}
+          </view>
+        </picker-view-column>
+        <!--区县-->
+        <picker-view-column>
+          <view wx:for="{{districtName}}" wx:key="dkey">
+            {{item}}
+          </view>
+        </picker-view-column>
+      </picker-view>
+    </view>
+  </view>
+</view>

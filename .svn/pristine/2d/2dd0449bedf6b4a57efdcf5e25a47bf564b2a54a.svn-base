@@ -1,0 +1,90 @@
+/* 地址列表页样式 */
+
+/* 地址为空 */
+
+.cont-empty {
+  width: 100%;
+  padding: 20% 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 25rpx;
+}
+.cont-empty .msg{
+  color: #999;
+}
+.cont-empty image {
+  width: 210rpx;
+  height: 210rpx;
+}
+
+/* 地址列表 */
+
+.address-list {
+  margin: 0px 0 66px 0;
+  width: 100%;
+  border-top: #f8f8f8 1px solid;
+}
+
+/* 默认按钮缩放大小 */
+
+.address-list .submit-select .radio {
+  transform: scale(0.8);
+}
+
+/* 地址列表循环开始 */
+
+.address-list .list-item {
+  width: 94%;
+  margin: 0 auto;
+  padding: 25rpx 0 5rpx 0;
+  border-bottom: #f8f8f8 1px solid;
+  background-color: #fff;
+}
+
+.address-list .list-item .item-info {
+  width: 85%;
+}
+/* 收货人 姓名/电话 */
+.address-list .list-item .item-info .info-contact {
+  width: 100%;
+}
+/* 收货人地址 */
+.address-list .list-item .item-info .info-detail {
+  width: 100%;
+  padding: 10rpx 0 12rpx 0;
+  color: #888;
+}
+
+/* 地址列表编辑图标 */
+
+.address-list .list-item .item-edit {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.address-list .list-item .item-edit image {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+/*  添加收货地址按钮*/
+
+.address-bar {
+  z-index: 100;
+  width: 100%;
+  background-color: #fff;
+  position: fixed;
+  bottom: 0;
+  box-sizing: border-box;
+}
+
+.address-bar .bar-create {
+  height: 88rpx;
+  text-align: center;
+  color: #fff;
+  line-height: 88rpx;
+}

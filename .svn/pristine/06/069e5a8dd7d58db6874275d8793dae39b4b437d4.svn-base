@@ -1,0 +1,94 @@
+<!--活动促销页面-->
+<view class='global-pageFont saleProduct'>
+  <!-- 顶部广告轮播 -->
+  <view class="saleProduct-banner">
+    <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" indicator-active-color="#ff8284">
+      <block wx:for="{{imgUrls}}" wx:key="">
+        <swiper-item bindtap='goUrl' data-ad_url="{{item.ad_url}}">
+          <image src="{{item.ad_source}}" class="banner-img" />
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <!-- 砍价 拼团商品 -->
+  <view class="sales-tab">
+    <!-- 砍价 拼团商品Tab切换 -->
+    <view class='goodsDetail-nav'>
+      <view class='nav-tab {{curIndex=="0"?"active":""}}' bindtap='changeTap' data-index="0">拼团抢购</view>
+      <view class='nav-tab {{curIndex=="1"?"active":""}}' bindtap='changeTap' data-index="1">砍价商品</view>
+    </view>
+    <!-- 砍价商品列表-->
+    <view class='' wx:if="{{curIndex=='1'}}">
+      <view class="pList-product">
+        <view class='pList-items' wx:for="{{products}}" wx:key="" wx:for-item="item" data-group_product_id="{{item.group_product_id}}">
+          <!-- 商品图片 -->
+          <image src='{{item.thumb}}' class="items-img" bindtap='goBargain_detail'></image>
+          <view class='items-info'>
+            <text class="info-title">{{item.product_name}}</text>
+            <view class='global-rowStart themeColor product-price'>
+              <view class='pintuan global-rowCenter'>
+                <text>已有</text>
+                <text class='bigFont'>{{item.group_user_num}}3</text>
+                <text>人参与砍价</text>
+              </view>
+              <view class='global-rowStart'>
+                <text class='global-font30 global-market_price global-price'><text class='global-font22'>¥</text>{{item.group_product_price}}
+                </text>
+              </view>
+              <view class="goTuan" bindtap='modal_show'>立即砍价 </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 拼团商品列表-->
+    <view class='' wx:if="{{curIndex=='0'}}">
+      <view class="pList-product">
+        <view class='pList-items' wx:for="{{products}}" wx:key="" wx:for-item="item" bindtap='goTuan' data-group_product_id="{{item.group_product_id}}">
+          <!-- 商品图片 -->
+          <image src='{{item.thumb}}' class="items-img"></image>
+          <view class='items-info'>
+            <text class="info-title">{{item.product_name}}</text>
+            <view class='global-rowStart themeColor product-price'>
+              <view class='pintuan global-rowCenter'>
+                <text class='bigFont'>{{item.group_user_num}}</text>
+                <text>人拼</text>
+              </view>
+              <view class='global-rowStart'>
+                <text class='global-font30 global-price'><text class='global-font22'>¥</text>{{item.group_product_price}}
+                </text>
+                <text class=' global-market_price'><text class='global-font22'>¥</text>{{item.market_price}}</text>
+              </view>
+              <view class="goTuan"> 去开团 </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<!--属性规格选择栏-->
+<view class='global-mask' wx:if="{{choose_modal}}" bindtap='modal_none'></view>
+<view class="global-guige" wx:if="{{choose_modal}}">
+  <view class="spec_img_container">
+    <image src="{{products.thumb}}"></image>
+    <view class='guige-name global-overHidden'>{{products.product_name}}</view>
+    <view class="guige-number themeColor">￥{{item.group_product_price}}</view>
+    <icon class="guige-delete" type='clear' bindtap="modal_none" size='17' color='#ff8284'></icon>
+  </view>
+  <!-- 规格属性展示 start -->
+  <view class="spec_view_container">
+    <block wx:for="{{special_structs}}" wx:for-item="struct" wx:key="" wx:for-index="level">
+      <view class="modal_de_select">{{struct.special_name}}</view>
+      <view class="modal_spec">
+        <block wx:for="{{struct.specification}}" wx:for-item="option" wx:key="" wx:for-index="spindex">
+          <view class="modal_spec_name {{option.selected?'activeOne':''}}" bindtap="selectSpecial" data-level="{{level}}" data-specialindex="{{spindex}}" wx:if="{{!option.hide}}">{{option.option_name}}</view>
+        </block>
+      </view>
+    </block>
+  </view>
+  <!-- 规格属性展示end -->
+  <view class="bottom-button">
+    <view class='modal_button2  btn' bindtap='goBargainDetail'>确定</view>
+  </view>
+</view>

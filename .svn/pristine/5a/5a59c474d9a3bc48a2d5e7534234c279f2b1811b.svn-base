@@ -1,0 +1,112 @@
+<?php
+
+/**
+ * 店铺管理控制台
+ *
+ * @author qidazhong@hnzhimo.com
+ */
+class StoreCtrl extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        $this->load->model("storeModel");
+        $this->load->model("storeOrderModel");
+        $this->load->model("userModel");
+    }
+
+    /**
+     * 获取店铺订单
+     */
+    public function get_store_orders() {
+        $user_id = $this->session->user_id;
+        //$store_id = $this->session->user_info['store_id'];
+        $number = $this->input->post("number");
+        $page = $this->input->post("page") ? $this->input->post("page") : 1;
+        $start_index = $number * ($page - 1);
+        $settlement_status = $this->input->post("status");
+        switch ($settlement_status) {
+            case 1:
+                $settlement_status = "order.settlement_status=0";
+                break;
+            case 2:
+                $settlement_status = "order.settlement_status=1";
+                break;
+            default:
+                $settlement_status = '';
+                break;
+        }
+        $storeOrders = $this->storeOrderModel->getStoreOrders($user_id, $number, $start_index, $settlement_status);
+
+        $countInfo['total'] = $this->storeOrderModel->countStroeOrders($user_id, -1, 0);
+        //销售情况统计
+        $countInfo['day'] = $this->storeOrderModel->countStroeOrders($user_id, 0, 0);
+        $result = array("error_code" => 0, "data" => $storeOrders, "countInfo" => $countInfo);
+        $this->output->set_content_type("application/json")->set_output(json_encode($result));
+    }
+
+    /**
+     * 获取店铺统计信息
+     */
+    public function get_store_count() {
+        $user_id = $this->session->user_id;
+
+        //结算用户收益
+        $cycle = $this->systemsetting->get("settlement_cycle");
+        $this->userModel->settlementReward($user_id, $cycle);
+        //结算供货商收益
+        $supplier_id = $this->session->user_info['supplier_id'];
+        if (!empty($supplier_id)) {
+            $this->load->model('SupplierModel');
+            $this->SupplierModel->supplierSettlement($supplier_id, $cycle);
+        }
+
+        $total = $this->storeOrderModel->countStroeOrders($user_id, -1);
+        //销售情况统计
+        $day_count_data = $this->storeOrderModel->countStroeOrders($user_id, 0);
+        $week_count_data = $this->storeOrderModel->countStroeOrders($user_id, 7);
+        $month_count_data = $this->storeOrderModel->countStroeOrders($user_id, 30);
+        //分销情况统计
+        $agent_count_data = $this->storeOrderModel->countStroeOrders($user_id, -1, 1);
+        $agent_day_count_data = $this->storeOrderModel->countStroeOrders($user_id, 0, 1);
+
+        //用户朋友统计
+        $userFriendsDay = $this->userModel->getUserFriendsCount($user_id, 0); //当天
+        $userFriends = $this->userModel->getUserFriendsCount($user_id, -1); //全部
+        $canInvitationUserId=array(180,182,181,183);//能够邀请开店的用户id
+        $data = array(
+            "day" => $day_count_data,
+            "week" => $week_count_data,
+            "month" => $month_count_data,
+            "total" => $total,
+            "sale_total" => $agent_count_data,
+            "sale_day" => $agent_day_count_data,
+            "day_add_friend" => $userFriendsDay,
+            "user_friends" => $userFriends,
+            "ciui"=>$canInvitationUserId
+        );
+
+        $result = array("error_code" => 0, "data" => $data);
+        $this->output->set_content_type("application/json")->set_output(json_encode($result));
+    }
+
+    /**
+     * 获取用户收益记录
+     */
+    public function get_rewards() {
+        $user_id = $this->session->user_id;
+        $page = $this->input->post("page") ? $this->input->post("page") : 1;
+        $type = $this->input->post("type");
+        $list = $this->userModel->getUserReward($user_id, $page, $type);
+
+        if (!empty($list)) {
+            foreach ($list as &$value) {
+                $value['time'] = date('Y-m-d', $value['createtime']);
+            }
+        }
+
+        $countInfo['total'] = $this->storeOrderModel->countStroeOrders($user_id, -1, $type);
+        $result = array("error_code" => 0, "data" => $list, 'countInfo' => $countInfo);
+        $this->output->set_content_type("application/json")->set_output(json_encode($result));
+    }
+
+}

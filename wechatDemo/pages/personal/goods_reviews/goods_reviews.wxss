@@ -1,0 +1,109 @@
+/* 商品评论页 */
+
+.reviews .reviews-goods {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: #fff;
+  margin-bottom: 20rpx;
+}
+
+/* 商品信息 */
+
+.reviews-goods .goods_product {
+  width: 96%;
+  margin: 25rpx auto 8rpx auto;
+  display: flex;
+  padding: 4rpx;
+  flex-direction: row;
+  align-items: center;
+}
+
+.reviews-goods .goods_product  .goods_info {
+  display: flex;
+  flex-direction: column;
+}
+/* 商品图 */
+.reviews-goods .goods_product image {
+  width: 148rpx;
+  height: 120rpx;
+  border: 1px solid #eee;
+}
+
+.reviews-goods .goods_product text {
+  padding-left: 30rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.reviews-comment text {
+  display: block;
+  margin-bottom: 15rpx;
+}
+
+.reviews-star {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  width: 96%;
+  margin: 45rpx auto;
+}
+/* .reviews-star .reviews-starIcon{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  margin: 15rpx auto;
+} */
+/* 评论等级图标 */
+
+.reviews-star .reviews-starIcon image {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.reviews-comment {
+  width: 96%;
+  margin: 0 auto;
+  background-color: #fff;
+
+}
+
+/* 评论输入框 */
+
+.reviews-comment textarea {
+  width: 100%;
+  height: 160rpx;
+  text-indent: 20rpx;
+  margin: 0 auto;
+  border: 1px solid #eee;
+  border-radius: 15rpx;
+  padding-top: 15rpx;
+}
+
+/*评论提交按钮 */
+
+.button {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  background-color: #ff8284;
+  color: #fff;
+  border: none;
+  border-radius: 0;
+}
+
+/* 选中 */
+
+.unselected {
+  color: black;
+}
+
+.reviews-score {
+  width: 110rpx;
+  padding-left: 10rpx;
+}

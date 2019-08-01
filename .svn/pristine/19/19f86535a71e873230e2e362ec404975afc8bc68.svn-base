@@ -1,0 +1,9 @@
+<!--累计客户.wxml-->
+<view class='global-pageFont totalCustomer'>
+  <view class='global-rowStart totalCustomer-list'>
+    <image src='{{}}' class='customer-headimg'></image>
+    <view class='global-column2'>
+      <text>{{}}微信名称</text>
+    </view>
+  </view>
+</view>

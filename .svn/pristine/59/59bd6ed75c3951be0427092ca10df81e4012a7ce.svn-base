@@ -1,0 +1,13 @@
+<!--推广订单列表.wxml-->
+<view class='global-pageFont extendList'>
+  <view class='extendList-list global-rowAround bg'>
+    <text>下单时间</text>
+    <text>订单编号</text>
+    <text>下单金额</text>
+  </view>
+  <view class='extendList-list global-rowAround'>
+    <text>2019-07-17 17:33:45</text>
+     <text>3876868687958</text>
+    <text class='themeColor'>563元</text>
+  </view>
+</view>

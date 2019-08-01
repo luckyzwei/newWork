@@ -1,0 +1,343 @@
+/* 个人中心页样式 */
+
+/*获取头像信息*/
+
+.getuserInfo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.getavator {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 0 0 0;
+  background: #f8f8f8;
+}
+
+.getavator .getavator-avator {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 150rpx;
+  border: 1px solid #eee;
+}
+
+/* 渐变字体 */
+
+.getavator  .userinfo-nickname {
+  background-image: -webkit-gradient(linear, left 0, right 0, from(rgb(173, 138, 84)), to(rgb(255, 130, 132)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 会员等级显示 */
+
+.personal {
+  position: relative;
+  width: 92%;
+  margin: 20rpx auto 0 auto;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  background: -webkit-linear-gradient(left, #6c6c6c, #222); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(right, #6c6c6c, #222); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(right, #6c6c6c, #222); /* Firefox 3.6 - 15 */
+  background: linear-gradient(right, #6c6c6c, #222); /* 标准的语法 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8rpx 0;
+}
+
+.personal-vip {
+  position: relative;
+  width: 100%;
+  margin: 0rpx auto 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.personal-vip .vip-list {
+  width: 10%;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.personal-vip .vip-listLevel {
+  color: white;
+}
+
+.personal-vip .vip-btn {
+  margin-left: 8rpx;
+  font-size: 20rpx;
+  color: white;
+}
+
+.personal-vip .vip-btn .phone-number {
+  font-size: 24rpx;
+  margin-left: 18rpx;
+}
+
+/* 获取微信绑定手机号按钮 */
+
+.personal-vip .vip-btn .getPnumber {
+  margin: 0;
+  padding: 0;
+  width: 120rpx;
+  font-size: 20rpx;
+  color: white;
+  background: rgba(0, 0, 0, 0);
+  margin-top: 8rpx;
+}
+
+.personal-vip .vip-btn .getPnumber::after {
+  border: none;
+}
+
+.personal-vip .vip-list .vip-listIcon {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+/* 余额 积分 优惠券 */
+
+.personal-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 30rpx;
+  border-bottom: 15rpx solid #f8f8f8;
+}
+
+.personal-list .personal-vipInfo {
+  width: 33.3%;
+  text-align: center;
+  border-left: 1px solid #f8f8f8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.personal-list .personal-vipInfo:first-child {
+  border-left: none;
+}
+
+/* 我的订单样式 */
+
+.personal-list .task {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 状态更新提醒红点 */
+
+.personal-list .warning {
+  margin-left: 44rpx;
+  margin-top: -40rpx;
+}
+
+/* 订单状态图标 */
+
+.personal-list .task image {
+  width: 75rpx;
+  height: 75rpx;
+}
+
+/* 我的订单服务 */
+
+.personal-category {
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx 30rpx;
+  justify-content: space-around;
+  line-height: 100rpx;
+}
+
+.personal-category .personal-service {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 100rpx;
+  border-bottom: 1px solid #f8f8f8;
+}
+
+.personal-category .personal-service .service-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.personal-category  .personal-service .service-list text {
+  padding-left: 15rpx;
+}
+
+.personal-category .personal-service .service-listImg {
+  width: 55rpx;
+  height: 55rpx;
+}
+
+/* 会员登录按钮 */
+
+.userCenter-btn {
+  color: white;
+  height: 65rpx;
+  line-height: 65rpx;
+  margin: 15rpx 0;
+  text-align: center;
+  font-size: 28rpx;
+}
+
+/* 绑定微信手机号码 弹窗 */
+
+.drawer_box {
+  width: 600rpx;
+  position: fixed;
+  top: 61%;
+  left: 0;
+  z-index: 9999;
+  margin: -370rpx 75rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  display: flex;
+  flex-direction: column;
+  padding: 30rpx 0;
+}
+
+.drawer_box .drawer_info_title {
+  width: 100%;
+  padding: 20rpx 0;
+  text-align: center;
+  font-weight: bold;
+  font-size: 30rpx;
+}
+
+.drawer_box .drawer_info {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  padding: 15rpx 0 25rpx 0;
+  margin: 0 auto;
+}
+
+.drawer_box .drawer_info .user-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 0 25rpx 0;
+}
+
+.drawer_box .drawer_info .user-info .userinfo-headimg {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  border: 1px solid #f8f8f8;
+}
+
+.drawer_box .drawer_info .user-info  .userinfo-nickname {
+  font-size: 28rpx;
+  margin-left: 24rpx;
+}
+
+.getPhonebtn .getPnumber {
+  margin: 0;
+  padding: 0;
+  width: 100rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  float: right;
+  font-size: 26rpx;
+  background: #5aaf51;
+  color: white;
+}
+
+/* 签到样式 */
+
+.signIn {
+  
+}
+/* 
+.signIn .signIn-icon {
+  position: absolute;
+  width: 60rpx;
+  height: 60rpx;
+  right: 22rpx;
+  margin-top: -2rpx;
+} */
+
+/* 会员等级进度条 */
+
+.vip-level {
+  position: relative;
+  width: 92%;
+  margin: 3rpx auto 0 auto;
+  padding: 4rpx 0;
+}
+
+/* 进度条  必须给出width */
+
+.vip-level progress {
+  width: 100%;
+  border-radius: 15px;
+  border: 1px solid #ad8a54;
+}
+
+/* 进度条底部数字积分 */
+
+.vip-level .score {
+  font-size: 22rpx;
+  color: #fff;
+  text-align: center;
+}
+
+/* 3部分平分 */
+
+.vip-level .score text {
+  display: block;
+  width: 33.3%;
+}
+
+/* 左边文字距左边现实 */
+
+.vip-level .score .score_left {
+  text-align: left;
+}
+
+/* 右边居右显示 */
+
+.vip-level .score .score_right {
+  text-align: right;
+}
+
+/* 等级图标 */
+
+.level {
+  margin-top: 9rpx;
+}
+
+.level-icon {
+  width: 35rpx;
+  height: 35rpx;
+}
+
+/* 左边图标 */
+
+.icon_left {
+  float: left;
+}
+
+.icon_right {
+  float: right;
+}

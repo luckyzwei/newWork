@@ -1,0 +1,123 @@
+<!--砍价详情.wxml-->
+<view class='bargain global-pageFont {{showRule?"preventScroll":showBargainNum?"preventScroll":""}} '>
+  <!-- 完善收货地址  //砍价规则-->
+  <view class='bar-address global-rowBtw'>
+    <view class='bar-addressLeft'>
+      <block>
+        <text>砍价成功后,付款即可发货 </text>
+      </block>
+      <block wx:if="{{}}">
+        <text>平台用户信息保密.可放心购买</text>
+      </block>
+    </view>
+    <view class='guize global-rowCenter themeColor' bindtap='showRule'>
+      <image src='/images/guize.png' class='guizeIcon'></image>
+      <text>规则</text>
+    </view>
+  </view>
+  <!-- 砍价商品详情 -->
+  <view class='bargain-detail global-column2'>
+    <view class='bargain-product global-rowStart'>
+      <image src='{{product.product_thumb}}' class='product-img'></image>
+      <view class='global-column2'>
+        <text class='bar-title global-title'>{{product.product_name}}</text>
+        <text class="limit-time"><block wx:if="orderinfo.endtime>0">{{orderinfo.endtime}} 后砍价过期</block><block wx:else>砍价已过期</block></text>
+        <text class='themeColor'>砍到{{killproduct.kill_product_min_price}}元拿</text>
+      </view>
+      <view class='order-status'>
+        <block wx:if="{{orderinfo.status==0}}">
+          <text>等待支付</text>
+        </block>
+        <block wx:if="{{orderinfo.status==1}}">
+          <text>待发货</text>
+        </block>
+        <block wx:if="{{orderinfo.status>5}}">
+          <text>已完成</text>
+        </block>
+      </view>
+    </view>
+    <!-- 砍价进度 -->
+    <view class='progress global-column2'>
+      <view class='glonal-rowCenter bar-tips'>
+        已砍
+        <text class='themeColor'>{{orderinfo.already_reduced_price}}</text>元, 还差
+        <text class='themeColor'>{{orderinfo.surplus_reduced_price}}</text> 元
+      </view>
+      <view class='progress-percent'>
+        <progress percent='{{bargain_product.percent}}' activeColor='#ff8284' backgroundColor='lightgray' stroke-width='6' border-radius="30"></progress>
+      </view>
+      <view class='bargain-invited'>
+        <button class='invited-btn' open-type='share' animation="{{showBargainNum?'':animationMiddleHeaderItem}}">邀好友帮砍</button>
+      </view>
+      <!-- 帮砍好友 -->
+      <view class='bargain-help global-column2'>
+        <text>好友榜</text>
+        <scroll-view scroll-y="true" class='fixed-heihgt'>
+          <!-- 空 -->
+          <view class='empty' wx:if="{{killlog.length==0}}">
+            <text>暂无好友帮砍,赶快去邀请吧</text>
+          </view>
+          <view class='help-lists global-rowStart' wx:for="{{killlog}}" wx:key="">
+            <image src='{{item.wx_headimg}}' class='list-headimg'></image>
+            <view class='lists-info global-column2 '>
+              <text class=''>{{item.wx_nickname}}</text>
+              <text class='bangkan'>帮砍掉 {{item.reduced_price}}元</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+  <!--砍价页面 商品推荐 -->
+  <!-- <view class='is_tui global-column2'>
+    <view class='is_tuiTitle'>大家都在买</view>
+    <view class='adv-items-products'>
+      <view class='global-product'>
+        <image src="{{item.thumb}}" class="product-img" data-product_id="{{item.product_id}}" bindtap='goGoodsDetail'></image>
+        <text class='global-title'>商品名字商品名商品名商品名商品名商品名</text>
+        <view class='global-rowBtw themeColor product-price'>
+          <view class='global-rowStart'>
+            <text class='global-font30 global-price'><text class='global-font22'>¥</text>45.00
+            </text>
+            <text class=' global-market_price'><text class='global-font22'>¥</text>86.00</text>
+          </view>
+        </view>
+      </view>
+    </view> 
+  </view>-->
+  <view class='more-btn' bindtap='goMore'>查看更多</view>
+</view>
+<!-- 规则弹窗 -->
+<view class='global-mask' wx:if="{{showRule}}" bindtap='closeRuleModal_rule'></view>
+<view class='rule global-column2' wx:if="{{showRule}}">
+  <scroll-view scroll-y="true">
+    <view class='global-column2'>
+      <text class='rule-title'>活动规则</text>
+      <text class='rule-content'>测试测试测试</text>
+    </view>
+  </scroll-view>
+</view>
+<!-- 砍价数量弹窗 -->
+<view class='global-mask' wx:if="{{showBargainNum}}" bindtap='closeRuleModal'></view>
+<view class='bargain-num global-column2' wx:if="{{showBargainNum}}">
+  <block wx:if="{{killprice.user_id==userInfo.user_id}}">
+    <view class='global-column1 barg-content'>
+      <!-- 拼单发起者头像 -->
+      <image src='{{userInfo.wx_headimg}}' class='pin-leader'></image>
+      <text class='title1'>我成功砍到{{killprice.reduced_price}}元了,快来一起免费拿</text>
+      <text class='subTitle'>【{{killproduct.product_name}}】</text>
+      <image src='{{product.product_thumb}}' class='bar-pImg'></image>
+    </view>
+    <button class='get-free' bindtap='goMore' open-type='share'>邀请好友帮砍</button>
+  </block>
+  <block wx:if="{{killprice.user_id!=userInfo.user_id}}">
+    <view class='global-column1 barg-content'>
+      <!-- 帮砍者头像 -->
+      <image src='{{userInfo.wx_headimg}}' class='pin-leader'></image>
+      <text class='title1'>帮砍了{{killprice.reduced_price}}元,还差{{killprice.surplusprice}}元</text>
+      <text class='subTitle'>【{{killproduct.product_name}}】</text>
+      <image src='{{product.product_thumb}}' class='bar-pImg'></image>
+    </view>
+    <view class='get-free' bindtap='goMore'>我也想要</view>
+  </block>
+</view>

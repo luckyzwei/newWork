@@ -1,0 +1,59 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of KillProductModel
+ *
+ * @author wangxiangshuai
+ */
+class KillProductModel extends CI_Model {
+
+    //put your code here
+    public function getKillProducts($page = 1, $limit = 10, $where = '') {
+        $this->db->select('kp.*,p.description,p.thumb,p.price,p.product_name,p.market_price')
+                ->from('kill_product kp')
+                ->join('product p', 'p.product_id=kp.product_id', 'left');
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
+        //这里筛选掉已结束的
+        $this->db->where('(kp.kill_product_endtime > ' . time() . ' or kp.kill_product_endtime = 0)');
+        $query = $this->db->order_by('kill_product_starttime', 'asc')
+                ->limit($limit, ($page - 1) * $limit)
+                ->get();
+        return $query->result_array();
+    }
+
+    public function getKillProduct($group_product_id) {
+        $query = $this->db->select('kp.*,p.description,p.thumb,p.product_name,p.price,p.weight as product_weight,p.market_price,p.images')
+                ->from('kill_product kp')
+                ->join('product p', 'p.product_id=kp.product_id', 'left')
+                ->where('kp.kill_product_id = ' . $group_product_id)
+                ->get();
+        $data = $query->row_array();
+        $data['kill_number'] = $this->db->select('count(*) as kill_number')
+                        ->from('order')
+                        ->where('order_type="K"')
+                        ->get()
+                        ->row_array()['kill_number'];
+
+        return $data;
+    }
+
+    //检查自己是否在该活动中下单
+    public function checkKillOrder($user_id, $kill_product_id) {
+        $num = $this->db->select('*')
+                ->from('kill_log kl')
+                ->join('order o', '(o.order_id=kl.order_id and kl.user_id=o.user_id)')
+                ->where('kl.user_id = ' . $user_id . '  and kl.kill_product_id=' . $kill_product_id)
+                ->get()
+                ->num_rows();
+        return $num > 0 ? true : false;
+    }
+
+}

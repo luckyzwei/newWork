@@ -1,0 +1,413 @@
+<?php
+
+/**
+ * 订单管理函数
+ * 
+ * @package	ZMshop
+ * @author	wangxiangshuai@hnzhimo.com
+ * @copyright (c) 2017, 河南知默网络科技有限公司
+ * @link	http://www.hnzhimo.com
+ * @since	Version 1.0.0
+ */
+class Order extends CI_Controller {
+
+    //status  -1售后中 0未支付 1已支付 2已发货 3部分发货 4部分退货 5已收货 6已评价 refunds_status 0默认状态 1申请退款 2已处理 3驳回
+    private $statusname = array(
+        '-1' => '已删除',
+        '0' => '等待用户支付',
+        '1' => '你的订单正在努力发货',
+        '2' => '你的商品已经在路上了',
+        '3' => '部分发货',
+        '4' => '部分发货',
+        '5' => '快来评价吧',
+        '6' => '订单已完成',
+        '7' => '售后中',
+        '8' => "已退款"
+    );
+    private $refunds_statusname = array(
+        '0' => '默认状态',
+        '1' => '已申请',
+        '2' => '已处理',
+        '3' => '驳回',
+    );
+
+    public function __construct() {
+        parent::__construct();
+        //当前控制器会使用到的类文件自动加载
+        $this->load->model("OrderModel");
+        $this->load->model("CouponModel");
+        $this->load->model("UserModel");
+        $this->load->model("userAccountLogModel");
+        $this->load->helper("string");
+    }
+    /**
+     * 查询订单详情
+     * 订单ID
+     */
+    public function get_order_info() {
+        $json['error_code'] = 2;
+        $user_id = $this->session->user_info['user_id'];
+        $order_id = $this->input->post_get("order_id");
+        $coupon = array();
+        $marketing = array();
+        if (empty($order_id)) {
+            $json['error_code'] = 1;
+        } else {
+            $orderinfo = $this->OrderModel->getOrderInfo(array('order_id' => $order_id, 'user_id' => $user_id), '*');
+
+
+            $coupon = $this->CouponModel->getOrderCoupon($order_id);
+
+            $this->load->model("MarketingModel");
+            $marketing = $this->MarketingModel->getOrderMarketings($order_id);
+
+            $orderproducts = $this->OrderModel->getOrderProduct($order_id);
+            foreach ($orderproducts as $key => $value) {
+                $orderproducts[$key]['product_thumb'] = reduce_double_slashes($value['product_thumb']);
+            }
+            if (!empty($orderinfo)) {
+                $orderinfo['statusname'] = $this->statusname[$orderinfo['status']];
+                $orderinfo['refunds_statusname'] = $this->refunds_statusname[$orderinfo['refunds_status']];
+                $orderinfo['createtime'] = date("Y-m-d H:i:s", $orderinfo['createtime']);
+                $orderinfo['shippingtime'] = date("Y-m-d H:i:s", $orderinfo['shippingtime']);
+                $json['data'] = array(
+                    'orderinfo' => $orderinfo,
+                    'coupon' => $coupon,
+                    'order_product' => $orderproducts,
+                    'marketing' => $marketing
+                );
+                $json['error_code'] = 0;
+            }
+        }
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+    /**
+     * 根据状态检查订单
+     */
+    public function check_order_bystatus() {
+        $user_id = $this->session->user_id;
+        $status = array("0" => "waitpay", "1" => "waitsend", "2" => "waitrecive", "5" => "waitcommend");
+        $result = array("waitpay" => 0, "waitsend" => 0, "waitrecive" => 0, "waitcommend" => 0);
+        foreach ($status as $key => $state) {
+            $orderlist = $this->OrderModel->getOrderList($user_id, $key);
+            $num = count($orderlist);
+            $result[$state] = $num;
+        }
+        //优惠券数量
+        $result['coupon_total'] = $this->CouponModel->getUserCoupons($user_id, 0)['totalnum'];
+        $json['error_code'] = 0;
+        $json['data'] = $result;
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+    /**
+     * 获取订单列表
+     */
+    public function get_orders() {
+        $json = array();
+        $user_id = $this->session->user_id;
+        if (empty($user_id)) {
+            $json['error_code'] = 1;
+        }
+        $status = $this->input->post('status');
+        $limit = $this->input->post("limit");
+        $limit = empty($limit) ? 10 : $limit;
+        $page = $this->input->post("page");
+        if ($status < 0) {
+            $status = "";
+        }
+        if (empty($json)) {
+            $orderlist = $this->OrderModel->getOrderList($user_id, $status, $limit, $page);
+            foreach ($orderlist as $key => $value) {
+
+                $value['statusname'] = $this->statusname[$value['status']];
+                $value['refunds_statusname'] = $this->refunds_statusname[$value['refunds_status']];
+//                foreach ($value['suborders'] as $k => $v) {
+//                    $value['suborders'][$k]['statusname'] = $this->statusname[$v['status']];
+//                }
+                $json['data'][] = $value;
+            }
+            $json['error_code'] = 0;
+        }
+        if (empty($json['data'])) {
+            $json['error_code'] = 1;
+        }
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+    /**
+     * 获取订单的快递信息
+     */
+    public function get_express() {
+        $json = array();
+        $user_id = $this->session->user_info['user_id'];
+        $order_id = $this->input->post("order_id");
+        if (empty($user_id)) {
+            $json['error_code'] = 1;
+        }
+        if (empty($order_id)) {
+            $json['error_code'] = 2;
+        }
+        if (empty($json)) {
+            $this->load->library("Systemsetting");
+            $config['code'] = 'c11573c692c84ff6a2850fab330732cd'; // $this->systemsetting->get("express_code");
+            $this->load->library("Express", $config);
+            $data = array();
+            $orderinfo = $this->OrderModel->getOrderInfo(array('order_id' => $order_id, 'user_id' => $user_id), 'shipping_code,shipping_type,status');
+            $express = $this->express->kdniao($orderinfo['shipping_code'], $orderinfo['shipping_type']);
+            if ($express['Success'] == true) {
+                $json['error_code'] = 0;
+                $json['data'] = $express;
+            } else {
+                $json['error_code'] = 3;
+            }
+        }
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+    //确认收货
+    public function receipt() {
+        $user_id = $this->session->user_info['user_id'];
+        $order_id = $this->input->post('order_id');
+        if (empty($user_id)) {
+            $json['error_code'] = 2;
+        }
+        if (empty($order_id)) {
+            $json['error_code'] = 1;
+        }
+        if (empty($json)) {
+            $order_status = $this->OrderModel->getOrderInfo(array('order_id' => $order_id, 'user_id' => $user_id), 'status');
+            if ($order_status['status'] == 1 || $order_status['status'] == 2) {
+                $this->OrderModel->upOrderinfo(array('user_id' => $user_id, 'order_id' => $order_id), array("status" => 5));
+                $json['error_code'] = 0;
+            } else {
+                $json['error_code'] = 3;
+            }
+        }
+        if (empty($json)) {
+            $json['error_code'] = 4;
+        }
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+    //订单退货
+    public function refundorder() {
+        $user_id = $this->session->user_info['user_id'];
+        $order_id = $this->input->post('order_id');
+        if (empty($user_id)) {
+            $json['error_code'] = 2;
+        }
+        if (empty($order_id)) {
+            $json['error_code'] = 1;
+        }
+        if (empty($json)) {
+            $order_status = $this->OrderModel->getOrderInfo(array('order_id' => $order_id, 'user_id' => $user_id), 'status,exchange_integral');
+            if ($order_status['status'] == 1 || $order_status['status'] == 2) {
+                $this->OrderModel->upOrderinfo(array('user_id' => $user_id, 'order_id' => $order_id), array("status" => 7, 'refunds_status' => 1, 'last_status' => $order_status['status']));
+                $json['error_code'] = 0;
+            } else {
+                $json['error_code'] = 3;
+            }
+        }
+        if($json['error_code'] ==0 && $order_status["exchange_integral"]){
+            
+             $intergal = $order_status['exchange_integral'];
+                $remark = "订单退款".$order_id.",退还用户".$order_status['exchange_integral']."积分";
+                $change_type = 5;
+                $user_account = $this->UserModel->setUseIntergal($user_id, $intergal);
+                if ($user_account) {
+                    $this->userAccountLogModel->addIntergalLog(array("user_id" => $user_id, "change_intergal" => $intergal, "change_cause" => $remark, "createtime" => time(), "change_type" => $change_type));
+                    
+                } 
+        }
+        if (empty($json)) {
+            $json['error_code'] = 4;
+        }
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+    //订单退货
+    public function refundCancel() {
+        $user_id = $this->session->user_info['user_id'];
+        $order_id = $this->input->post('order_id');
+        if (empty($user_id)) {
+            $json['error_code'] = 2;
+        }
+        if (empty($order_id)) {
+            $json['error_code'] = 1;
+        }
+        if (empty($json)) {
+            $order_status = $this->OrderModel->getOrderInfo(array('order_id' => $order_id, 'user_id' => $user_id), 'status,last_status,exchange_integral');
+            if (!$order_status['last_status']) {
+                $order_status['last_status'] = 1;
+            }
+
+            if ($order_status['status'] == 7) {
+                $this->OrderModel->upOrderinfo(array('user_id' => $user_id, 'order_id' => $order_id), array("status" => $order_status['last_status'], 'last_status' => $order_status['status']));
+                $json['error_code'] = 0;
+            } else {
+                $json['error_code'] = 3;
+            }
+        }
+        if (empty($json)) {
+            $json['error_code'] = 4;
+        }
+         if($json['error_code'] ==0 && $order_status["exchange_integral"]){
+            
+             $intergal = $order_status['exchange_integral'];
+                $remark = "订单退款取消".$order_id.",扣除用户".$order_status['exchange_integral']."积分";
+                $change_type = 4;
+                $user_account = $this->UserModel->setUseIntergal($user_id, $intergal);
+                if ($user_account) {
+                    $this->userAccountLogModel->addIntergalLog(array("user_id" => $user_id, "change_intergal" => $intergal, "change_cause" => $remark, "createtime" => time(), "change_type" => $change_type));
+                    
+                } 
+        }
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+    //获取订单商品
+    public function get_order_product() {
+        $order_id = $this->input->post('order_id');
+        $user_id = $this->session->user_info['user_id'];
+        $orderinfo = $this->OrderModel->getOrderInfo(array('order_id' => $order_id, 'user_id' => $user_id, 'status' => 5), 'status');
+        $json['error_code'] = 1;
+        if ($orderinfo) {
+            $products = $this->OrderModel->getOrderProduct($order_id);
+            foreach ($products as $value) {
+                $value['product_score'] = 5;
+                $json['data'][] = $value;
+            }
+            $json['error_code'] = 0;
+        }
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+    /**
+     * 获取供货商需要发货的商品
+     */
+    public function get_supplier_product() {
+        $supplier_id = $this->session->user_info['supplier_id'];
+        $page = $this->input->post('page') ? $this->input->post('page') : 1;
+        $limit = $this->input->post('limit') ? $this->input->post('limit') : 10;
+        $status = $this->input->post('status');
+        if (empty($status)) {
+            $where = 'order.status=1';
+        } else {
+            $where = 'order.status>1';
+        }
+        $list = $this->OrderModel->getSupplierOrder($supplier_id, $limit, $page, $where);
+        $json = array('data' => $list, 'error_code' => 0);
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+    /**
+     * 供货商发货操作
+     */
+    public function deliver_goods() {
+        $order_id = $this->input->post('order_id');
+        $supplier_id = $this->session->user_info['supplier_id'];
+        $shipping_code = $this->input->post('shipping_code');
+        $res = $this->OrderModel->upOrderinfo(array('order_id' => $order_id, 'supplier_id' => $supplier_id, 'status' => 1), array('status' => 2, 'shipping_code' => $shipping_code, 'shippingtime' => time()));
+        $json = array('error_code' => 1);
+        if ($res) {
+            $json = array('error_code' => 0);
+            $this->sendmessage($order_id);
+        }
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+    public function sendmessage($order_id) {
+        $orderinfo = $this->OrderModel->getOrderInfo('order_id=' . $order_id);
+        $config = array(
+            'appid' => $this->systemsetting->get("wechat_fun_id"),
+            'appsecret' => $this->systemsetting->get("wechat_fun_secret")
+        );
+        //发送短信
+        $morderinfo = $this->OrderModel->getOrderInfo('order_id=' . $orderinfo['master_order_id']);
+        $ressms = $this->sendsms($morderinfo['telephone'], $orderinfo['order_sn']);
+        if ($ressms) {
+            $smsmsg = ', 短信提醒成功';
+        } else {
+            $smsmsg = ', 短信提醒失败';
+        }
+        $this->load->model('FormIdModel');
+        $this->load->model('UserModel');
+        $userinfo = $this->UserModel->getUserById($orderinfo['user_id'], 1);
+        $formidinfo = $this->FormIdModel->getFormId($orderinfo['user_id']);
+        $this->load->library('wechat_tmplmsg', $config);
+
+        $data['touser'] = $userinfo['wx_fun_openid'];
+        $data['form_id'] = $formidinfo['formid'];
+        $data['page'] = 'pages/member/my/my';
+        $data['template_id'] = 'ZICex1pzRcIRYFj_ZYtMbfE1KBCBKqqYEHDU0aNlrSc';
+        $data['data'] = array(
+            'keyword1' => array('value' => $orderinfo['order_sn']),
+            'keyword2' => array('value' => '已发货'),
+            'keyword3' => array('value' => $orderinfo['shipping_code']),
+            'keyword4' => array('value' => '您的商品正在努力配送中。。'),
+        );
+        $data['emphasis_keyword'] = 'keyword2';
+
+        $token = $this->wechat_tmplmsg->checkAuth();
+        $res = $this->wechat_tmplmsg->sendmessage($token, $data);
+        if ($res == 'ok') {
+            $msg = '成功';
+        } else {
+            $msg = '失败' . $res;
+        }
+        if ($formidinfo['source_field'] == 'sub_pay') {
+            $updata['status'] = $formidinfo['status'] + 1;
+        } else {
+            $updata['status'] = 1;
+        }
+        $updata['temp_msginfo'] = '订单' . $orderinfo['order_sn'] . '发送' . $msg . $smsmsg;
+        $updata['sendtime'] = time();
+
+        $this->FormIdModel->editformid($updata, array('id' => $formidinfo['id']));
+        return $msg;
+    }
+
+    public function sendsms($phone, $order_sn) {
+        //获取系统阿里云短信的配置信息
+        $accessId = $this->systemsetting->get("alisms_accessid");
+        $accessSecret = $this->systemsetting->get("alisms_accessecret");
+        $singname = $this->systemsetting->get("alisms_singname");
+
+        $config = array("accessId" => $accessId, "accessSecret" => $accessSecret, "singname" => $singname);
+        $this->load->library("aliyunsms", $config);
+        $content = array("ordersn" => $order_sn);
+        $sendResult = $this->aliyunsms->sendSMS($phone, $content, "SMS_144795144");
+
+        if ($sendResult['Code'] == "OK") {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    /*     * 用户取消订单* */
+    public function delete_order() {
+        $order_id = $this->input->post("order_id");
+        $order=$this->OrderModel->getOrderInfo("order_id=".$order_id,"exchange_integral,user_id");
+        $res=$this->OrderModel->deleteOrder($order_id);
+        if ($res && $order['exchange_integral']) {
+            
+             $intergal = $order['exchange_integral'];
+                $remark = "取消订单".$order_id.",退还用户".$order['exchange_integral']."积分";
+                $change_type = 5;
+                $user_account = $this->UserModel->setUseIntergal($order["user_id"], $intergal);
+                if ($user_account) {
+                    $this->userAccountLogModel->addIntergalLog(array("user_id" => $order["user_id"], "change_intergal" => $intergal, "change_cause" => $remark, "createtime" => time(), "change_type" => $change_type));
+                    
+                } 
+            $json = array('error_code' => 0);
+        }elseif ($res) {
+              $json = array('error_code' => 0);
+        }else{
+            $json = array('error_code' => 1);
+        }
+        $this->output->set_content_type("application/json")->set_output(json_encode($json));
+    }
+
+}

@@ -1,0 +1,50 @@
+<!--活动促销页面-->
+<view class='global-pageFont saleProduct'>
+  <!-- 顶部广告轮播 -->
+  <view class="saleProduct-banner">
+    <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" indicator-active-color="#ff8284">
+      <block wx:for="{{imgUrls}}" wx:key="">
+        <swiper-item bindtap='goUrl' data-ad_url="{{item.ad_url}}">
+          <image src="{{item.ad_source}}" class="banner-img" />
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <!-- 砍价 拼团商品 -->
+  <view class="sales-tab">
+    <!-- 砍价 拼团商品Tab切换 -->
+    <view class='goodsDetail-nav'>
+      <view class='nav-tab {{curIndex=="0"?"active":""}}' bindtap='changeTap' data-index="0">拼团抢购</view>
+      <view class='nav-tab {{curIndex=="1"?"active":""}}' bindtap='changeTap' data-index="1">砍价商品</view>
+    </view>
+    <!-- 砍价商品列表-->
+    <view class='' wx:if="{{curIndex=='1'}}">
+
+    </view>
+    <!-- 拼团商品列表-->
+    <view class='' wx:if="{{curIndex=='0'}}">
+      <view class="pList-product">
+        <view class='pList-items' wx:for="{{products.group}}" wx:key="" wx:for-item="item">
+          <!-- 商品图片 -->
+          <image src='{{item.group_img}}' class="items-img" data-product_id="{{item.product_id}}" bindtap='goGoodsDetail'></image>
+          <view class='items-info'>
+            <text class="info-title">{{item.group_name}}</text>
+            <view class='global-rowStart themeColor product-price'>
+              <view class='pintuan global-rowCenter'>
+                <text class='bigFont'>4</text>
+                <text>人拼</text>
+              </view>
+              <view class='global-rowStart'>
+                <text class='global-font30 global-price'><text class='global-font22'>¥</text>{{item.group_price}}
+                </text>
+                <text class=' global-market_price'><text class='global-font22'>¥</text>{{item.group_price}}</text>
+              </view>
+              <view class="goTuan" bindtap='goTuan'data-group_product_id="{{}}">  去拼团 </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+</view>

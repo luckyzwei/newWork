@@ -1,0 +1,494 @@
+<?php
+
+/**
+ * 订单模型类
+ */
+class OrderModel extends CI_Model {
+
+    /**
+     * 生成订单
+     * @todo 处理赠品
+     * @params array 订单数据结构参考代码
+     */
+    public function addOrder($data) {
+
+        $this->db->trans_begin();
+        //插入主订单
+        $source_data = $data;
+        $products = $data['products'];
+        $marketings = $data['order_marketings'];
+        $coupon = $data['coupon'];
+        $groupbuy_data = $data['groupbuy_data'];
+        unset($data['groupbuy_data']);
+        unset($data['products']);
+        unset($data['order_marketings']);
+        unset($data['coupon']);
+
+        $order_sn = $this->getOrderSn();
+        $data['order_sn'] = $order_sn;
+
+        $this->db->insert("order", $data);
+        $master_order_id = $this->db->insert_id();
+        //插入订单策略表
+        foreach ($marketings as $marketing) {
+            $marketing_data = array(
+                "marketing_id" => $marketing['marketing_id'],
+                "order_id" => $master_order_id,
+                "marketing_kind" => $marketing['marketing_kind'],
+            );
+            switch ($marketing['marketing_kind']) {
+                case "achieve_discount":
+                    $marketing_data['content'] = $marketing['marketing_discount'];
+                    break;
+                case "achieve_give":
+                    $marketing_data['content'] = $marketing['marketing_product'];
+                    break;
+                case "achieve_coupon":
+                    $marketing_data['content'] = $marketing['marketing_coupon'];
+                    break;
+                case "achieve_reward":
+                    $marketing_data['content'] = $marketing['marketing_reward'];
+                    break;
+                case "achieve_freeshipping"://满额包邮@todo
+                    $marketing_data['content'] = $marketing['marketing_shipping'];
+                    break;
+            }
+            $this->db->insert("order_marketing", $marketing_data);
+        }
+        //插入团列表
+        if ($data['order_type'] == 'G' && !empty($groupbuy_data)) {
+            $groupbuy_data['order_id'] = $master_order_id;
+            //插入子订单
+            $this->db->insert("user_groupbuy", $groupbuy_data);
+        }
+        //根据供货商拆分订单商品
+        foreach ($products as $product) {
+            $orderProduct[$product['supplier_id']][] = $product;
+        }
+        foreach ($orderProduct as $key => $products) {
+            $sub_order_sn = $this->getOrderSn();
+            $sub_order_data = array(
+                "master_order_id" => $master_order_id,
+                "user_id" => $data['user_id'],
+                "order_sn" => $sub_order_sn,
+                "createtime" => time(),
+                "supplier_id" => $key
+            );
+            //插入子订单
+            $this->db->insert("order", $sub_order_data);
+            $sub_order_id = $this->db->insert_id();
+            foreach ($products as $product) {
+                @$order_product = array(
+                    "master_order_id" => $master_order_id,
+                    "order_id" => $sub_order_id,
+                    "product_id" => $product['product_id'],
+                    "product_special_name" => $product['product_special_name'],
+                    "product_special_id" => $product['product_special_id'],
+                    "product_price" => $product['product_price'],
+                    "product_number" => $product['product_number'],
+                    "product_name" => $product['product_name'],
+                    "product_thumb" => $product['thumb'],
+                );
+                $this->db->insert("order_product", $order_product);
+            }
+        }
+        //更新优惠券为已经使用
+        if (!empty($coupon)) {
+            $this->db
+                    ->where(array('coupon_id' => $coupon['coupon_id'], "user_id" => $data['user_id']))
+                    ->update('user_coupon', array('status' => 1, "order_id" => $master_order_id, "save_money" => $coupon['save_money']));
+            $this->db
+                    ->where(array('coupon_id' => $coupon['coupon_id']))
+                    ->set("use_num", "use_num-1", false)
+                    ->update('coupon');
+        }
+
+        //插入佣金表
+        $rewards = $this->calculateReward($source_data);
+        $reward_type = 0;
+        foreach ($rewards as $key => $reward) {
+            if ($reward['reward_money'] > 0) {
+                $reward_data = array(
+                    "user_id" => $key,
+                    "order_id" => $master_order_id,
+                    "order_reward" => $reward['reward_money'],
+                    "reward_status" => $reward_type,
+                    "createtime" => time()
+                );
+                $reward_type++;
+                $this->db->insert("user_reward", $reward_data);
+            }
+        }
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback(); //回滚
+            return FALSE;
+        } else {
+            $this->db->trans_commit(); //提交
+            //订单日志
+            $order_log = array(
+                'createtime' => time(),
+                'operator_id' => $data['user_id'],
+                'order_id' => $master_order_id,
+                'content' => '用户' . $data['user_id'] . '新增订单'
+            );
+            $this->db->insert('order_log', $order_log);
+            return $master_order_id;
+        }
+    }
+
+    /**
+     * 计算订单的佣金
+     */
+    private function calculateReward($data) {
+        $products = $data['products'];
+        $product_amount = $data['product_amount'];
+        //当前用户的代理分组
+        $query = $this->db->select("agent_group.*,agent.user_id")
+                ->where("agent.user_id", $data['user_id'])
+                ->join("agent_group", "agent_group.agent_group_id=agent.agent_group_id", "left")
+                ->get("agent");
+        $userAgent = $query->row_array();
+        $level_one_id = 0;
+        $level_two_id = 0;
+        //设置可以得到佣金的用户id：如果用户是代理则自己获取一级分成
+//        if (!empty($userAgent)) {
+//            $level_one_id = $data['user_id'];
+//            $level_two_id = $data['from_id'];
+//        } else
+        if ($data['from_id']) {
+            $level_one_id = $data['from_id'];
+            $query_user = $this->db->select("*")->where("user_id", $data['from_id'])->get("user");
+            $from_user = $query_user->row_array();
+
+            $level_two_id = !empty($from_user['parent_user_id']) ? $from_user['parent_user_id'] : 0;
+        }
+//        if (!empty($data['store_id'])) {//如果店铺id已经定义强制一级分成为店铺管理员
+//            $storequery = $this->db->select("*")->from("store")->where("store_id", $data['store_id'])->get();
+//            $store_info = $storequery->row_array();
+//            $level_one_id = $store_info['store_uid'];
+//
+//            $query_user = $this->db->select("parent_user_id")->where("user_id", $level_one_id)->get("user");
+//            $parent_user = $query_user->row_array();
+//            $level_two_id = !empty($parent_user['parent_user_id']) ? $parent_user['parent_user_id'] : 0;
+//        }
+
+        $user_reward = array($level_one_id => array("reward_money" => 0), $level_two_id => array("reward_money" => 0));
+        if ($level_one_id) {
+
+            //适用的代理商分组：所有分成按照一级代理商所在分组进行计算
+            $query = $this->db->select("agent_group.*,agent.user_id")
+                    ->where("agent.user_id", $level_one_id)
+                    ->join("agent_group", "agent_group.agent_group_id=agent.agent_group_id", "left")
+                    ->get("agent");
+            $userAgent = $query->row_array();
+
+            foreach ($products as $product) {
+                if (empty($product['is_gift'])) {
+                    $productAgentSet = array();
+                    $query = $this->db->select("agent_commission")->where("product_id", $product['product_id'])->get("product");
+                    $pro_info = $query->row_array();
+                    if (!empty($pro_info['agent_commission'])) {
+                        $productAgentSet = unserialize($pro_info['agent_commission']);
+                        foreach ($productAgentSet as $pas) {
+                            if ($pas['agent_group_id'] == $userAgent['agent_group_id']) {
+                                $proAset = $pas;
+                            }
+                        }
+                    }
+                    if (!empty($proAset)) {
+                        if ($proAset['agent_commission'][0] > 1) {
+                            $user_reward[$level_one_id]['reward_money'] += $proAset['agent_commission'][0] * $product['product_number'];
+                        } elseif ($proAset['agent_commission'][0] >= 0 && $proAset['agent_commission'][0] < 1) {
+                            $user_reward[$level_one_id]['reward_money'] += $proAset['agent_commission'][0] * $product['product_price'] * $product['product_number'];
+                        }
+                        //如果是店铺销售加上产品差价
+//                        if (!empty($data['store_id'])) {
+//                            $sourceProduct_query = $this->db->select("*")->where("product_id", $product['product_id'])->get("product");
+//                            $source_product = $sourceProduct_query->row_array();
+//                            $diffPirce = $product['product_price'] - $source_product['price'];
+//                            $user_reward[$level_one_id]['reward_money'] += ($diffPirce > 0 ? $diffPirce : 0);
+//                        }
+
+                        if ($level_two_id||1==2) {
+                            if ($proAset['agent_commission'][1] > 1) {
+                                $user_reward[$level_two_id]['reward_money'] += $proAset['agent_commission'][1] * $product['product_number'];
+                            } elseif ($proAset['agent_commission'][1] >= 0 && $proAset['agent_commission'][1] < 1) {
+                                $user_reward[$level_two_id]['reward_money'] += $proAset['agent_commission'][1] * $product['product_price'] * $product['product_number'];
+                            }
+                        }
+                        //总金额里面减去当前已经分佣的商品金额
+                        $product_amount -= $product['product_price'] * $product['product_number'];
+                    }
+                }
+            }
+            $user_agent = unserialize($userAgent['commission_rate']);
+            //计算订单商品总额佣金
+            if ($product_amount > 0 && $user_agent) {
+                if ($user_agent[0] > 1) {
+                    $user_reward[$level_one_id]['reward_money'] += $user_agent[0];
+                } elseif ($user_agent[0] >= 0 && $user_agent[0] < 1) {
+                    $user_reward[$level_one_id]['reward_money'] += $user_agent[0] * $product_amount;
+                }
+                if ($level_two_id||1==2) {
+                    if ($user_agent[1] > 1) {
+                        $user_reward[$level_two_id]['reward_money'] += $user_agent[1];
+                    } elseif ($user_agent[1] >= 0 && $user_agent[1] < 1) {
+                        $user_reward[$level_two_id]['reward_money'] += $user_agent[1] * $product_amount;
+                    }
+                }
+            }
+        }
+        return $user_reward;
+    }
+
+    /**
+     * 创建订单号
+     * @return string
+     */
+    private function getOrderSn() {
+        $sn = "SN" . time() . mt_rand(1000, 9999);
+        $has = $this->orderModel->getOrderInfo(array("order_sn" => $sn));
+        if (!empty($has)) {
+            $this->getOrderSn();
+        }
+        return $sn;
+    }
+
+    /**
+     * 获取用户订单数量
+     * @params int 用户ID
+     * @params int 订单状态 -1售后中0未支付1已支付2已发货3部分发货4部分退货5已收货 其他 全部订单
+     * @params array('fasttime'=>time(),'lasttime'=>time()) 查询开始时间和结束时间
+     * 
+     * 特别说明最后一个参数 如果传值则返回数组否则返回整数
+     * @params $files 统计的字段 和
+     */
+    public function getOrderListCount($user_id, $status = 'all', $time = array(), $files = '') {
+        $this->db->where('status = ' . $status);
+        if (!empty($time) && is_array($time))
+            $this->db->where('createtime > ' . $time['fasttime'] . ' and createtime < ' . $time['lasttime']);
+        $this->db->from('order')->where('user_id = ' . $user_id);
+        if (!empty($files)) {
+            $count_db = clone($this->db);
+            $num = $count_db->count_all_results();
+            $this->db->select_sum($files, 'countsum');
+            $query = $this->db->get();
+            return array('count' => $num, 'countsum' => $query->row('countsum'));
+        } else {
+            return $this->db->count_all_results();
+        }
+        return;
+    }
+
+    /**
+     * 获取用户订单列表
+     * 
+     * @params int 用户ID
+     * @params int 订单状态 -1售后中0未支付1已支付2已发货3部分发货4部分退货5已收货 其他 全部订单
+     * @params int 每次查询的条数
+     * @params int 查询的页码
+     */
+    public function getOrderList($user_id, $status = 'all', $limit = 15, $page = 1) {
+
+        if ($status != "all" || $status == "0") {
+            $this->db->where('status = ' . $status);
+        } else {
+            $this->db->where('status>-1');
+        }
+        $query = $this->db->select('*')
+                ->from('order')
+                ->order_by("order_id", "DESC")
+                ->where('master_order_id = 0 and user_id = ' . $user_id)
+                ->limit($limit, ($page - 1) * $limit)
+                ->get();
+
+        $orderlist = array();
+        //查询子订单
+        foreach ($query->result_array() as $key => $value) {
+            $value['product'] = $this->getOrderProduct($value['order_id']);
+//            $value['suborders'] = $this->getSuborders($value['order_id'],$status);
+//            if(empty($value['suborders']))
+//                continue;
+            $orderlist[] = $value;
+        }
+        return $orderlist;
+    }
+
+    /**
+     * 获取子订单
+     * @param type $master_order_id
+     */
+    public function getSuborders($master_order_id, $status = '') {
+        if ($status !== '')
+            $this->db->where('status = ' . $status);
+        $query = $this->db->select('order_id,order_sn,shipping_code,status,supplier_id')
+                ->from('order')
+                ->where('master_order_id = ' . $master_order_id)
+                ->get();
+        $orderlist = array();
+        foreach ($query->result_array() as $value) {
+            $value['product'] = $this->getOrderProduct($value['order_id']);
+            $value['store'] = $this->db->select('order_product.product_id,store_product.product_id,store.store_uid,agent.dot_name')
+                    ->join('store_product', 'order_product.product_id=store_product.product_id')
+                    ->join('store', 'store_product.store_id=store.store_id')
+                    ->join('agent', 'store.store_uid=agent.user_id')
+                    ->from('order_product')
+                    ->where('order_product.order_id=' . $value['order_id'])
+                    ->get()
+                    ->row_array();
+            $orderlist[] = $value;
+        }
+        return $orderlist;
+    }
+
+    /**
+     * 获取单商品信息
+     * @param type $order_id
+     */
+    public function getOrderProduct($order_id, $supplier_id = '') {
+        $this->db->select('order_product.*')
+                ->from('order_product');
+
+        if (!empty($supplier_id)) {
+            $this->db->select('product.in_price')
+                    ->join('product', 'product.product_id=order_product.product_id and product.supplier_id = ' . $supplier_id, 'right');
+        }
+        $query = $this->db->where('order_product.master_order_id = ' . $order_id)
+                // ->join('store_product','order_product.product_id=store_product.product_id')
+                // ->join('store','store_product.store_id=store.store_id')
+                // ->join('agent','store.store_uid=agent.user_id')
+                ->get();
+//        echo $this->db->last_query();
+        return $query->result_array();
+    }
+
+    /**
+     * 获取主订单商品信息
+     * @param type $master_order_id
+     * @return type
+     */
+    public function getMasterOrderProduct($master_order_id) {
+        $query = $this->db->select("product.*")
+                ->join("product", "product.product_id=order_product.product_id", "lfet")
+                ->where("order_product.master_order_id", $master_order_id)
+                ->get("order_product");
+        return $query->result_array();
+    }
+
+    /*
+     * 查询订单信息
+     * 
+     * @params array 查询订单的条件 order_id  ordersn
+     * @params string 需要查询的字段
+     * @params boole 是否获取该订单的商品信息
+     * @params boole 需要查询该订单的策略信息
+     * 
+     */
+
+    public function getOrderInfo($where, $files = '*') {
+
+        //查询订单信息
+        $query = $this->db->select($files)
+                ->from('order')
+                ->where($where)
+                ->get();
+        return $query->row_array();
+    }
+
+    /**
+     * 更新订单信息 支持 状态 退货 更新 暂留等功能扩展
+     * 
+     * @param array or string $where
+     * @param array $data
+     */
+    public function upOrderinfo($where, $data) {
+        $result = $this->db->set($data)
+                ->where($where)
+                ->update('order');
+        switch ($data['status']) {
+            case 7:
+
+                $content = "申请退款";
+                break;
+            case 5:
+
+                $content = "确认收货";
+                break;
+
+            default:
+                $content = "更新订单";
+                break;
+        }
+
+        if ($result) {
+
+            $order_log = array(
+                'createtime' => time(),
+                'operator_id' => $where['user_id'],
+                'order_id' => $where['order_id'],
+                'content' => '用户' . $where['user_id'] . $content
+            );
+            $this->db->insert('order_log', $order_log);
+            return $result;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 修改订单状态，包含子订单
+     * @param type $order_id
+     * @param type $status
+     */
+    public function updateOrder($order_id, $data) {
+        return $this->db->where("order_id=" . $order_id)
+                        ->or_where("master_order_id=" . $order_id)
+                        ->update("order", $data);
+    }
+
+    /*
+     * 根据供货商id和分页参数查询订单数据
+     */
+
+    public function getSupplierOrder($supplier_id, $limit = 10, $page = 1, $where = 'status=1') {
+        $query = $this->db->select('order.order_sn,order.order_id,order.status,o.address,o.fullname,o.telephone')
+                ->from('order')
+                ->join('order as o', 'o.order_id=order.master_order_id')
+                ->where('order.supplier_id', $supplier_id)
+                ->where($where)
+                ->limit($limit, ($page - 1) * $limit)
+                ->get();
+        $data = array();
+        foreach ($query->result_array() as $value) {
+            $value['product'] = $this->getOrderProduct($value['order_id'], $supplier_id);
+            if (!empty($value['product']))
+                $data[] = $value;
+        }
+        return $data;
+    }
+
+    /**
+     * 获取订单所享受的优惠活动
+     * @param type $order_id
+     */
+    public function getOrderMarketings($order_id) {
+        $query = $this->db->select("*")->where("order_id", $order_id)->get("order_marketing");
+        return $query->result_array();
+    }
+
+    /**
+     * 获取用户推广的订单
+     */
+    public function getUserPopuOrder() {
+        
+    }
+
+    /*     * 用户删除订单* */
+
+    public function deleteOrder($order_id) {
+        $res=$this->db->where("order_id", $order_id)->set("status", -1)->update("order");
+        $this->db->where("master_order_id", $order_id)->set("status", -1)->update("order");
+        return $res;
+    }
+
+}

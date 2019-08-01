@@ -1,0 +1,68 @@
+<!--拼团列表-->
+<view class='group-list global-pageFont'>
+  <view class='empty' wx:if="{{grouplist.length<1}}">
+    <image src='/images/empty.png'></image>
+    <text>还没有参与拼团哦赶紧去促销专区立马参与~</text>
+  </view>
+  <view wx:else class='list-items'>
+    <view class='order-unempty' wx:if="{{grouplist}}">
+      <view class="order-list global-column2" wx:for="{{grouplist}}" wx:key="" wx:for-item="group">
+        <!-- <view class="header-sn global-rowStart" bindtap='goDetail' data-order_id='{{group.order_id}}'>
+        </view> -->
+        <!-- 商品列表 团编号： group.groupbuy_sn -->
+        <view class='order-items'>
+          <image src='{{group.thumb}}' class="items-img"></image>
+          <view class='items-info'>
+           <text class='is_tunaNum'>团编号: {{group.groupbuy_sn}}</text>
+            <text class="info-title">{{group.product_name}}</text>
+            <view class='global-rowStart product-price'>
+              <text class='global-price'><text class='global-font22'>¥</text>{{group.group_product_price}}
+              </text>
+            </view>
+            <view class='global-rowStart'>
+              <text class='themeColor' wx:if="{{group.order_status==0}}">等待支付</text>
+              <text class='themeColor' wx:if="{{group.order_status==3}}">拼团失败</text>
+              <text class='themeColor' wx:if="{{group.status==1&&group.order_status==1}}">等待成团</text>
+              <text class='themeColor' wx:if="{{group.status==2&&group.order_status==2}}">拼团成功,已发货</text>
+              <text class='themeColor' wx:if="{{group.status==2&&group.order_status>2}}">拼团成功,已完成</text>
+            </view>
+            <!-- 分享按钮 -->
+            <view class='group-share global-column1'>
+              <image src='/images/share.png' class='share-icon'></image>
+              <!-- <text class='share-txt'>分享</text> -->
+              <button open-type='share' class='share-btn' data-group_product_id="{{group.group_product_id}}" data-groupbuy_sn="{{group.groupbuy_sn}}" bindtap='onShareAppMessage'  send-message-img="{{imageUrl}}" hover-class="none">分享</button>
+            </view>
+          </view>
+        </view>
+        <!--团编号 -->
+        <view class=''>
+         
+        </view>
+        <view class="item-footer global-rowBtw">
+          <!-- 拼团成员 -->
+          <view class='tuan-number global-rowStart' wx:if="{{group.groupbuy.length>0}}">
+            <image src='{{item.wx_headimg}}' class='num-headimg' wx:for="{{group.groupbuy}}" wx:for-item="item" wx:key=""></image>
+          </view>
+          <!-- 拼团 支付价格 -->
+          <view class='item-footer-row'>
+            <text class="sum">实付:￥{{group.order_amount}}</text>
+            <view class="footer-button themeBg" wx:if='{{group.status==0 && group.order_status==0}}' bindtap='payorder' data-order_id='{{group.order_id}}'> 支付订单 </view>
+            <block wx:if="{{group.order_status==2}}">
+              <view class="footer-button themeBg" bindtap='clickreceipt' data-order_id='{{group.order_id}}'> 确认收货</view>
+              <view class="footer-button themeBg" bindtap="showTransport" data-order_id='{{group.order_id}}' data-statu="open">查看物流</view>
+            </block>
+            <block wx:if="{{group.order_status==5}}">
+              <view class="footer-button themeBg" bindtap='comment' data-order_id='{{group.order_id}}'>去评价</view>
+            </block>
+            <block wx:if="{{group.order_status>0 && group.order_status<5}}">
+              <view class="footer-button themeBg" bindtap='refundorder' data-order_id='{{group.order_id}}'> 退款</view>
+            </block>
+            <block wx:if="{{group.order_status==7}}">
+              <view class="footer-button themeBg" bindtap='refundCancel' data-order_id='{{group.order_id}}'> 取消退款</view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

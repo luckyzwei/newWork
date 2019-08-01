@@ -1,0 +1,10 @@
+<!--邀请推广.wxml-->
+<view class='global-pageFont invited'>
+  <view class='global-rowStart invited-list'>
+    <image src='{{}}' class='invited-headimg'></image>
+    <view class='global-column2'>
+      <text>{{}}客户微信名称</text>
+      <text class='invited-time'>2019-07-17 17:33:45</text>
+    </view>
+  </view>
+</view>

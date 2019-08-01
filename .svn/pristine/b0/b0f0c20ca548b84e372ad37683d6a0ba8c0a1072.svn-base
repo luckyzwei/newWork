@@ -1,0 +1,132 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+class Yse_index extends CI_Controller {
+
+    /**
+     * 衣生贰小程序首页
+     * 获取首页位置所有广告
+     */
+    public function get_yse_index() {
+        $this->load->helper("string");
+        $this->load->model("AdvertModel");
+        //首页轮播
+        $data['lunbo'] = $this->AdvertModel->getAdvert(14);
+        //热销专区
+        $data['rexiao'] = $this->AdvertModel->getAdvert(15);
+        //新品推荐
+        $data['xinpin'] = $this->AdvertModel->getAdvert(22);
+        //私人定制
+        $data['siren'] = @array_pop($this->AdvertModel->getAdvert(16));
+        //定制下方
+        $data['dingzhixia'] = @array_pop($this->AdvertModel->getAdvert(26));
+        //主题沙龙背景
+        $data['zhuti'] = @array_pop($this->AdvertModel->getAdvert(17));
+
+
+        //视频上方
+        $data['shipins'] = @array_pop($this->AdvertModel->getAdvert(27));
+        //视频下方1
+        $data['shipinx1'] = @array_pop($this->AdvertModel->getAdvert(28));
+        //视频下方2 3图片
+        $data['shipinx2'] = $this->AdvertModel->getAdvert(29);
+        //视频下方3
+        $data['shipinx3'] = @array_pop($this->AdvertModel->getAdvert(30));
+        //最下方
+        $data['zuixia'] = @array_pop($this->AdvertModel->getAdvert(31));
+        //新浪二维码
+        $data['xinlangqr'] = @array_pop($this->AdvertModel->getAdvert(18));
+        //微信二维码
+        $data['weixinqr'] = @array_pop($this->AdvertModel->getAdvert(19));
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[$key] = $this->HandleAdvert($value);
+            }
+        }
+        //主题 沙龙 活动 文字
+        $text1 = @array_pop($this->AdvertModel->getAdvert(23));
+        $text1['ad_source'] = explode("-", $text1['ad_source']);
+        $data['zhuti_txt'] = $text1;
+        $text2 = @array_pop($this->AdvertModel->getAdvert(24));
+        $text2['ad_source'] = explode("-", $text2['ad_source']);
+        $data['shalong_txt'] = $text2;
+        $text3 = @array_pop($this->AdvertModel->getAdvert(25));
+        $data['huodong_txt'] = $text3;
+
+        //底部视频
+        $data['shipin'] = @array_pop($this->AdvertModel->getAdvert(20));
+
+        $this->load->model("CategoryModel");
+        //全部商品 -分类
+        //全分类排序
+        $result1 = $this->CategoryModel->getCategoryList('all', '4');
+        foreach ($result1 as $key => $value) {
+            $value['image'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $value['image']);
+            $data['quanbu_p'][] = $value;
+        }
+        //新品商品
+        $this->load->model("ProductModel");
+        $result1 = $this->ProductModel->getProductList(1, 6, '', '', 'new');
+        $data['xinpin_p'] = $this->HandleProduct($result1['list']);
+
+        //热销商品
+        $result2 = $this->ProductModel->getProductList(1, 6, '', '', 'hot');
+        $data['rexiao_p'] = $this->HandleProduct($result2['list']);
+
+        //定制商品
+        $result3 = $this->ProductModel->getProductList(1, 6, '', '', 'sort', 'DESC', '', 1);
+        $data['siren_p'] = $this->HandleProduct($result3['list']);
+
+        //热推商品
+        $result4 = $this->ProductModel->getProductList(1, 6, '', '', 'sort');
+        $data['rexiao_p'] = $this->HandleProduct($result4['list']);
+
+        //设计师商品
+        //$this->load->model("SupplierModel");
+        //$result3 = $this->SupplierModel->getSupplierProdutcts(0, 1, 6, '', 'sort');
+
+        $this->load->model("ArticleModel");
+        //首页公告 result
+        $article = $this->ArticleModel->getArticles(90,1,3);
+        $data['articles'] = $article['result'];
+        $this->output->set_content_type("json/application")->set_output(json_encode(array('data' => $data, 'error_code' => 0)));
+    }
+
+    /**
+     * 处理商品的会员优惠价格 和图片
+     * @param array $products
+     */
+    private function HandleProduct($products) {
+        $Nproducts = array();
+        $user_id =  $this->session->user_info['user_id'];
+        foreach ($products as $product) {
+            $default_special = $this->ProductModel->getSpecial($product['product_id']);
+            $product['default_special'] = $default_special;
+            $product['user_price'] = $this->ProductModel->getUserDiscountPrice($user_id, $product['product_id']);
+            $product['thumb'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $product['thumb']);
+            $Nproducts[] = $product;
+        }
+        return $Nproducts;
+    }
+
+    /**
+     * 处理广告图片
+     */
+    private function HandleAdvert($adverts) {
+        foreach ($adverts as $key => $adv) {
+            if (is_array($adv)) {
+                   $adverts[$key]['ad_source'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $adv['ad_source']);
+            } else {
+                $adverts['ad_source'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $adverts['ad_source']);
+                return $adverts;
+            }
+        }
+        return $adverts;
+    }
+
+}

@@ -1,0 +1,40 @@
+<!--优惠券列表-->
+<!-- 优惠券列表导航 -->
+<view class='giftList' wx:if="{{!userInfo.agent_id}}">
+  <view class='goods-tab-nav {{curIndex==0 ?"on":""}}' bindtap="bindTap" data-index='0'>未使用</view>
+  <view class='goods-tab-nav {{curIndex==1 ?"on":""}}' bindtap='bindTap' data-index="1">已使用</view>
+  <view class='goods-tab-nav {{curIndex==2 ?"on":""}}' bindtap='bindTap' data-index="2">已过期</view>
+</view>
+<view class='content'>
+  <view class="cont-empty" wx:if="{{coupons.length<1}}">
+    <image class="icon" src="/images/empty.png"></image>
+    <block wx:if="{{curIndex==0}}">
+      <view class="msg">无可用优惠券,可去首页领取哦~</view>
+    </block>
+    <block wx:if="{{curIndex==1}}">
+      <view class="msg">您还没有使用过优惠券哦~</view>
+    </block>
+    <block wx:if="{{curIndex==2}}">
+      <view class="msg">您还没过期的优惠券哦~</view>
+    </block>
+  </view>
+
+  <!-- 优惠券列表 展示-->
+  <view class='coupon-items' wx:for="{{coupons}}" wx:key="" data-coupon_id="{{coupon_id}}">
+    <image src='/images/coupon.png' class='coupon'></image>
+    <view class='coupon-info'>
+      <view class='coupon-info-left'>
+        <view class=''>
+          <text class='price-icon'>¥<text class='coupon-price'>{{item.coupon_denomination}}</text></text>
+          <text class='coupon-discount'>满{{item.limit_order_amount}}使用</text>
+        </view>
+        <text class='coupon-endtime'>{{item.show_end_time}}到期</text>
+      </view>
+      <view class='coupon-info-right'>
+        <text class='getCoupon' wx:if="{{item.status==0}}">可使用</text>
+        <text class='getCoupon' wx:if="{{item.status==1}}">已使用</text>
+        <text class='getCoupon' wx:if="{{item.status==2}}">已过期</text>
+      </view>
+    </view>
+  </view>
+</view>

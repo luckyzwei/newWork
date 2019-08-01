@@ -1,0 +1,60 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of GroupProduct
+ *
+ * @author wangxiangshuai
+ */
+class GroupProduct extends CI_Controller {
+
+    //put your code here
+    public function __construct() {
+        parent::__construct();
+        $this->load->model("GroupProductModel");
+        $this->load->helper("string");
+    }
+
+    /**
+     * 获取拼团商品
+     */
+    public function get_groupproducts() {
+        $page = $this->input->post('page') ? $this->input->post('page') : 1;
+        $limit = $this->input->post('limit') ? $this->input->post('limit') : 10;
+
+        $groupproductList = $this->GroupProductModel->getGroupProducts($page, $limit);
+
+        foreach ($groupproductList as &$product) {
+            $product['thumb'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $product['thumb']);
+        }
+
+        $this->output->set_content_type("application/json")->set_output(json_encode(array('data' => $groupproductList, 'error_code' => 0)));
+    }
+
+    public function get_groupproduct() {
+        $group_product_id = $this->input->post("group_product_id");
+        $groupproduct = $this->GroupProductModel->getGroupProduct($group_product_id);
+        if (!empty($groupproduct)) {
+            $groupproduct['thumb'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $groupproduct['thumb']);
+            $images = unserialize($groupproduct['images']);
+            if (!empty($images)) {
+                $groupproduct['images'] = array();
+                foreach ($images as $value) {
+                    $groupproduct['images'][] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $value);
+                }
+            }
+            if (empty($groupproduct['endtime'])) {
+                $groupproduct['endtime'] = 260000;
+            } else {
+                $groupproduct['endtime'] -= time();
+            }
+        }
+        $this->output->set_content_type("application/json")->set_output(json_encode(array('data' => $groupproduct, 'error_code' => 0)));
+    }
+
+}

@@ -1,0 +1,28 @@
+/* 提现记录页面样式*/
+
+.record {
+  width: 96%;
+  margin: 0 auto;
+}
+
+.record .getCash {
+  padding: 15rpx 0;
+  border-bottom:1px solid #f8f8f8;
+
+}
+
+/* 提现时间 */
+
+.record .getCash .getCash-time {
+  font-size: 28rpx;
+}
+
+/* 提现金额 */
+
+.record .getCash .getCash-money {
+  font-size: 32rpx;
+}
+
+.record .getCash .status {
+  font-size: 24rpx;
+}

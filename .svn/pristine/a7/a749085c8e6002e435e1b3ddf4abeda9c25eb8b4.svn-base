@@ -1,0 +1,77 @@
+<!-- 商品首页 -->
+<view class="global-pageFont">
+  <!-- 首页轮播 -->
+  <view class="index-banner">
+    <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}">
+      <block wx:for="{{imgUrls}}" wx:key="">
+        <swiper-item bindtap='goUrl' data-ad_url="{{item.ad_url}}">
+          <image src="{{item.ad_source}}" class="banner-img" />
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <!-- 首页搜索 -->
+  <view class='index-search'>
+    <input placeholder='请输入您要搜索的商品' placeholder-class='unselectColor' confirm-type='search' bindconfirm="clickSearch" value="{{keyword}}" wx:if="{{hiddenInput}}"></input>
+  </view>
+  <!--首页 商品分类 -->
+  <view class="index-category global-flexWrap">
+    <view class='category-items global-column1 ' wx:for="{{category}}" wx:key="" bindtap='goproductList' data-category_id="{{item.category_id}}">
+      <image src='{{item.image}}' class="items-img"></image>
+      <text class='items-txt'>{{item. name}}</text>
+    </view>
+  </view>
+  <!-- 首页广告位 -->
+  <view class='index-adv'>
+    <!-- 首页优惠券 -->
+    <view class='index-coupon'>
+      <scroll-view scroll-x="true">
+        <view class='coupon-items' wx:for="{{coupons}}" wx:key="" data-coupon_id="{{coupon_id}}">
+          <image src='/images/coupon.png' class='coupon'></image>
+          <view class='coupon-info'>
+            <view class='coupon-info-left'>
+              <view class='coupon-marginTop'>
+                <text class='price-icon'>¥<text class='coupon-price'>{{item.coupon_denomination}}</text></text>
+              </view>
+              <text class='coupon-endtime'>满{{item.limit_order_amount}}可用</text>
+            </view>
+            <block wx:if="{{item.hasRec==0}}">
+              <view class='coupon-info-right' bindtap='getCoupon' data-coupon_id='{{item.coupon_id}}'>
+                <text class='getCoupon'>点击领取</text>
+                <image class='nav-img' src='/images/nav-right1.png'></image>
+              </view>
+            </block>
+            <block wx:else>
+              <view class='coupon-info-right'>
+                <text class='getCoupon'>已领取</text>
+                <!-- <image class='nav-img' src='/images/nav-right1.png'></image> -->
+              </view>
+            </block>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+    <!--广告位  -->
+    <view class="adv-items" wx:for="{{advertise}}" wx:key=""  bindtap='goUrl' data-ad_url="{{item.ad_url}}">
+      <image src='{{item.ad_source}}' class='item-img'></image>
+    </view>
+  </view>
+  <!-- 分享按钮-->
+  <view class='index-share fixed-btn global-column1' bindtap="shareStyle">
+   <button open-type='share' class="share1-btn fixed-btn">分享</button>
+    <image src='/images/share.png' class='fixed-img '></image>
+    <text>分享</text>
+  </view>
+  <!-- 客服按钮 -->
+  <view class="index-contact fixed-btn global-column1">
+    <button open-type='contact' class="contact-btn fixed-btn">客服</button>
+    <image src='/images/contact.png' class=' fixed-img'></image>
+    <text>客服</text>
+  </view>
+  <!-- 显示分享方式弹层 -->
+  <!-- <view class='mask' bindtap="closeShare" wx:if="{{shareModal}}"></view>
+  <view class='share-modal' wx:if="{{shareModal}}">
+    <button class='share-btn' open-type='share'>立即分享</button>
+    <button class='share-btn' bindtap="createShareImg">生成海报分享</button>
+  </view> -->
+</view>

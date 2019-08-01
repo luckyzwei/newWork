@@ -1,0 +1,22 @@
+<!--积分规则.wxml-->
+<view class='integralRule global-pageFont'>
+  <view class='integralRule-title'>
+    <text>积分新玩法</text>
+  </view>
+  <view class='integralRule-content'>
+    <view class='global-column2'>
+      <view class='fixed-left'>积分该怎么花?</view>
+      <view class='content-items global-column2'>
+        <text class='content-subTitle' decode='true'>&nbsp;&nbsp;使用积分兑换商品</text>
+        <view class='items-list global-rowStart'>
+          <image src='/images/' class='items-list-img'></image>
+          <view class='global-column2'>  
+             <text>兑换优惠券/码</text>
+             <text>兑换成功后可以在个人中心查看</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

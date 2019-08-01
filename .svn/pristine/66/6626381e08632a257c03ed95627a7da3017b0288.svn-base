@@ -1,0 +1,33 @@
+/* 收支明细样式 */
+
+.incomedetail {
+  width: 96%;
+  margin: 0 auto;
+}
+
+/* 收支明细详情 */
+
+.incomedetail .incomedetail-lists {
+  padding: 15rpx 0;
+  border-bottom: 1px solid #f8f8f8;
+}
+
+/* 收支明细时间 */
+
+.incomedetail .incomedetail-lists .lists-left .createtime {
+  font-size: 30rpx;
+  color: #777;
+}
+
+/* 收支明细原因*/
+
+.incomedetail .incomedetail-lists .lists-left .cause {
+  color: #bbb;
+  font-size: 24rpx;
+}
+
+/* 收支金额 */
+
+.incomedetail .incomedetail-lists .lists-right {
+  font-size: 34rpx;
+}

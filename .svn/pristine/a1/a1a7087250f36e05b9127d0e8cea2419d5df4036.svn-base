@@ -1,0 +1,80 @@
+<view class='center'>
+  <view class='search'>
+    <icon type='search' size='15'></icon>
+    <input type='search' placeholder='搜索商品名称或品牌' confirm-type='search' bindconfirm="clicksearch" value="{{keywords}}"></input>
+  </view>
+  <!--轮播  -->
+  <view class="banner">
+    <swiper autoplay="true">
+      <block wx:for="{{adverts}}" wx:key="">
+        <swiper-item style="color:#000">
+          <navigator url="{{item.ad_url}}">
+            <image src='{{item.ad_source}}' mode="widthFix"></image>
+          </navigator>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <!--商品展示  -->
+  <view class='content-top'>
+    <!-- 左右滑动分类项 -->
+    <scroll-view class='scroll-x' scroll-x="true">
+      <view class='inline-block'>
+        <view class="task">
+          <block wx:for="{{categories}}" wx:for-item="category" wx:key="categorykey">
+            <view bindtap='getProductList' class="task-t" data-category="{{category.category_id}}">
+              <image src="{{category.image}}"></image>
+              <text class="tash-text">{{category.name}}</text>
+            </view>
+          </block>
+          <view class="task-t" hidden='true'>
+            <image src="/images/more.png"></image>
+            <text class="tash-text">查看更多</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+    <!-- 左右滑动分类项 end-->
+  </view>
+  <!--商品说明  -->
+  <view class='tgoods'>
+    <!--tab  -->
+    <view class='goods-tab-box'>
+      <!-- <view class='goods-tab-nav {{curIndex===0 ?"on":""}}' bindtap="bindTap" data-index='0'>时尚生活</view>
+      <view class='goods-tab-nav {{curIndex===1 ?"on":""}}' bindtap='bindTap' data-index="1">超高佣金</view>
+      <view class='goods-tab-nav {{curIndex===2 ?"on":""}}' bindtap='bindTap' data-index="2">海淘精选</view> -->
+      <block wx:for="{{products}}" wx:for-item="product" wx:key="pkey">
+        <navigator url='/pages/goodsdetail/goodsdetail?product_id={{product.product_id}}'>
+          <!--商品  -->
+          <view style="padding-bottom:20rpx;">
+            <view class='goodDetail_c'>
+              <view class='goodDetail_c_left'>
+                <image src='{{product.thumb}}' mode="widthFix"></image>
+              </view>
+              <view class='goodDetail_c_right'>
+                <text class='goodDetail_c_right_t1'>{{product.product_name}}</text>
+                <text class='goodDetail_c_right_t4'>{{product.explain}}</text>
+                <text class='goodDetail_c_right_t2'>¥{{product.user_price.user_price}}</text>
+              </view>
+            </view>
+          </view>
+        </navigator>
+        <!--float右  -->
+        <view class='is_burron'>
+          <block wx:if="{{shopkeeper}}">
+            <block wx:if="{{!product.store_product}}">
+              <text class='is_tui' bindtap='recommend' data-product_id="{{product.product_id}}">推荐到首页</text>
+            </block>
+            <block wx:else>
+              <text class='is_tui'>已推荐到首页</text>
+            </block>
+          </block>
+          <text class='is_mai' data-product_id="{{product.product_id}}" bindtap="addToCart">加入购物车</text>
+        </view>
+      </block>
+    </view>
+  </view>
+  <view class='footer'>
+    <text>~~ 别扯了我是有底线的 ~~</text>
+  </view>
+</view>

@@ -1,0 +1,116 @@
+//砍价详情.js
+const App = getApp()
+Page({
+  data: {
+    bargain_product: {},
+    showRule: false,
+    showBargainNum: false
+  },
+  onLoad: function(options) {
+    var that = this;
+    App.initialize(function(res) {
+      that.setData({
+        "userInfo": wx.getStorageSync("user_data"),
+      });
+    });
+    var bargain_product = {
+      thumb: "http://admin.cutepetxb.cn/upload/image/shouye/kaizhang/(16).jpg",
+      name: "商品测试名称",
+      limit_time: "12:31:45",
+      price: "86",
+      left_price: "180",
+      percent: "43"
+    }
+    that.setData({
+      bargain_product: bargain_product
+    })
+
+  },
+  onReady: function() {
+    var circleCount = 0;
+    this.animationMiddleHeaderItem = wx.createAnimation({
+      duration: 1000,    // 以毫秒为单位
+      timingFunction: 'linear',
+      delay: 100,
+      transformOrigin: '50% 50%',
+      success: function (res) {
+      }
+    });
+
+    setInterval(function () {
+      if (circleCount % 2 == 0) {
+        this.animationMiddleHeaderItem.scale(1.10).step();
+      } else {
+        this.animationMiddleHeaderItem.scale(0.9).step();
+      }
+
+      this.setData({
+        animationMiddleHeaderItem: this.animationMiddleHeaderItem.export()
+      });
+
+      circleCount++;
+      if (circleCount == 1000) {
+        circleCount = 0;
+      }
+    }.bind(this), 600);
+
+  },
+  onShow: function() {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function() {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function() {
+
+  },
+  /**完善收货地址 */
+  goAddressEdit: function() {
+    wx.navigateTo({
+      url: '/pages/personal/addressedit/addressedit',
+    })
+  },
+  /**显示砍价规则弹窗 */
+  showRule: function(e) {
+    var that = this;
+    that.setData({
+      showRule: true
+    })
+  },
+  /**关闭弹窗 */
+  closeRuleModal: function(e) {
+    var that = this;
+    that.setData({
+      showRule: false,
+      showBargainNum: false
+    })
+  },
+  /**跳转关联商品详情 */
+  goGoodsDetail: function(e) {
+    var that = this;
+    wx.navigateTo({
+      url: '',
+    })
+  },
+  /**砍价数量弹窗 */
+  showBargainNum: function(e) {
+    var that = this
+    that.setData({
+      showBargainNum: true
+    })
+  },
+  /**到促销专区 */
+  goMore:function(){
+   wx.switchTab({
+     url: '/pages/salespromotion/salespromotion',
+   })
+  }
+})

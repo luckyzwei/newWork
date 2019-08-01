@@ -1,0 +1,124 @@
+<!-- 订单详情页 -->
+<view class='global-pageFont'>
+  <view class="orderdetail themeBg">
+    <view class='orderdetail-status'>
+      <text >{{orderinfo.statusname}}</text>
+      <image src='/images/orderlist.png' class='orderdetail-icon'></image>
+    </view>
+  </view>
+  <!-- 收货地址信息 -->
+  <view class='newAdress'>
+    <image src='/images/address.png'></image>
+    <view class="confirm-address">
+      <view class="address-contact">
+        收 货 人: {{orderinfo.fullname}} {{orderinfo.telephone}}
+      </view>
+      <view class="address-detail">
+        <text>收货地址：{{orderinfo.address}}</text>
+      </view>
+    </view>
+  </view>
+  <!-- 配送方式 -->
+  <!-- <view class='global-rowStart orderdetail-express'>
+    <image src='/images/kd.png' class='express'></image>
+    <view class='express-right global-column2 '>
+      <text class=''>配送方式:{{}}</text>
+      <text>配送时间:{{}}</text>
+    </view>
+  </view> -->
+  <!-- 商品列表 -->
+  <view class="order-goods" wx:for='{{order_product}}' wx:key='' wx:for-item='product' bindtap='goodsDetail' data-product='{{product.product_id}}'>
+    <view class="item-photo">
+      <image src="{{product.product_thumb}}"></image>
+    </view>
+    <view class="item-info">
+      <text class="info-name">{{product.product_name}}</text>
+      <text class="info-price"> ￥{{product.product_price}}x{{product.product_number}}</text>
+    </view>
+  </view>
+  <!-- 订单总计 -->
+  <view class="confirm-summury">
+    <view class="summury-total">
+      订单总额
+      <text class="total-price">￥{{orderinfo.order_amount}}</text>
+    </view>
+    <view class="summury-detail">
+      商品总额
+      <text class="total-price">￥{{orderinfo.product_amount}}</text>
+    </view>
+    <view class="summury-detail">
+      运费
+      <text class="total-price">+ ￥{{orderinfo.postage}}</text>
+    </view>
+    <view class="summury-detail" wx:if="{{coupon}}">
+     优惠券：{{coupon.coupon_name}}
+      <text class="total-price">-￥{{coupon.save_money}}</text>
+    </view>
+    <block wx:if="{{marketing.length>0}}">
+        <view class="summury-detail"   wx:for='{{marketing}}' wx:key='' wx:for-item='m' wx:if="{{m.marketing_kind=='achieve_discount'}}">
+     {{m.marketing_name}}
+      <text class="total-price">- ￥{{m.content}}</text>
+    </view>
+    </block>
+    <view class="summury-detail">
+      应付
+      <text class="total-price">￥{{orderinfo.order_amount}}</text>
+    </view>
+  </view>
+  <!-- 订单信息 -->
+  <view class="confirm-summury marginbot">
+    <view class="summury-total"> 订单信息</view>
+    <view class="summury-detail1">
+      <span> 订单编号:</span>
+      <text class="total-price"  selectable='true'>{{orderinfo.order_sn}}</text>
+    </view>
+    <view class="summury-detail1">
+      <span> 创建时间:</span>
+      <text class="total-price">{{orderinfo.createtime}}</text>
+    </view>
+    <view class="summury-detail1" wx:if="{{orderinfo.status==1}}">
+      <span> 付款时间:</span>
+      <text class="total-price">{{orderinfo.paytime}}</text>
+    </view>
+    <view class="summury-detail1" wx:if="{{orderinfo.status==2}}">
+      <span> 发货时间:</span>
+      <text class="total-price">{{orderinfo.shippingtime}}</text>
+    </view>
+    <!-- <view class="summury-detail1" wx:if="{{orderinfo.status==5}}">
+      <span> 成交时间:</span>
+      <text class="total-price">{{orderinfo.receivetime}}</text>
+    </view> -->
+    <view class="summury-detail1" wx:if="{{orderinfo.status>1 && orderinfo.status<6}}">
+      <span> 物流编号：</span>
+      <text class="total-price"  selectable='true'>{{orderinfo.shipping_code}}</text>
+    </view>
+  </view>
+  <!-- 对应订单状态按钮 -->
+  <view class='fixed'>
+    <view bindtap='deleteOrder' wx:if="{{orderinfo.status==0}}" class="cancel_order">取消订单</view>
+    <view bindtap='getPayParams' data-order='{{orderinfo.order_id}}' class='pay_order themeBg defaultColor1' wx:if="{{orderinfo.status==0}}" >付款</view>
+    <view bindtap="refundorder" wx:if="{{orderinfo.status>0&&orderinfo.status<5}}" class="">退款</view>
+    <view bindtap="refundCancel" wx:if="{{orderinfo.status==7}}" class="">取消退款</view>
+    <view bindtap="showTransport" wx:if="{{orderinfo.status>1}}" data-statu="open">查看物流</view>
+    <view bindtap='clickreceipt' wx:if="{{orderinfo.status>1&&orderinfo.status<5}}" class="themeBg defaultColor1"> 确认收货</view>
+    <view bindtap='comment' wx:if="{{orderinfo.status==4}}" class="themeBg defaultColor1"> 已收货(评价)</view>
+    <view wx:if="{{orderinfo.status==6}}"> 已完成</view>
+  </view>
+  <!--物流信息弹出层  -->
+  <view class='global-mask' wx:if="{{showTransport}}" catchtouchmove="preventTouchMove" data-statu="close" bindtap="showTransport"></view>
+  <view class="drawer_box" wx:if="{{showTransport}}">
+    <view class='drawer_info'>
+      <image src="/images/delete.png" data-statu="close" bindtap="showTransport"></image>
+    </view>
+    <view class="drawer_content">
+      <view class="drawer_title ">物流编号：{{express.expressid}} </view>
+    </view>
+    <view class='waring'>如对物流信息产生疑问,请联系客服哟~~</view>
+    <scroll-view scroll-y="true">
+      <view class='wuliu-info' wx:for='{{express.list}}' wx:key="">
+        <view class='getTime'>{{item.time}}</view>
+        <view class='getInfo'>{{item.content}} </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

@@ -1,0 +1,72 @@
+<!--分销规则.wxml-->
+<view class='integralRule global-pageFont'>
+  <view class='integralRule-title'>
+    <text>分销新玩法</text>
+  </view>
+  <view class='integralRule-content'>
+    <!-- 分销 -->
+    <view class='global-column2'>
+      <view class='fixed-left'>怎么进行分销?</view>
+      <view class='content-items global-column2'>
+        <text class='content-subTitle' decode='true'>&nbsp;&nbsp;海报推广</text>
+        <!--  -->
+        <view class='items-list global-rowStart'>
+          <image src='/images/j1.png' class='items-list-img'></image>
+          <view class='global-column2 items-listInfo'>
+            <text class='items-list-txt1'>商品详情分享按钮生成海报</text>
+            <text class='items-list-txt2'>保存海报到相册,发朋友圈进行推广</text>
+          </view>
+        </view>
+        <!--  -->
+        <view class='items-list global-rowStart'>
+          <image src='/images/j2.png' class='items-list-img'></image>
+          <view class='global-column2 items-listInfo'>
+            <text class='items-list-txt1'>分销中心</text>
+            <text class='items-list-txt2'>海报推广</text>
+          </view>
+        </view>
+        <!--  -->
+        <view class='items-list global-rowStart'>
+          <image src='/images/j3.png' class='items-list-img'></image>
+          <view class='global-column2 items-listInfo'>
+            <text class='items-list-txt1'>分销中心</text>
+            <text class='items-list-txt2'>邀请朋友</text>
+          </view>
+        </view>
+
+      </view>
+    </view>
+    <!--  -->
+    <view class='global-column2'>
+      <view class='fixed-left'>分销的奖励?</view>
+      <view class='content-items global-column2'>
+        <text class='content-subTitle' decode='true'>&nbsp;&nbsp;分销有奖</text>
+        <view class='font28'>以下是分销的收益百分比</view>
+        <!--  -->
+        <view class='items-list1 global-rowStart'>
+          <image src='/images/d.png' class='items-list-img1'></image>
+          <view class='global-column2 items-listInfo'>
+            <text class='items-list-txt1'>朋友通过你分享的程序码购买商品,你就可以有相应的收益</text>
+          </view>
+        </view>
+        <text class='content-subTitle' decode='true'>&nbsp;&nbsp;邀请有奖</text>
+        <!--  -->
+        <view class='items-list1 global-column2'>
+          <view class='global-rowStart margin'>
+            <image src='/images/d.png' class='items-list-img1'></image>
+            <view class='global-column2 items-listInfo'>
+              <text class='items-list-txt1'>邀好友成为分销者赚取奖励</text>
+            </view>
+          </view>
+          <view class='global-rowStart margin'>
+            <image src='/images/d.png' class='items-list-img1'></image>
+            <view class='global-column2 items-listInfo'>
+              <text class='items-list-txt1'>其他活动敬请期待</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

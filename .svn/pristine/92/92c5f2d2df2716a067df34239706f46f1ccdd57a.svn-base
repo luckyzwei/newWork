@@ -1,0 +1,12 @@
+// 累计客户.js
+Page({
+  data: {
+  customer:[]
+  },
+  onLoad: function (options) {
+  },
+  onReady: function () {
+  },
+  onShow: function () {
+  },
+})

@@ -1,0 +1,2 @@
+<!--收支明细 请优化此页面-->
+<view class='incomedetail' wx:for="{{accountList}}">金额，日期</view>

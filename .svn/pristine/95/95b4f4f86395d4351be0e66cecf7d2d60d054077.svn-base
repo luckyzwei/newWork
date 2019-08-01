@@ -1,0 +1,112 @@
+{
+	"description": "项目配置文件。",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": true,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.6.6",
+	"appid": "wx9fd339ad1b6ef7e6",
+	"projectname": "%E4%B8%8A%E6%B5%B7%E5%B0%8F%E4%BC%B4",
+	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 9,
+			"list": [
+				{
+					"id": 0,
+					"name": "顺序模式",
+					"pathName": "pages/default/default",
+					"query": "from_user_id=86"
+				},
+				{
+					"id": 3,
+					"name": "商品详情",
+					"pathName": "pages/groupdetail/groupdetail",
+					"query": "group_product_id=15",
+					"scene": null
+				},
+				{
+					"id": 17,
+					"name": "订单详情",
+					"pathName": "pages/orderdetail/orderdetail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "会员中心",
+					"pathName": "pages/my/my",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 9,
+					"name": "订单详情",
+					"pathName": "pages/orderdetail/orderdetail",
+					"query": "order_id=3",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "会员信息",
+					"pathName": "pages/personal/userinfo/userinfo",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "分销中心",
+					"pathName": "pages/personal/salecenter/salecenter",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "团订单详情",
+					"pathName": "pages/group_orderdetail/group_orderdetail",
+					"query": "from_user_id=86",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "砍价详情",
+					"pathName": "pages/personal/bargaindetail/bargaindetail",
+					"query": "order_id=3",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "砍价商品详情",
+					"pathName": "pages/bargain_detail/bargain_detail",
+					"query": "order_id=3",
+					"scene": null
+				}
+			]
+		}
+	}
+}

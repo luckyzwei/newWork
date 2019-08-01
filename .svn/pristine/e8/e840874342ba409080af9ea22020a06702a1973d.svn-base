@@ -1,0 +1,167 @@
+<!--拼团商品详情页-->
+<view class='global-pageFont'>
+  <view class='goodDetail'>
+    <!-- 商品主图轮播-->
+    <view class='goodDetail-img'>
+      <swiper autoplay="true" indicator-dots="true" circular="true">
+        <block wx:for="{{groupproduct.images}}" wx:key="">
+          <swiper-item>
+            <image src='{{item}}' mode='widthFix'></image>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+    <!-- 拼团详情-->
+    <view class='goodDetail-tuan global-rowBtw'>
+      <text class='tuan_txt1'>拼团</text>
+      <view class='limit-time'>
+        {{limitWarning}}
+        <block wx:if="{{times>0}}">{{day}} 天 {{h}} 时 {{m}} 分 {{s}} 秒</block>
+      </view>
+    </view>
+    <!-- 商品信息 -->
+    <view class='goodDetail-info'>
+      <view class='product-name'>
+        <text class="global-overHidden ">{{groupproduct.product_name}}</text>
+        <view class='product-share'>
+          <button class='share-btn' open-type='share'>share</button>
+          <image src='/images/share.png' class='share-icon'></image>
+        </view>
+      </view>
+      <view class='product-explain defaultColor global-overHidden '>{{groupproduct.explain}}</view>
+      <view class='global-conlumn2'>
+        <view class='global-rowStart'>
+          <text class='global-font30 themeColor'> <text class='global-font26'> ¥</text> {{groupproduct.group_product_price}}</text>
+          <view class='pintuan global-rowCenter'>
+            <text class='bigFont'>{{groupproduct.group_user_num}}</text>
+            <text>人拼团价</text>
+          </view>
+        </view>
+        <text class='product-specPrice defaultColor' decode='true'>原价:&nbsp;&nbsp;¥{{groupproduct.market_price}}</text>
+      </view>
+
+    </view>
+    <!-- 正在拼团的列表 -->
+    <view class='global-column2 group-list' wx:if="{{groupproduct.group_list.length>0}}">
+      <view class='global-rowBtw cantuan'>
+        <text>以下小伙伴正在发起拼团,你可以直接参加</text>
+        <image src='/images/nav-right.png' class='group-right'></image>
+      </view>
+      <view class='tuan-list global-rowBtw' wx:for="{{groupproduct.group_list}}" wx:for-item="item" wx:key="">
+        <view class='list-left global-rowStart'>
+          <image src='{{item.wx_headimg}}' class='headimg'></image>
+          <view class='list-info global-column2'>
+            <text class='info-name'>{{item.wx_nickname}}</text>
+            <text class='info-tishi'>还差{{groupproduct.group_user_num-item.group_in_number}}人成团</text>
+          </view>
+        </view>
+        <view class='list-right' bindtap="modal_show" data-groupbuy_sn='{{item.groupbuy_sn}}'>去凑团</view>
+      </view>
+    </view>
+  </view>
+  <view class='goodDetail-attribute'>
+    <view class='attribute'>
+      <!-- 商品属性 -->
+      <view class='attribute_cont' wx:for="{{product.product_special.attributes}}" wx:for-item="attribute" wx:key="attrkey">
+        <text>{{attribute.name}}:</text>
+        <text>{{attribute.value}}</text>
+      </view>
+      <view class='goodsDetail-nav'>
+        <view class='nav-tab {{curIndex=="0"?"active":""}}' bindtap='changeTap' data-index="0">商品详情</view>
+        <view class='nav-tab {{curIndex=="1"?"active":""}}' bindtap='changeTap' data-index="1">商品评论</view>
+      </view>
+      <!-- 商品详情图 -->
+      <view class='attribute_title' wx:if="{{curIndex=='0'}}">
+        <rich-text nodes="{{groupproduct.group_description}}"></rich-text>
+        <rich-text nodes="{{groupproduct.description}}"></rich-text>
+      </view>
+      <!-- 商品评论列表 -->
+      <view class="goods-reviews" wx:if="{{curIndex=='1'}}">
+        <view class="eva_item" wx:for="{{reviews}}" wx:for-item="review" wx:key="reviewlist">
+          <view class="eva_user">
+            <view class="eva_iu">
+              <image src="{{review.wx_headimg}}"></image>
+              <text>{{review.wx_nickname}}</text>
+            </view>
+            <view class="star">
+              <block wx:for="{{star}}" wx:key="" wx:for-index="index">
+                <image src='/images/star.png' wx:if="{{index<review.product_score}}"></image>
+                <!--   -->
+              </block>
+            </view>
+          </view>
+          <view class="eva_detail">
+            <view class="eva_ud">{{review.product_content}}</view>
+          </view>
+          <view class="eva_gattr">
+            <text class="eva_time">{{review.createtime}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!--底部操作栏-->
+  <view class='detail_footer'>
+    <view class='detail_icon'>
+      <button open-type='contact' show-message-card="true" class='goodDetail-kefu'>kefu</button>
+      <image src="/images/contact.png"></image>
+      <text>客服</text>
+    </view>
+    <view class='detail_icon'>
+      <image src="/images/shopcart.png" bindtap='showCart'></image>
+      <text>购物车</text>
+      <span class="warning global-warning" wx:if="{{cartProductNum}}">{{cartProductNum}}</span>
+    </view>
+    <view class='addCart  ' bindtap='goproduct'>￥{{groupproduct.price}} 单买
+    </view>
+    <view class='buy themeBg' bindtap="modal_show" data-groupbuy_sn='{{groupbuy_sn}}'>￥{{groupproduct.group_product_price}}
+      <black wx:if="{{groupproduct.again_act==0}}">
+        开团
+      </black>
+      <black wx:if="{{groupproduct.again_act==1}}">
+        参团
+      </black>
+      <black wx:if="{{groupproduct.again_act==2}}">
+        重新开团
+      </black>
+    </view>
+  </view>
+  <view class='bottom_cover'></view>
+  <!--属性规格选择栏-->
+  <view class='global-mask' style="display:{{choose_modal}}"></view>
+  <view class="global-guige" style="display:{{choose_modal}}">
+    <view class="spec_img_container">
+      <image src="{{groupproduct.thumb}}"></image>
+      <view class='guige-name global-overHidden'>{{groupproduct.product_name}}</view>
+      <view class="guige-number themeColor">￥{{groupproduct.group_product_price}}</view>
+      <icon class="guige-delete" type='clear' bindtap="modal_none" size='17' color='#ff8284'></icon>
+    </view>
+    <!-- 规格属性展示 start -->
+    <view class="spec_view_container">
+      <block wx:for="{{special_structs}}" wx:for-item="struct" wx:key="" wx:for-index="level">
+        <view class="modal_de_select">{{struct.special_name}}</view>
+        <view class="modal_spec">
+          <block wx:for="{{struct.specification}}" wx:for-item="option" wx:key="" wx:for-index="spindex">
+            <view class="modal_spec_name {{option.selected?'activeOne':''}}" bindtap="selectSpecial" data-level="{{level}}" data-specialindex="{{spindex}}" wx:if="{{!option.hide}}">{{option.option_name}}</view>
+          </block>
+        </view>
+      </block>
+    </view>
+    <!-- 规格属性展示end -->
+    <!--选择购买数量 -->
+    <view class='product-acount'>
+      <view class="font_num">购买数量：</view>
+      <view class="buy_num">
+        <view class="stepper">
+          <text class="{{minusStatus}}" bindtap="bindMinus">-</text>
+          <input type="number" bindchange="bindManual" value="{{num}}" />
+          <text class="{{maxusStatus}}" bindtap="bindPlus">+</text>
+        </view>
+      </view>
+      <view class="limit_num" wx:if="{{groupproduct.group_user_num_every>0}}">拼团商品限购{{groupproduct.group_user_num_every}}件</view>
+    </view>
+    <view class="bottom-button">
+      <view class='modal_button2  btn' bindtap='addToCart'>确定</view>
+    </view>
+  </view>
+</view>

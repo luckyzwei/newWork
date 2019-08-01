@@ -1,0 +1,239 @@
+/* 购物车页样式 */
+
+page {
+  background: #fff;
+}
+
+.shopcart {
+  padding: 0;
+  margin: 0;
+}
+
+/*空购物车 */
+
+.shopcart .empty-icon {
+  width: 256rpx;
+  height: 256rpx;
+}
+
+.shopcart .shopcart-empty {
+  text-align: center;
+  padding: 40% 0;
+  font-size: 25rpx;
+}
+
+.shopcart-empty .seeMore {
+  margin: 18rpx auto;
+  width: 25%;
+  color: white;
+  border-radius: 60rpx;
+  height: 55rpx;
+  line-height: 55rpx;
+}
+
+.shopcart-empty .empty-tishi {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 购物车商品推荐 */
+
+.shopcart-tui {
+  width: 100%;
+  margin-top: 50rpx;
+}
+
+.shopcart-tui .tui-product {
+  width: 94%;
+  margin: 20rpx auto;
+}
+
+/*购物车商品  */
+
+.shopcart-cont {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #ededed;
+}
+
+.shopcart-product {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 10rpx;
+}
+
+.shopcart-product-left {
+  position: relative;
+  width: 29%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 18rpx;
+}
+
+.shopcart-product-left .cart-img {
+  width: 205rpx;
+  height: 205rpx;
+}
+
+.shopcart-product-right {
+  width: 60%;
+  color: black;
+  padding-top: 26rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.shopcart-product-right .product-rightTitle {
+  font-size: 28rpx;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.shopcart-product-right .product-rightPrice {
+  font-size: 30rpx;
+  width: 55%;
+}
+
+.shopcart-product-right .product-rightSpec {
+  color: #c4c4c4;
+  line-height: 25rpx;
+  padding-top: 20rpx;
+}
+
+.shopcart-product-right .cartPrice-margin {
+  margin-top: 40rpx;
+}
+
+/* 底部结算 */
+
+.shopcart-cartFixed {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  font-size: 30rpx;
+  display: flex;
+  flex-direction: row;
+  line-height: 45rpx;
+  justify-content: space-around;
+  background: white;
+  border-top: 1rpx solid #f8f4f4;
+}
+
+.shopcart-cartFixed .shopcart-edit {
+  width: 35%;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+}
+
+.shopcart-cartFixed .shopcart-edit .selectAll {
+  margin-left: 25rpx;
+}
+
+.shopcart-cartFixed .shopcart-edit .select-txt {
+  margin-left: 35rpx;
+  margin-right: 15rpx;
+}
+
+.shopcart-cartFixed .Count {
+  color: #fff;
+  line-height: 80rpx;
+  width: 30%;
+  border-radius: 0;
+  text-align: center;
+}
+
+.shopcart-cartFixed .cartFixedText {
+  width: 35%;
+  line-height: 80rpx;
+  text-align: left;
+}
+
+.shopcart-cartFixed .cartFixedText .cart-total {
+  font-size: 32rpx;
+}
+
+.shopcart .end {
+  text-align: center;
+  line-height: 60rpx;
+  font-size: 25rpx;
+  color: #ededed;
+  padding-bottom: 80rpx;
+}
+
+/* 自定义 checkbox 样式 */
+
+.shopcart-checkbox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 16rpx;
+}
+
+checkbox-group {
+  width: 60rpx;
+  zoom: 0.65;
+}
+
+/* 未选中的 背景样式 */
+
+checkbox .wx-checkbox-input {
+  border-radius: 50%;
+  width: 60rpx;
+  height: 60rpx;
+}
+
+/* 选中后的样式  */
+
+checkbox .wx-checkbox-input.wx-checkbox-input-checked {
+  background: #ff8284;
+  border-color: #ff8284;
+}
+
+checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
+  border-radius: 50%;
+  width: 50rpx;
+  height: 50rpx;
+  line-height: 55rpx;
+  text-align: center;
+  color: #fff;
+  background: transparent;
+  transform: translate(-50%, -50%) scale(1);
+  -webkit-transform: translate(-50%, -50%) scale(1);
+}
+
+/* 商品列表2秒杀图标 */
+
+.timeLimit2 {
+  position: absolute;
+  width: 60rpx;
+  height: 60rpx;
+  margin-left: -70rpx;
+}
+.cartTips{
+  padding-left:10px;
+  padding-top:5px;
+  color: #ff8284;
+}
+/*单独设置 input输入框样式 避免底部穿透底部结算按钮 */
+
+.buy_num .stepper .input {
+  width: 70rpx;
+  height: 50rpx;
+  float: left;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 32rpx;
+  border-left: 2rpx solid #ccc;
+  border-right: 2rpx solid #ccc;
+}

@@ -1,0 +1,35 @@
+// 分销中心
+const App = getApp()
+Page({
+  data: {
+    userInfo: {},
+  },
+  onLoad: function(options) {
+    var that = this;
+    App.initialize(function(res) {
+      that.setData({
+        "userInfo": wx.getStorageSync("user_data"),
+      });
+    });
+  },
+  onShow: function() {
+
+  },
+  /**跳转到商品列表 */
+  goProductList:function(){
+    wx.navigateTo({
+      url: '/pages/productList/productList',
+    })
+  },
+  /**跳转到提现页*/
+  goGetCash: function(e) {
+    var that = this;
+    wx.navigateTo({
+      url: '/pages/personal/getcash/getcash',
+    })
+  },
+  /**生成海报 */
+  bindPost:function(){
+
+  }
+})

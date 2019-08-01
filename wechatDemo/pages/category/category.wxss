@@ -1,0 +1,98 @@
+/* 商品分类页样式*/
+
+page {
+  height: 100%;
+}
+
+/*主盒子*/
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  color: gray;
+}
+
+/*左侧栏主盒子*/
+
+.category .nav_left {
+  display: inline-block;
+  width: 25%;
+  height: 100%;
+  background: #f8f8f8;
+  text-align: center;
+}
+
+/*左侧栏list的item*/
+
+.category .nav_left .nav_left_items {
+  height: 80rpx;
+  line-height: 80rpx;
+  padding: 12rpx 0;
+}
+
+/*左侧栏list的item被选中时*/
+
+.category .nav_left .nav_left_items.active {
+  background: #fff;
+  color: #333;
+}
+
+.category .nav_left .nav_left_items.active::before {
+  content: "";
+  width: 8rpx;
+  height: 25rpx;
+  position: absolute;
+  left: 25rpx;
+  margin-top: 28rpx;
+  background: #ff8284;
+  border-radius: 15rpx;
+}
+
+/*右侧栏主盒子*/
+
+.category .nav_right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  flex: 1;
+  width: 75%;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+/*右侧栏list的item*/
+
+.category .nav_right .nav_right_items {
+  float: left;
+  width: 33.33%;
+  text-align: center;
+}
+
+.category .nav_right .nav_right_items image {
+  width: 120rpx;
+  height: 120rpx;
+  margin-top: 15rpx;
+}
+
+.category .nav_right .nav_right_items text {
+  display: block;
+  margin-top: 15rpx;
+  color: #999;
+  font-size: 26rpx;
+  /*设置文字溢出部分为...*/
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.category .nodata_text {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

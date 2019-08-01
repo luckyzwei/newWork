@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * 首页控制器主要显示首页
+ * 
+ * @author wangxiangshuai@hnzhimo.com
+ * @copyright (c) 2017, 河南知默网络科技有限公司
+ * @since	Version 1.0.0
+ */
+class Index extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        $this->load->model("AdvertModel");
+         $this->load->model("CategoryModel");
+          $this->load->model("couponModel");
+          $this->load->model("ProductModel");
+         $this->load->helper('string');
+    }
+
+    //分类显示
+    public function get_home() {
+         $cateLevel= $this->input->post("cateLevel");
+          $imageKey = $this->input->post("imageKey");
+           $advertKey = $this->input->post("advertKey");
+          $data=array();
+          $user_id = $this->session->user_id;
+        //所有分类
+           if($cateLevel==1){
+               $parent_id=0;
+           }
+        $data["categoryList"] = $this->HandleImage($this->CategoryModel->getCategoryList($parent_id,8),"image");
+        
+         
+        //轮播图
+        $data["imageList"] =$this->HandleImage($this->AdvertModel->getAdvert($imageKey),"ad_source"); 
+        
+        //获取所有的广告位
+        $data["advertList"]=$this->HandleImage($this->AdvertModel->getAdvert($advertKey),"ad_source");
+        foreach ($data["advertList"] as $key => $value) {
+           if($value['ad_url_type']=='productList'){
+               $data["advertList"][$key]['recommendList']=  $this->ProductModel->getRecommends();
+               foreach ($data["advertList"][$key]['recommendList'] as &$sp) {
+            $sp['thumb'] = $this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $sp['thumb'];
+        }
+           }
+        }
+        $data["couponList"]=$this->couponModel->getUsercanRevice($user_id);
+            $this->output->set_content_type("json/application")->set_output(json_encode(array('data' => $data, 'error_code' => 0)));
+        
+        
+    }
+      /**
+     * 处理广告图片
+     */
+    private function HandleImage($data,$field) {
+        foreach ($data as $key => $v) {
+            if (is_array($v)) {
+                   $data[$key][$field] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $v[$field]);
+            } else {
+                $data[$field] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $data[$field]);
+                return $data;
+            }
+        }
+        return $data;
+    }
+
+}

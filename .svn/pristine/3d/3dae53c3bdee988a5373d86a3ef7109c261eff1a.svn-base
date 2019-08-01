@@ -1,0 +1,5 @@
+/* 满减与秒杀列表 与 商品列表 共用一个样式 */
+@import "../productList/productList.wxss";
+.goods-tab-box{
+  padding-top: 5rpx;
+}

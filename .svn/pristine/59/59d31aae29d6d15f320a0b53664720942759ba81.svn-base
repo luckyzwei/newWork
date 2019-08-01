@@ -1,0 +1,290 @@
+/* 砍价详情.wxss */
+
+page {
+  min-height: 100%;
+  display: block;
+  background: #ff8284;
+}
+
+/* 顶部半透明 */
+
+.bargain .bar-address {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 15rpx 0;
+  font-size: 24rpx;
+}
+
+.bargain .bar-address .bar-addressLeft {
+  width: 85%;
+  text-align: center;
+}
+
+/* 完善收货地址 */
+
+.underline {
+  text-decoration-line: underline;
+  font-size: 28rpx;
+}
+
+/*砍价规则 */
+
+.bargain .guize {
+  width: 15%;
+  border-left: 1px solid #ff8284;
+  font-size: 27rpx;
+  margin-left: 15rpx;
+}
+
+/* 规则icon */
+
+.bargain .guize .guizeIcon {
+  width: 26rpx;
+  height: 26rpx;
+  margin-right: 6rpx;
+}
+
+/* 规则内容展示 */
+
+.rule {
+  position: absolute;
+  width: 75%;
+  height: 740rpx;
+  left: 50%;
+  margin-left: -40%;
+  top: 50%;
+  z-index: 99;
+  margin-top: -400rpx;
+  background: #fff;
+  border-radius: 15rpx;
+  text-align: center;
+  padding: 20rpx 15rpx;
+  font-size: 28rpx;
+}
+
+/* 滚动条 */
+
+.rule scroll-view {
+  width: 100%;
+  height: 500rpx;
+}
+
+/* 规则标题 */
+
+.rule .rule-title {
+  width: 100%;
+  display: block;
+  text-align: center;
+  font-size: 36rpx;
+  padding-top: 25rpx;
+  padding-bottom: 15rpx;
+  margin-bottom: 20rpx;
+  border-bottom: 1px solid #f8f8f8;
+}
+
+/* 规则标题  */
+
+.rule-content {
+  width: 100%;
+  text-align: left;
+}
+
+/* 砍价商品详情 */
+
+.bargain .bargain-detail {
+  width: 90%;
+  margin: 25rpx auto;
+  background: #fff;
+  border-radius: 15rpx;
+  padding: 15rpx;
+}
+
+/* 商品信息 */
+
+.bargain .bargain-detail .bargain-product {
+  position: relative;
+  width: 98%;
+  margin: 10rpx atuo;
+  background: #f8f8f8;
+  border-radius: 15rpx;
+  padding: 8rpx;
+  font-size: 27rpx;
+}
+
+/* 商品图片 */
+
+.bargain .bargain-detail .bargain-product .product-img {
+  width: 150rpx;
+  height: 150rpx;
+  margin-right: 15rpx;
+  border-radius: 15rpx;
+}
+
+/* 砍价商品标题 */
+
+.bargain .bargain-detail .bargain-product .bar-title {
+  font-size: 29rpx;
+  color: #666;
+  font-weight: 600;
+}
+
+/*  砍价商品倒计时 */
+
+.bargain .bargain-detail .limit-time {
+  color: #999;
+  margin: 10rpx 0;
+}
+
+/* 商品状态 */
+
+.bargain .bargain-detail .order-status {
+  position: absolute;
+  right: 0;
+  width: 95rpx;
+  line-height: 40rpx;
+  color: #fff;
+  background: #ff8284;
+  border-top-left-radius: 15rpx;
+  border-bottom-left-radius: 15rpx;
+  text-align: center;
+  font-size: 22rpx;
+  margin-top: 40rpx;
+}
+
+/* 砍价进度区*/
+
+.bargain .bargain-detail .progress {
+  width: 100%;
+  margin-top: 40rpx;
+}
+
+.bargain .bargain-detail .progress .bar-tips {
+  width: 100%;
+  text-align: center;
+}
+
+/* 进度条 */
+
+.bargain .bargain-detail .progress .progress-percent {
+  width: 100%;
+  margin-top: 28rpx;
+}
+
+.bargain .bargain-detail .progress .progress-percent progress {
+  width: 90%;
+  margin: 0 auto;
+}
+
+/* 邀好友砍价 */
+
+.bargain .bargain-detail .progress .bargain-invited {
+  width: 93%;
+  margin: 40rpx auto;
+}
+
+/* 邀好友砍价按钮 */
+
+.invited-btn {
+  width: 100%;
+  height: 70rpx;
+  line-height: 70rpx;
+  color: #fff;
+  border-radius: 40rpx;
+  background: #ff8284;
+  font-size: 30rpx;
+  -moz-box-shadow: 2px 5px 5px #999;
+  -webkit-box-shadow: 2px 5px 5px #999;
+  box-shadow: 2px 5px 5px #999;
+}
+
+/* 去按钮自带边框 */
+
+.invited-btn::after {
+  border: none;
+}
+
+/* 帮砍好友 */
+
+.bargain-help {
+  font-size: 30rpx;
+}
+
+/* 图标 */
+
+.bargain-help .bargain-icon {
+  width: 50rpx;
+  height: 50rpx;
+  margin: 0 8rpx;
+}
+
+/* 帮砍列表 */
+
+.bargain-help .help-lists {
+  color: #999;
+  padding: 10rpx 0;
+}
+
+/* 帮砍好友头像 */
+
+.bargain-help .help-lists .list-headimg {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  border: 1px solid #f8f8f8;
+}
+
+.bargain-help .fixed-heihgt {
+  height: 200rpx;
+  padding: 30rpx 0;
+}
+
+/* 帮砍好友 信息 */
+
+.bargain-help .help-lists  .lists-info {
+  margin-left: 20rpx;
+  font-size: 28rpx;
+}
+
+.bangkan {
+  font-size: 25rpx;
+}
+
+/* 商品推荐 */
+
+.is_tui {
+  width: 90%;
+  margin:  25rpx auto;
+  background: #fff;
+  border-radius: 15rpx;
+  padding: 15rpx;
+}
+.is_tuiTitle{
+  margin: 10rpx 0 20rpx  0;
+}
+/* 关联商品 */
+
+.adv-items-products {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+
+.global-title {
+  font-size: 25rpx !important;
+}
+
+.global-price {
+  font-size: 28rpx;
+}
+
+.global-product {
+  width: 46.3% !important;
+  margin-bottom: 2.5% !important;
+  padding: 25rpx 1%;
+  border: 1px solid #f8f8f8;
+}
+.global-product .global-cart1 {
+  margin-right: 4rpx;
+}

@@ -1,0 +1,123 @@
+/*优惠券列表样式*/
+
+.giftList {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 9;
+}
+/* 默認導航樣式 */
+.giftList .goods-tab-nav {
+  display: inline-block;
+  width: 33.3%;
+  height: 90rpx;
+  line-height: 90rpx;
+  box-sizing: border-box;
+  text-align: center;
+  color: #999;
+  font-size: 26rpx;
+  border-top: 1px solid #eee;
+  background: #fff;
+}
+/* 選中tab 樣式 */
+.goods-tab-nav.on {
+  color: #ff8284;
+  border-bottom: 4rpx solid #ff8284;
+}
+/* 优惠券列表样式*/
+.content {
+  width: 100%;
+  margin-top: 90rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 滑动组件 子元素 */
+
+ .coupon-items {
+  width: 750rpx;
+  height: 260rpx;
+  display: inline-block;
+  padding: 30rpx 10rpx 2rpx 15rpx;
+  position: relative;
+}
+
+/* 优惠券子元素背景图片 */
+
+.coupon-items  .coupon {
+  width: 720rpx;
+  height: 260rpx;
+  position: absolute;
+  z-index: -1;
+  border-radius: 10rpx;
+}
+
+/*  优惠券信息 */
+
+.coupon-items .coupon-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  width: 100%;
+  padding: 40rpx 0 20rpx 0;
+  position: absolute;
+  margin-top: 15rpx;
+}
+/* 优惠券左边*/
+.coupon-items .coupon-info .coupon-info-left {
+  display: flex;
+  flex-direction: column;
+  width: 52%;
+  margin-left: 12%;
+  border-right: 2rpx dashed #f3aaab;
+  color: #ff8284;
+}
+/* 优惠券左边金额显示  */
+.coupon-items .coupon-info .coupon-info-left  .coupon-discount {
+  font-size: 20rpx;
+}
+
+.coupon-items .coupon-info .coupon-info-left .coupon-endtime {
+  font-size: 24rpx;
+  margin-left: 5rpx;
+}
+
+.coupon-items .coupon-info .coupon-info-left .price-icon {
+  font-size: 28rpx;
+}
+
+.coupon-items .coupon-info .coupon-info-left .coupon-price {
+  font-size: 90rpx;
+  font-weight: bold;
+}
+/* 优惠券右边使用状态 */
+.coupon-items .coupon-info .coupon-info-right {
+  width: 21%;
+  display: flex;
+  flex-direction: column;
+  color: #ff8284;
+  font-size: 30rpx;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+/* 无优惠券 提示语*/
+
+.cont-empty {
+  width: 100%;
+  padding: 20% 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 25rpx;
+}
+.cont-empty .msg{
+  color: #999;
+}
+.cont-empty image {
+  width: 210rpx;
+  height: 210rpx;
+}

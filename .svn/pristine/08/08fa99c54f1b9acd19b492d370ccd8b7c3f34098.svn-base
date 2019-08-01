@@ -1,0 +1,48 @@
+/* 授权弹窗 */
+
+.content1 {
+  width: 80%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  left: 50%;
+  top: 15%;
+  margin-left: -40%;
+  z-index: 9999;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx 0;
+  text-align: center;
+  align-content: center;
+}
+
+.txt-top {
+  color: gray;
+  font-size: 38rpx;
+  line-height: 100rpx;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  text-indent: 6rpx;
+}
+
+.content1 >text {
+  font-size: 28rpx;
+  color: gray;
+  text-indent: 6rpx;
+  line-height: 50rpx;
+}
+
+.content1  > image {
+  width: 74%;
+  height: 380rpx;
+  margin: 30rpx auto;
+  padding-left: 50rpx;
+}
+
+.content1 > button {
+  width: 90%;
+  line-height: 75rpx;
+  color: white;
+  background: #31cd00;
+  border-radius: 40rpx;
+}

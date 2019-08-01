@@ -1,0 +1,67 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of KillProduct
+ *
+ * @author wangxiangshuai
+ */
+class KillProduct extends CI_Controller{
+    //put your code here
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('KillProductModel');
+        $this->load->helper('string');
+    }
+    
+    public function get_killproducts(){
+        $page = $this->input->post('page') ? $this->input->post('page') : 1;
+        $limit = $this->input->post('limit') ? $this->input->post('limit') : 10;
+
+        $killproductList = $this->KillProductModel->getKillProducts($page, $limit);
+
+        foreach ($killproductList as &$product) {
+            $product['thumb'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $product['thumb']);
+        }
+
+        $this->output->set_content_type("application/json")->set_output(json_encode(array('data' => $killproductList, 'error_code' => 0)));
+    }
+    
+    public function get_killproduct() {
+        $kill_product_id = $this->input->post("kill_product_id");
+        $killproduct = $this->KillProductModel->getKillProduct($kill_product_id);
+        if (!empty($killproduct)) {
+            $groupproduct['thumb'] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $groupproduct['thumb']);
+            $images = unserialize($groupproduct['images']);
+            if (!empty($images)) {
+                $groupproduct['images'] = array();
+                foreach ($images as $value) {
+                    $groupproduct['images'][] = reduce_double_slashes($this->systemsetting->get("img_url") . $this->systemsetting->get("file_upload_dir") . $value);
+                }
+            }
+            if (empty($groupproduct['endtime'])) {
+                $groupproduct['endtime'] = 260000;
+            } else {
+                $groupproduct['endtime'] -= time();
+            }
+        }
+        $groupbuy_sn = $this->input->post('groupbuy_sn');
+        //这里检查团详情
+        $groupproduct['again_act'] = 0; // 按钮文字  0 开团   1 参团  2重新开团
+        if (!empty($groupbuy_sn)) {
+            $groupproduct['groupbuy'] = $this->GroupOrderModel->getGroupbuyBysn($groupbuy_sn);
+            $groupproduct['again_act'] = count($groupproduct['groupbuy']) >= $groupproduct['group_user_num'] ? 2 : 1;
+        }
+        $groupproduct['group_list'] = array();
+        if (!empty($groupproduct['show_group_list'])) {
+            $groupproduct['group_list'] = $this->GroupOrderModel->getGroupLits(array('group_product_id' => $group_product_id, 'status' => array(1), 'endtime' => time()));
+        }
+        $this->output->set_content_type("application/json")->set_output(json_encode(array('data' => $groupproduct, 'error_code' => 0)));
+    }
+
+}

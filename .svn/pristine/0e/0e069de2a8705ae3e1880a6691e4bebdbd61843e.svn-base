@@ -1,0 +1,72 @@
+<!--积分规则.wxml-->
+<view class='integralRule global-pageFont'>
+  <view class='integralRule-title'>
+    <text>积分新玩法</text>
+  </view>
+  <view class='integralRule-content'>
+    <!-- 怎么花积分 -->
+    <view class='global-column2'>
+      <view class='fixed-left'>积分该怎么花?</view>
+      <view class='content-items global-column2'>
+        <text class='content-subTitle' decode='true'>&nbsp;&nbsp;使用积分兑换商品</text>
+        <!-- 兑换优惠券 -->
+        <view class='items-list global-rowStart'>
+          <image src='/images/j1.png' class='items-list-img'></image>
+          <view class='global-column2 items-listInfo'>
+            <text class='items-list-txt1'>兑换优惠券/码</text>
+            <text class='items-list-txt2'>兑换成功后,可以在个人中心查看</text>
+          </view>
+        </view>
+        <!-- 兑换权益卡 -->
+        <view class='items-list global-rowStart'>
+          <image src='/images/j2.png' class='items-list-img'></image>
+          <view class='global-column2 items-listInfo'>
+            <text class='items-list-txt1'>兑换权益卡</text>
+            <text class='items-list-txt2'>兑换成功后.可以在个人中心查看</text>
+          </view>
+        </view>
+        <!-- 兑换商品-->
+        <view class='items-list global-rowStart'>
+          <image src='/images/j3.png' class='items-list-img'></image>
+          <view class='global-column2 items-listInfo'>
+            <text class='items-list-txt1'>兑换商品</text>
+            <text class='items-list-txt2'>兑换成功后,可以在我的订单查看发货进度</text>
+          </view>
+        </view>
+
+      </view>
+    </view>
+    <!-- 怎么赚积分 -->
+    <view class='global-column2'>
+      <view class='fixed-left'>该怎么赚积分?</view>
+      <view class='content-items global-column2'>
+        <text class='content-subTitle' decode='true'>&nbsp;&nbsp;消费</text>
+        <view class='font28'>以下获得积分的规则可以叠加</view>
+        <!--  -->
+        <view class='items-list1 global-rowStart'>
+          <image src='/images/d.png' class='items-list-img1'></image>
+          <view class='global-column2 items-listInfo'>
+            <text class='items-list-txt1'>部分商品消费10.00元可获得5积分</text>
+          </view>
+        </view>
+        <text class='content-subTitle' decode='true'>&nbsp;&nbsp;签到</text>
+        <!--  -->
+        <view class='items-list1 global-column2'>
+          <view class='global-rowStart margin'>
+            <image src='/images/d.png' class='items-list-img1'></image>
+            <view class='global-column2 items-listInfo'>
+              <text class='items-list-txt1'>每日签到可获得5积分</text>
+            </view>
+          </view>
+          <view class='global-rowStart margin'>
+            <image src='/images/d.png' class='items-list-img1'></image>
+            <view class='global-column2 items-listInfo'>
+              <text class='items-list-txt1'>连续签到5天可获得10积分</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

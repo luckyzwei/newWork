@@ -1,0 +1,19 @@
+<!--累计客户.wxml-->
+<view class='global-pageFont totalCustomer'>
+  <view class='global-rowStart totalCustomer-list' wx:for="{{customer}}">
+    <image src='{{item.wx_headimg}}' class='customer-headimg'></image>
+    <view class='global-column2'>
+      <text class='wx-nickname'>{{item.wx_nickname}}  </text>
+      <text class='sub'>成交订单数{{item.count.order_number}}
+      </text>
+      <text class='sub'>成交金额 ￥{{item.count.order_money?item.count.order_money:"0.00"}}</text>
+    </view>
+  </view>
+  <!-- 空 -->
+  <view class='global-rowStart' wx:if="{{customer.length==0}}">
+    <view class='empty'>
+      <image src='/images/d1.png'></image>
+      <text>您暂时还没有客户哦</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,80 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/category/category",
+    "pages/shopcar/shopcar",
+    "pages/my/my",
+    "pages/authoriz/authoriz",
+    "pages/checkout/checkout",
+    "pages/orderdetail/orderdetail",
+    "pages/productList/productList",
+    "pages/goodsdetail/goodsdetail",
+    "pages/personal/addressedit/addressedit",
+    "pages/personal/addressList/addressList",
+    "pages/personal/goods_reviews/goods_reviews",
+    "pages/personal/allorder/allorder",
+    "pages/goodscenter/goodscenter",
+    "pages/personal/couponlist/couponlist",
+    "pages/payment/payment",
+    "pages/reduceList/reduceList",
+    "pages/product_list/product_list",
+    "pages/spikeList/spikeList",
+    "pages/personal/userinfo/userinfo",
+    "pages/personal/salecenter/salecenter",
+    "pages/personal/getcash/getcash",
+    "pages/personal/incomedetail/incomedetail",
+    "pages/personal/recordlist/recordlist",
+    "pages/salespromotion/salespromotion",
+    "pages/groupdetail/groupdetail",
+    "pages/personal/grouplist/grouplist",
+    "pages/group_orderdetail/group_orderdetail",
+    "pages/personal/bargainlist/bargainlist",
+    "pages/personal/bargaindetail/bargaindetail",
+    "pages/bargain_detail/bargain_detail"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#f8f8f8",
+    "navigationBarTitleText": "上海小伴",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#888",
+    "selectedColor": "#ff8284",
+    "borderStyle": "black",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/images/index.png",
+        "selectedIconPath": "/images/index1.png"
+      },
+      {
+        "pagePath": "pages/category/category",
+        "text": "所有商品",
+        "iconPath": "/images/category.png",
+        "selectedIconPath": "/images/category1.png"
+      },
+      {
+        "pagePath": "pages/salespromotion/salespromotion",
+        "text": "活动促销",
+        "iconPath": "/images/sales.png",
+        "selectedIconPath": "/images/sales1.png"
+      },
+      {
+        "pagePath": "pages/shopcar/shopcar",
+        "text": "购物车",
+        "iconPath": "/images/shopcart.png",
+        "selectedIconPath": "/images/shopcart1.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "/images/my.png",
+        "selectedIconPath": "/images/my1.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,36 @@
+<!-- 地址列表页-->
+<view class="container global-pageFont">
+  <view class="address-list">
+    <view class="list-item global-rowBtw" wx:for="{{addresslist}}" wx:key=''>
+      <view class="item-info">
+        <view class="info-contact">
+          {{item.name}} {{item.telephone}}
+        </view>
+        <view class="info-detail">
+          <text>{{item.province_name}}{{item.city_name}}{{item.district_name}}{{item.address}}</text>
+        </view>
+        <block>
+          <view class="submit-select active" data-address_id='{{item.address_id}}' bindtap='setdefault'>
+            <radio checked='{{item.is_default==1}}' color='#ff8284' class='radio'></radio>
+            <text class="select-checkbox"></text>设置默认
+          </view>
+        </block>
+      </view>
+      <!-- 编辑收货地址 -->
+      <navigator url="/pages/personal/addressedit/addressedit?ref={{ref}}&address_id={{item.address_id}}"  hover-class='none'>
+        <view class="item-edit">
+          <image src="/images/editor.png"></image>
+        </view>
+      </navigator>
+    </view>
+  </view>
+  <view class="cont-empty" wx:if="{{addresslist.length<1}}" >
+    <image class="icon" src="/images/empty.png"></image>
+    <view class="msg">暂时没有地址,快去添加一个叭</view>
+  </view>
+  <view class="address-bar fixed-bottom">
+    <navigator url="/pages/personal/addressedit/addressedit?ref={{ref}}" hover-class='none'>
+      <view class="bar-create themeBg"> 添加收货地址</view>
+    </navigator>
+  </view>
+</view>

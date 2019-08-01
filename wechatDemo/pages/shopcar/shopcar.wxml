@@ -1,0 +1,65 @@
+<view class='shopcart global-pageFont'>
+  <!-- 购物车为空 -->
+  <view class='shopcart-empty global-column1' wx:if="{{cartProducts.length==0}}">
+    <image src="/images/empty.png" class="empty-icon"></image>
+    <text class='empty-tishi'>购物车啥都没有</text>
+    <view bindtap='goHome' class="themeBg seeMore">去逛逛</view>
+  </view>
+  <!-- 购物车商品 -->
+  <view class='shopcart-cont' wx:key="cpskey" wx:for="{{cartProducts}}" wx:for-item="cps">
+    <view class='shopcart-product'>
+      <view class="shopcart-checkbox">
+        <checkbox-group bindchange="setCartProductChkStatus" data-cart_id="{{cps.cart_id}}">
+          <checkbox value="{{cps.cart_id}}" color='white' checked='{{cps.checkout=="1"||cps.is_gift==1}}' disabled='{{cps.is_gift==1}}'></checkbox>
+        </checkbox-group>
+      </view>
+      <view class='shopcart-product-left'>
+        <block wx:if='{{cps.is_timelimit==1}}'>
+          <image src='/images/timeSale.png' class="timeLimit2"></image>
+        </block>
+        <image src='{{cps.thumb}}' class="cart-img"></image>
+      </view>
+      <view class='shopcart-product-right'>
+        <text class='product-rightTitle'>{{cps.product_name}}</text>
+        <text class='product-rightSpec' wx:if="{{cps.product_special_name}}">{{cps.product_special_name}}{{cps.explain}}</text>
+        <text class='product-rightSpec' wx:for="{{cps.product_marketing}}" wx:key="mkt">{{item.marketing_group}}:{{item.marketing_name}}</text>
+        <view class="global-rowStart cartPrice-margin">
+          <text class='product-rightPrice themeColor' wx:if="{{cps.is_gift!=1}}"><text wx:if="{{cps.is_timelimit==1}}">限时秒杀价 </text>¥{{cps.product_price}} x {{cps.product_number}}</text>
+          <!--选择购买数量 -->
+          <view class="buy_num" wx:if="{{cps.is_gift!=1}}">
+            <view class="stepper">
+              <text class="{{minusStatus}}" bindtap="bindMinus" data-index="{{index}}" data-cart_id="{{cps.cart_id}}" data-buy_num="{{cps.product_number}}">-</text>
+              <input type="number" bindchange="bindManual"  bindblur="onShowText"data-index="{{index}}" data-cart_id="{{cps.cart_id}}" value="{{cps.product_number}}" wx:if="{{isShowInput}}" class="input"/>
+              <text bindtap='onShowTextare' class="input" wx:if="{{isShowText}}">{{cps.product_number}}</text>
+              <text class="normal" bindtap="bindPlus" data-index="{{index}}" data-buy_num="{{cps.product_number}}" data-cart_id="{{cps.cart_id}}">+</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 底部操作栏 -->
+  <!--购物车优惠提醒-->
+  <view class="cartTips" wx:for="{{order_marketing}}" wx:key="omtips">
+    <block wx:if="{{item.status}}">
+      {{item.marketing_group}} {{item.marketing_name}}
+    </block>
+  </view>
+  <view class='shopcart-cartFixed' wx:if="{{cartProducts.length>0}}">
+    <view class="shopcart-edit ">
+      <checkbox-group bindchange="setCartProductChkStatus" data-cart_id="all">
+        <label class="checkbox ">
+          <checkbox value='all'  class="selectAll" />
+        </label>
+      </checkbox-group>
+      <text class="select-txt">全选</text>
+      <text class='shopcart-delete themeColor' bindtap='deleteCartProduct'>删除</text>
+    </view>
+    <view class='cartFixedText  '>
+      总价:
+      <text class="themeColor cart-total">￥{{amount}}</text>
+    </view>
+    <view class='Count themeBg' bindtap='checkout'>结算</view>
+  </view>
+  <view class='end' wx:if="{{cartProducts}}">~~End~~</view>
+</view>

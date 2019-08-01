@@ -1,0 +1,13 @@
+<!--收支明细 请优化此页面-->
+<!-- 金额，日期 -->
+<view class='incomedetail global-pageFont'>
+  <view class='incomedetail-lists  global-rowBtw' wx:for="{{accountList}}" wx:key="">
+    <view class='lists-left global-column2'>
+      <text class='createtime'>{{item.createtime}}</text>
+      <text class='cause'>{{item.change_cause}}</text>
+    </view>
+    <view class='lists-right'>
+      <text>{{item.change_money}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * 分销模型
+ * @package    ZMshop
+ * @author qidazhong@hnzhimo.com
+ * @copyright  2017 河南知默网络科技有限公司
+ * @link   http://www.hnzhimo.com
+ * @since  Version 1.0.0
+ */
+class AgentModel extends CI_Model {
+
+    public function getAgentByUserId($user_id) {
+        $query = $this->db->select("agent_gorup.*,agent.*")
+                ->join("agent_group", "agent_group.agent_group_id=agent.agent_group_id", "left")
+                ->where(array("user_id" => $user_id))
+                ->get("agent");
+        return $query->row_array();
+    }
+    /**
+     * 添加分销商
+     * @param type $data
+     * @return type
+     */
+    public function addAgent($data){
+        return $this->db->insert("agent",$data);
+    }
+    /**
+     * 获取分销商信息
+     * @param type $agent_id
+     * @return type
+     */
+    public function getAgentById($agent_id){
+        $query=$this->db->get_where("agent",array("agent_id"=>$agent_id));
+        return $query->row_array();
+    }
+
+}

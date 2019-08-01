@@ -1,0 +1,197 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of KillProduct
+ *
+ * @author wangxiangshuai
+ */
+class KillProduct extends CI_Controller {
+
+    //put your code here
+    public function __construct() {
+        parent::__construct();
+        $this->load->model("KillProductModel");
+        $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+        $this->load->library("pagination");
+    }
+
+    //设置控制权限
+    public static function getModuleInfo() {
+        return array(
+            "moduleName" => "助力砍价",
+            "controller" => "KillProduct",
+            "author" => "wangxiangshuai@hnzhimo.com",
+            "operation" => array(
+                "index" => "砍价商品列表",
+                "addKillProduct" => "添加砍价商品",
+                "editKillProduct" => "编辑砍价商品",
+                "deleteKillProduct" => "删除砍价商品",
+            )
+        );
+    }
+
+    public function index() {
+        $page = $this->input->get('per_page');
+        $page = $page ? $page : 1;
+        $data = array();
+        $where = array();
+        $limit = $this->input->get_post("limit") > 0 ? $this->input->get_post("limit") : 10;
+        $killproducts = $this->KillProductModel->getKileProductList($where, $page, $limit);
+        $config['base_url'] = site_url('KillProduct/index'); //当前分页地址
+        $config['total_rows'] = $killproducts['count'];
+        $config['per_page'] = $limit;    //每页显示的条数
+        $this->pagination->initialize($config);
+        $data['linklist'] = $this->pagination->create_links();
+        $data['killproductlist'] = $killproducts['result'];
+        $data['title'] = $this->zmsetting->getTitle($this->getModuleInfo());
+        $this->load->view('killproduct', $data);
+    }
+
+    public function addKillProduct() {
+        if ($this->input->method() == "post") {
+            $data = $this->valiRules();
+            if ($data['rules_run'] == True) {
+                unset($data['rules_run']);
+                $starttime = $data['kill_product_starttime'];
+                $data['kill_product_starttime'] = empty($data['kill_product_starttime']) ? '' : strtotime($data['kill_product_starttime']);
+                $data['kill_product_endtime'] = empty($data['kill_product_endtime']) ? '' : strtotime($data['kill_product_endtime']);
+                $query = $this->KillProductModel->getEndTimeProduct($data['product_id'], $data['kill_product_starttime']);
+                if (empty($query)) {
+                    $res = $this->KillProductModel->addKillProduct($data);
+                    if (!empty($res)) {
+                        $this->session->set_flashdata("success", "添加砍价活动成功");
+                        redirect(site_url("KillProduct/index"));
+                    } else {
+                        $this->session->set_flashdata("error", $res);
+                    }
+                } else {
+                    $this->session->set_flashdata("error", "'该商品在" . $starttime . '尚有砍价活动未结束，不能在此时间添加');
+                }
+            } else {
+                $this->session->set_flashdata("error", $this->form_validation->error_string());
+            }
+        }
+        $data['title'] = $this->zmsetting->getTitle($this->getModuleInfo());
+        $this->load->view('killproduct_add', $data);
+    }
+
+    public function editKillProduct() {
+        $kill_product_id = $this->input->get_post('kill_product_id');
+        $data['killproductinfo'] = $this->KillProductModel->getKillProductInfo($kill_product_id);
+        if ($this->input->method() == "post") {
+            $data = $this->valiRules();
+            if ($data['rules_run'] == True) {
+                unset($data['rules_run']);
+                $starttime = $data['kill_product_starttime'];
+                $data['kill_product_starttime'] = empty($data['kill_product_starttime']) ? '' : strtotime($data['kill_product_starttime']);
+                $data['kill_product_endtime'] = empty($data['kill_product_endtime']) ? '' : strtotime($data['kill_product_endtime']);
+                $query = $this->KillProductModel->getEndTimeProduct($data['product_id'], $data['kill_product_starttime']);//该商品开始时间之后是否还有砍价活动
+                if (empty($query)) {
+                    $res = $this->KillProductModel->editKillProduct($kill_product_id, $data);
+                    if (!empty($res)) {
+                        $this->session->set_flashdata("success", "编辑砍价活动成功");
+                        redirect(site_url("KillProduct/index"));
+                    } else {
+                        $this->session->set_flashdata("error", $res);
+                    }
+                } else {
+                    $this->session->set_flashdata("error", "该商品在" . $starttime . '尚有砍价活动未结束，不能在此时间开始');
+                    redirect(site_url("KillProduct/editKillProduct?kill_product_id=" . $kill_product_id));
+                }
+            } else {
+                $this->session->set_flashdata("error", $this->form_validation->error_string());
+                redirect(site_url("KillProduct/editKillProduct?kill_product_id=" . $kill_product_id));
+            }
+        }
+        $data['title'] = $this->zmsetting->getTitle($this->getModuleInfo());
+        $this->load->view('killproduct_edit', $data);
+    }
+    //删除助力砍价商品
+    public function deleteKillProduct(){
+        $kill_product_ids= $this->input->post('selected');
+        if(!empty($kill_product_ids) && is_array($kill_product_ids)){
+            $where = implode(',', $this->input->post('selected'));
+            if($this->KillProductModel->deleteKillProduct('kill_product_id in ('.$where.')')){
+                $this->session->success('删除成功');
+                $this->session->mark_as_flash('success');
+            }else{
+               $this->session->success('删除失败');
+                $this->session->mark_as_flash('error'); 
+            }
+        }else{
+            $this->session->error = "请求有误!";
+            $this->session->mark_as_flash("error");
+        }
+        redirect(site_url('KillProduct/index'));
+    }
+
+    //验证填写的数据
+    public function valiRules() {
+        $filerdata = array("product_id", "kill_product_name", "kill_product_store", "kill_product_min_price", "kill_fixed_price", "kill_price_number", "kill_price_type", "kill_price_time", "kill_product_starttime", "kill_product_endtime");
+        $data = elements($filerdata, $this->input->post(), "");
+        //验证数据
+        $valiRules = array(
+            array(
+                'field' => 'kill_product_name',
+                'label' => '活动名称',
+                'rules' => 'required',
+                "errors" => array(
+                    'required' => "活动名称不能为空"
+                )
+            ),
+            array(
+                'field' => 'kill_price_number',
+                'label' => '砍价人数',
+                'rules' => 'required',
+                "errors" => array(
+                    'required' => "砍价人数不能为空"
+                )
+            ),
+            array(
+                'field' => 'endtime',
+                'label' => '结束时间',
+                'rules' => 'callback_startimeCheck[' . $data['kill_product_starttime'] . ']',
+                "errors" => "请正确填写设置项名称:名称不能重复"
+            ),
+        );
+        //验证数据
+        if ($data["kill_price_type"] == "1") {
+            $valiRules[] = array(
+                'field' => 'kill_fixed_price',
+                'label' => '固定金额',
+                'rules' => 'required',
+                "errors" => array(
+                    'required' => "砍价方式为固定金额市,请输入固定金额"
+                )
+            );
+        }
+        $this->form_validation->set_rules($valiRules);
+        $data['updatetime'] = time();
+        $data['rules_run'] = $this->form_validation->run();
+        return $data;
+    }
+
+    //验证日期时间
+    public function startimeCheck($time, $dirh = '0') {
+        $time = strtotime($time);
+        if (empty($dirh)) {
+            if (!empty($time) && ($time < time())) {
+                $this->form_validation->set_message('startimeCheck', "结束时间不能小于当前时间");
+                return false;
+            }
+        } else {
+            if (!empty($time) && $time < strtotime($dirh)) {
+                $this->form_validation->set_message('startimeCheck', "结束时间不能小于开始时间");
+                return false;
+            }
+        }
+    }
+
+}

@@ -1,0 +1,195 @@
+<?php
+
+/**
+ * 营销策略控制器
+ * @package   ZMshop
+ * @author     qidazhong@hnzhimo.com
+ * @copyright  2017 河南知默网络科技有限公司
+ * @link       http://www.hnzhimo.com
+ * @since      Version 1.0.0
+ */
+class Marketing extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        $this->load->model("MarketingModel");
+        $this->load->model("UserGroupModel");
+        $this->load->model("ProductModel");
+        $this->load->model("CouponModel");
+        $this->load->model("CategoryModel");
+        $this->load->library("pagination");
+        $this->load->helper('url');
+        $this->load->library("form_validation");
+    }
+
+    public function index() {
+        $data = array();
+        $limit = $this->input->get_post("limit") > 0 ? $this->input->get_post("limit") : 20;
+//        $page = intval($this->uri->segment(3)) ? intval($this->uri->segment(3)) : 1;
+        $page = $this->input->get('per_page');
+        $page = $page ? $page : 1;
+        $marketinglists = $this->MarketingModel->getMarketingList($limit, $page);
+        $data['marketinglists'] = $marketinglists['datas'];
+        $config['base_url'] = site_url('Marketing/index'); //当前分页地址
+        $config['total_rows'] = $marketinglists['count'];
+        $config['per_page'] = $limit;    //每页显示的条数
+        $config['cur_page'] = $page;
+        $this->pagination->initialize($config);
+        $data['links'] = $this->pagination->create_links();
+        $data['page'] = $page;
+        $data['title'] = $this->zmsetting->getTitle($this->getModuleInfo());
+        $this->load->view('marketing', $data);
+    }
+
+    /**
+     * 添加营销策略
+     */
+    public function addMarketing() {
+        $this->load->helper('url');
+        $this->load->library("form_validation");
+        $data = array();
+        if ($this->input->method() == 'post') {
+            $insertFiled = array(
+                "marketing_name",
+                "marketing_type",
+                "marketing_trigger_price",
+                "marketing_trigger_number",
+                "marketing_kind",
+                'marketing_coupon',
+                'marketing_discount',
+                'give_product',
+                'marketing_reward',
+                'marketing_shipping',
+                'category_applyorno',
+                'marketing_category',
+                'product_applyorno',
+                'marketing_product',
+                'marketing_level',
+                'marketing_parallel',
+                'user_group',
+                'marketing_group',
+                'starttime',
+                'endtime'
+            );
+            $data = elements($insertFiled, $this->input->post());
+            $this->setRules();
+            if ($this->form_validation->run() == True) {
+                $this->MarketingModel->addMarketing($data);
+                $this->session->success = "添加优惠策略成功";
+                $this->session->mark_as_flash("success");
+                redirect(site_url("Marketing/index"));
+            } else {
+                $this->session->error = $this->form_validation->error_string();
+                $this->session->mark_as_flash("error");
+                $data = array_merge($data, $this->input->post());
+            }
+        }
+        $usergroups = $this->UserGroupModel->getUserGroupList();
+        $data['usergroups'] = $usergroups['result']; //获取所有的分组
+        $categorydata = $this->CouponModel->getList();
+        $data['couponLists'] = $categorydata['result']; //获取所有的优惠券
+        $data['title'] = $this->zmsetting->getTitle($this->getModuleInfo());
+        $this->load->view('marketing_add', $data);
+    }
+
+    /**
+     * 编辑营销策略
+     * @param type $marketing_id
+     */
+    public function editMarketing() {
+        $marketing_id = $this->input->get_post("marketing_id");
+        if ($this->input->method() == 'post') {
+            $insertFiled = array("marketing_name", "marketing_type", "marketing_trigger_price", "marketing_trigger_number", "marketing_kind", 'marketing_coupon', 'marketing_discount', 'give_product', 'marketing_reward', 'marketing_shipping', 'category_applyorno', 'marketing_category', 'product_applyorno', 'marketing_product', 'marketing_level', 'marketing_parallel', 'user_group', 'marketing_group', 'starttime', 'endtime');
+            $data = elements($insertFiled, $this->input->post(), "");
+            $this->setRules();
+            if ($this->form_validation->run() == True) {
+                $this->MarketingModel->editMarketingBy($data, array('marketing_id' => $marketing_id));
+                $this->session->success = "修改优惠策略成功";
+                $this->session->mark_as_flash("success");
+                redirect(site_url("Marketing/index"));
+            } else {
+                $this->session->error = $this->form_validation->error_string();
+                $this->session->mark_as_flash("error");
+            }
+        }
+        $data['title'] = $this->zmsetting->getTitle($this->getModuleInfo());
+        $data['marketing'] = $this->MarketingModel->getMarketingById($marketing_id);
+        $data['marketing']['marketing_product'] = array_unique(array_filter(explode('|', $data['marketing']['marketing_product'])));
+        $data['marketing']['marketing_product'] = implode(',', $data['marketing']['marketing_product']);
+        $data['marketing']['give_product'] = array_unique(array_filter(explode('|', $data['marketing']['give_product'])));
+        $data['marketing']['give_product']  = implode(',', $data['marketing']['give_product']);
+       if (empty($data['marketing']['marketing_product'])) {
+            $data['marketing']['marketing_product'] = array();
+        } else {
+            $data['marketing']['marketing_product'] = $this->ProductModel->getProducts('product_id in (' . $data['marketing']['marketing_product'] . ')');
+        }
+        if (empty($data['marketing']['marketing_category'])) {
+            $data['marketing']['marketing_category'] = array();
+        } else {
+            $data['marketing']['marketing_category'] = $this->CategoryModel->getCategorys($data['marketing']['marketing_category']);
+        }
+        if (empty($data['marketing']['marketing_parallel'])) {
+            $data['marketing']['marketing_parallel'] = "0";
+        }
+        if (empty($data['marketing']['give_product'])) {
+            $data['marketing']['give_product'] = array();
+        } else {
+            $data['marketing']['give_product'] = $this->ProductModel->getProducts('product_id in (' . $data['marketing']['give_product'] . ')');
+        }
+        $usergroups = $this->UserGroupModel->getUserGroupList();
+        $data['usergroups'] = $usergroups['result'];
+        $categorydata = $this->CouponModel->getList();
+        $data['couponLists'] = $categorydata['result'];
+        $this->load->view('marketing_edit', $data);
+    }
+
+    public function deleteMarketing() {
+        $where = implode(',', $this->input->post('selected'));
+        $query = $this->MarketingModel->deleteMarketing('marketing_id in (' . $where . ')');
+        if ($query) {
+            $this->session->success = "删除成功!";
+            $this->session->mark_as_flash("success");
+        } else {
+            $this->session->error = "删除失败!";
+            $this->session->mark_as_flash("error");
+        }
+        redirect(site_url("Marketing/index"));
+    }
+
+
+    //验证有效期开始时间和结束时间   time结束时间，starttime开始时间
+    public function startimeCheck($time, $starttime = '0') {
+        $time = strtotime($time);
+        $starttime = strtotime($starttime);
+        if (!empty($time) && ($time < time())) {
+            $this->form_validation->set_message('startimeCheck', "策略结束时间不能小于当前时间");
+            return false;
+        }
+
+        if (!empty($time) && ($time < $starttime)) {
+            $this->form_validation->set_message('startimeCheck', "策略结束时间不能小于开始时间");
+            return false;
+        }
+    }
+
+    private function setRules() {
+        $this->form_validation->set_rules('marketing_name', '策略名称', 'required|max_length[128]|min_length[3]', array('required' => '策略名称必填', 'min_length' => '策略名称最少为3位', "max_length" => "策略名称最大为128位"));
+        $this->form_validation->set_rules('starttime', '开始时间', 'required', array('required' => '开始时间必填'));
+        $this->form_validation->set_rules('endtime', '结束时间', 'callback_startimeCheck[' . $this->input->post('starttime') . ']');
+    }
+
+   public static function getModuleInfo() {
+        return array(
+            "moduleName" => "营销策略管理",
+            "controller" => "Marketeting",
+            "author" => "xuhuan@hnzhimo.com",
+            "operation" => array(
+                "index" => "策略列表",
+                "addMarketing" => "添加策略",
+                "editMarketing" => "修改策略",
+                "deleteMarketing" => "删除策略"
+            )
+        );
+    }
+
+}

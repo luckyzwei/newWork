@@ -1,0 +1,180 @@
+<view class='mymax global-pageFont'>
+  <!-- 个人中心 -->
+  <view class='getuserInfo'>
+    <view class='getavator'>
+      <image bindtap="bindViewTap" class="getavator-avator" src="{{!userInfo.wx_headimg?'/images/default-user.png':userInfo.wx_headimg}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.wx_nickname?userInfo.wx_nickname:"普通会员"}}</text>
+      <!-- 会员登录 -->
+      <!-- <block wx:else>
+        <button open-type='getUserInfo' bindgetuserinfo='authorize' class='userCenter-btn themeBg'>会员登录</button>
+      </block> -->
+      <!--会员信息显示 -->
+      <view class='personal'>
+        <view class='personal-vip'>
+          <view class='vip-list'>
+            <image src='/images/vip.png' class='vip-listIcon'></image>
+          </view>
+          <view class='vip-listLevel'>
+            <text>{{userInfo.user_group_name}}</text>
+          </view>
+          <!-- 获取微信绑定手机号 -->
+          <view class='vip-btn'>
+            <block wx:if="{{userInfo.user_phone}}">
+              <text class='phone-number'>{{userInfo.user_phone}}</text>
+            </block>
+            <block wx:else>
+              <block wx:if="{{userInfo.wx_nickname}}">
+                <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" class='getPnumber'>绑定手机号</button>
+              </block>
+              <block wx:else>
+                <button open-type="getUserInfo" bindgetuserinfo='authorize' class='getPnumber'>升级会员</button>
+              </block>
+            </block>
+          </view>
+          <!-- 签到按钮 -->
+          <view class='signIn global-rowCenter' bindtap='signIn'>
+            <text>{{sign?"已签到":"签到"}}</text>
+            <image src='/images/signIcon.png' class='signIn-icon'></image>
+          </view>
+        </view>
+        <!-- 升级提示 -->
+        <view class='goUp' >
+          <block wx:if="{{userInfo.level_up.is_up}}">
+            <text>积分已达{{userInfo.level_up.up_level.user_group_name}},升级后部分商品可享{{userInfo.level_up.up_level.user_group_discount}}折优惠</text>
+          <text class='rightUp' bindtap="upGrade">立即升级</text>
+          </block>
+        </view>
+        <!-- 会员等级展示 -->
+        <view class='vip-level global-column2'>
+          <!-- 等级积分进度条 -->
+          <view class='levelStyle global-rowBtw'>
+            <span class="default_Lv fixed1 active_Lv"></span>
+            <span class="default_Lv fixed2"></span>
+            <span class="default_Lv fixed3"></span>
+          </view>
+          <progress percent="{{userInfo.percent*100}}" activeColor="#ad8a54" backgroundColor='lightgray' stroke-width='4' />
+          <view class='global-rowAround score'>
+            <text class='score_left'>Lv1</text>
+            <text>Lv2</text>
+            <text class='score_right'>Lv3</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 余额积分优惠券 -->
+    <view class='personal-list'>
+      <view class="personal-vipInfo">
+        <text>{{userInfo.user_money}}</text>
+        <text>余额</text>
+      </view>
+      <view class="personal-vipInfo">
+        <text>{{userInfo.user_intergal}}</text>
+        <text>积分</text>
+      </view>
+      <view class="personal-vipInfo">
+        <text>{{orderStatus.coupon_total}}</text>
+        <text>可用优惠券</text>
+      </view>
+    </view>
+    <!-- 订单状态 -->
+    <view class='personal-list'>
+      <view class='task' bindtap='orderStatus' data-status="0">
+        <image src='/images/user1.png'></image>
+        <text>待付款</text>
+        <span class="warning global-warning" wx:if="{{orderStatus.waitpay}}">{{orderStatus.waitpay}}</span>
+      </view>
+      <view class='task' bindtap='orderStatus' data-status="1">
+        <image src='/images/user2.png'></image>
+        <text>待发货</text>
+        <span class="warning global-warning" wx:if="{{orderStatus.waitsend}}">{{orderStatus.waitsend}}</span>
+      </view>
+      <view class='task' bindtap='orderStatus' data-status="2">
+        <image src='/images/user3.png'></image>
+        <text>待收货</text>
+        <span class="warning global-warning" wx:if="{{orderStatus.waitrecive}}">{{orderStatus.waitrecive}}</span>
+      </view>
+      <view class='task' bindtap='orderStatus' data-status="5">
+        <image src='/images/user7.png'></image>
+        <text>待评价</text>
+        <span class="warning global-warning" wx:if="{{orderStatus.waitcommend}}">{{orderStatus.waitcommend}}</span>
+      </view>
+      <view class='task' bindtap='orderStatus' data-status="all">
+        <image src='/images/user4.png'></image>
+        <text>全部订单</text>
+      </view>
+    </view>
+    <!-- 我的服务 -->
+    <view class='personal-category'>
+      <navigator url="/pages/personal/userinfo/userinfo" hover-class='none'>
+        <view class='personal-service'>
+          <view class="service-list">
+            <image src='/images/userInfo.png' class='service-listImg'></image>
+            <text class="">会员信息</text>
+          </view>
+          <image src='/images/nav-right.png' class='global-rightImg'></image>
+        </view>
+      </navigator>
+      <navigator url='/pages/personal/addressList/addressList' hover-class='none'>
+        <view class='personal-service'>
+          <view class="service-list">
+            <image src='/images/user6.png' class='service-listImg'></image>
+            <text>收货地址</text>
+          </view>
+          <image src='/images/nav-right.png' class='global-rightImg'></image>
+        </view>
+      </navigator>
+      <navigator url="/pages/personal/salecenter/salecenter" hover-class='none'>
+        <view class='personal-service'>
+          <view class="service-list">
+            <image src='/images/sale.png' class='service-listImg'></image>
+            <text class="">我的分销</text>
+          </view>
+          <image src='/images/nav-right.png' class='global-rightImg'></image>
+        </view>
+      </navigator>
+      <navigator url="/pages/personal/grouplist/grouplist" hover-class='none'>
+        <view class='personal-service' data-status="tuan">
+          <view class="service-list">
+            <image src='/images/tuan.png' class='service-listImg'></image>
+            <text class="">我的拼团</text>
+          </view>
+          <image src='/images/nav-right.png' class='global-rightImg'></image>
+        </view>
+      </navigator>
+      <navigator url="/pages/personal/bargainlist/bargainlist" hover-class='none'>
+        <view class='personal-service' data-status="bargain">
+          <view class="service-list">
+            <image src='/images/bargain.png' class='service-listImg'></image>
+            <text class="">我的砍价</text>
+          </view>
+          <image src='/images/nav-right.png' class='global-rightImg'></image>
+        </view>
+      </navigator>
+      <navigator url="/pages/personal/couponlist/couponlist" hover-class='none'>
+        <view class='personal-service'>
+          <view class="service-list">
+            <image src='/images/user5.png' class='service-listImg'></image>
+            <text class="">优惠券</text>
+          </view>
+          <image src='/images/nav-right.png' class='global-rightImg'></image>
+        </view>
+      </navigator>
+
+    </view>
+  </view>
+</view>
+<!-- 绑定微信手机号弹窗 -->
+<view class="global-mask" wx:if="{{showModal}}" bindtap='showGetPhone' data-show='close'> </view>
+<view class='drawer_box global-pageFont' wx:if="{{showModal}}" bindtap='showGetPhone' data-show='open'>
+  <view class='drawer_info_title'>点击下一步可绑定微信手机号</view>
+  <view class='drawer_info'>
+    <view class='user-info'>
+      <image bindtap="bindViewTap" class="userinfo-headimg" src="{{userInfo.wx_headimg}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.wx_nickname}}</text>
+    </view>
+    <view class='getPhonebtn'>
+      <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" class='getPnumber'>下一步</button>
+    </view>
+  </view>
+
+</view>

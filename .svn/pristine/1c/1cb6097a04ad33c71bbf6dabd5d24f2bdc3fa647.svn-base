@@ -1,0 +1,2 @@
+<!--提现记录 -->
+<view class='record' wx:for='{{cashList}}'>金额，日期，状态</view>

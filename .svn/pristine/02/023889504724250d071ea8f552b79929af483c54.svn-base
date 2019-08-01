@@ -1,0 +1,154 @@
+/* pages/payment/payment.wxss */
+
+page {
+  min-height: 100%;
+  background: #eee;
+}
+
+.max {
+  width: 100%;
+  padding-top: 30rpx;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  font-size: 28rpx;
+}
+
+.container-top {
+  width: 88%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: #fcfcfc;
+  padding: 33rpx 40rpx;
+}
+
+.container .container-top  .left {
+  display: flex;
+  flex-direction: column;
+}
+
+.container .container-top  .left text {
+  line-height: 47rpx;
+}
+
+.container .container-top  .left1 {
+  color: #000;
+  font-size: 31rpx;
+}
+
+.container .container-top  .left2 {
+  color: gray;
+  font-size: 26rpx;
+}
+
+.container .container-top .right image {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  border: 1px solid #eee;
+}
+
+.paymoney {
+  padding: 33rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.paymoney .jiner {
+  padding: 30rpx 0;
+}
+
+.inputmoney span {
+  font-size: 60rpx;
+}
+
+.inputmoney input {
+  font-size: 66rpx;
+  padding-left: 10rpx;
+  height: 90rpx;
+}
+
+.inputmoney {
+  border-bottom: 1px solid #eee;
+  padding: 2rpx 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.btn {
+  padding: 40rpx 40rpx;
+  height: 100rpx;
+  text-align: center;
+  font-size: 36rpx;
+}
+
+.btn view {
+  background: green;
+  color: white;
+  line-height: 100rpx;
+  border-radius: 15rpx;
+}
+
+.beizhu {
+  text-align: center;
+  line-height: 60rpx;
+}
+
+/* 提现弹出层 */
+
+.mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  bottom: 0;
+  background: #000;
+  left: 0;
+  opacity: 0.2;
+  z-index: 900;
+}
+
+.outpage {
+  width: 552rpx;
+  position: absolute;
+  left: 13%;
+  top: 20%;
+  background: #fff;
+  z-index: 999;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  padding-top: 12%;
+  padding-bottom: 4%;
+}
+
+.outpage .green {
+  color: green;
+  font-size: 35rpx;
+}
+
+.outpage .extro {
+  font-size: 30rpx;
+}
+
+.outpage .black {
+  color: black;
+  font-size: 60rpx;
+}
+
+.outpage .finished {
+  width: 260rpx;
+  text-align: center;
+  padding: 12rpx 0;
+  border: 1rpx solid green;
+  color: green;
+  margin-left: 27%;
+  margin-top: 190rpx;
+  font-size: 28rpx;
+}

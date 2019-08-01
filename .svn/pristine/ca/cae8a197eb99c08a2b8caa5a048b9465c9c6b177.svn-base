@@ -1,0 +1,50 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of GroupOrder
+ *
+ * @author wangxiangshuai
+ */
+class GroupOrder extends CI_Model {
+
+    //put your code here
+    public function getGroupLits($group_produt_id = '', $page = 1, $limit = 2) {
+        $this->db->select('ug.*,uw.wx_headimg')
+                ->from('user_groupbuy ug')
+                ->join('user_wechat uw','uw.user_id = ug.user_id')
+                ->where('ug.group_in_num>0');
+        if (!empty($group_produt_id)) {
+            $this->db->where('ug.group_produt_id', $group_produt_id);
+        }
+        $query = $this->db
+                ->group_by('ug.groupbuy_sn')
+                ->order_by('ug.createtime', 'asc')
+                ->limit($limit, ($page - 1) * $limit)
+                ->get();
+        return $query->result_array();
+    }
+    /**
+     * 查询团列表
+     * @param type $groupbuy_sn
+     */
+    public function getGroupbuyBysn($groupbuy_sn){
+       $this->db->select('ug.*,uw.wx_headimg,uw.wx_nickname')
+                ->from('user_groupbuy ug')
+                ->join('user_wechat uw','uw.user_id = ug.user_id')
+                ->where('ug.group_in_num>0');
+        if (!empty($groupbuy_sn)) {
+            $this->db->where('ug.groupbuy_sn', $groupbuy_sn);
+        }
+        $query = $this->db
+                ->order_by('ug.createtime', 'asc')
+                ->get();
+         return $query->result_array();
+    }
+
+}

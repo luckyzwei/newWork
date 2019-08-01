@@ -1,0 +1,14 @@
+<!--提现记录 -->
+<!-- 金额，日期，状态  -->
+<view class='record global-pageFont'>
+  <view class='getCash global-column2' wx:for='{{cashList}}' wx:key="">
+    <text class='getCash-time'>{{item.createtime}}</text>
+    <view class='global-rowBtw'>
+      <text class="getCash-money">￥{{item.cash_amount}}</text>
+      <text class="themeColor status">{{item.status}}</text>
+    </view>
+
+  </view>
+
+
+</view>

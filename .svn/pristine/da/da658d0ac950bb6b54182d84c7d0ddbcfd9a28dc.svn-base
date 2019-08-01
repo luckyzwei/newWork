@@ -1,0 +1,20 @@
+<!--推广订单列表.wxml-->
+<view class='global-pageFont extendList'>
+  <view class='extendList-list global-rowAround bg' wx:if="{{orders.length!=0}}">
+    <text>下单时间</text>
+    <text>订单编号</text>
+    <text>下单金额</text>
+  </view>
+  <view class='extendList-list global-rowAround' wx:for="{{orders}}">
+    <text>{{item.createtime}}</text>
+    <text>{{item.order_sn}}</text>
+    <text class='themeColor'>{{item.order_amount}}元</text>
+  </view>
+<!-- 空 -->
+  <view class='global-rowStart' wx:if="{{orders.length==0}}">
+    <view class='empty'>
+      <image src='/images/empty.png'></image>
+      <text>您暂时没有推广订单</text>
+    </view>
+  </view>
+</view>

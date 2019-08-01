@@ -1,0 +1,64 @@
+// 活动促销.js
+Page({
+  data: {
+    indicatorDots: true, //小点
+    autoplay: true, //自动轮播
+    interval: 2000, //间隔
+    duration: 2000, //滑动时间,
+    imgUrls: [],
+    curIndex: 0,
+    products: {}
+  },
+  onLoad: function(options) {
+    var imgUrls = [{
+      ad_source: "http://admin.cutepetxb.cn/upload/image/shouye/kaizhang/(16).jpg",
+    }]
+    var products = {
+      bargain: [{
+        bargain_img: "http://admin.cutepetxb.cn/upload/image/cahnpinbaozhuang/NCSHZJRQML11/20190613_143627_016.jpg",
+        bargain_name: "Nutrience 纽翠斯黑钻无谷鸡肉全猫粮11磅5KG",
+        bargain_price: "0.99"
+      }, {
+        bargain_img: "http://admin.cutepetxb.cn/upload/image/cahnpinbaozhuang/NCSHZJRQML11/20190613_143627_016.jpg",
+        bargain_name: "Nutrience 纽翠斯黑钻无谷鸡肉全猫粮11磅5KG",
+        bargain_price: "19.9"
+      }],
+      group: [{
+        group_img: "http://admin.cutepetxb.cn/upload/image/cahnpinbaozhuang/BLSNYML8/20190521_172232_434.jpg",
+        group_name: "Nutrience 纽翠斯黑钻无谷鸡肉全猫粮11磅5KG",
+        group_price: "45"
+      }, {
+          group_img: "http://admin.cutepetxb.cn/upload/image/cahnpinbaozhuang/BLSNYML8/20190521_172232_434.jpg",
+        group_name: "Nutrience 纽翠斯黑钻无谷鸡肉全猫粮11磅5KG",
+        group_price: "23"
+      }]
+
+    }
+    this.setData({
+      imgUrls: imgUrls,
+      products: products
+    })
+  },
+  onReady: function() {
+
+  },
+  onShow: function() {
+
+  },
+  /**砍价/拼团Tab切换 */
+  changeTap: function(e) {
+    var that = this;
+    var index = e.currentTarget.dataset.index;
+    that.setData({
+      curIndex: index
+    })
+  },
+/** 跳转到拼团详情页*/
+  goTuan:function(e){
+    // var product_id = e.currentTarget.dataset.group_product_id;
+    wx.navigateTo({
+      url: '/pages/groupdetail/groupdetail',
+    })
+
+  }
+})

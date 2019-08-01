@@ -1,0 +1,27 @@
+/* 推广订单列表.wxss */
+
+.extendList {
+  width: 100%;
+  margin: 0 auto;
+  border-bottom: 1px solid #f8f8f8;
+}
+
+/*推广订单列表信息 */
+
+.extendList-list {
+  width: 96%;
+  margin: 0 auto;
+  padding: 20rpx 2%;
+  border-bottom: 1px solid #f8f8f8;
+}
+
+.extendList-list text {
+  display: block;
+  width: 33.3%;
+  text-align: center;
+}
+
+.bg {
+  background: #f8f8f8;
+  border-top: 1px solid #fff;
+}

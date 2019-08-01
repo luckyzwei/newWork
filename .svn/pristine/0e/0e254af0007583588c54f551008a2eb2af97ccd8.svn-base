@@ -1,0 +1,103 @@
+// 活动促销.js
+const App = getApp();
+Page({
+  data: {
+    indicatorDots: true, //小点
+    autoplay: true, //自动轮播
+    interval: 2000, //间隔
+    duration: 2000, //滑动时间,
+    imgUrls: [],
+    curIndex: 0,
+    products: [],
+    page: 1,
+    choose_modal: false, //弹出层的初始状态是隐藏
+  },
+  onLoad: function(options) {
+    var imgUrls = [{
+      ad_source: "http://admin.cutepetxb.cn/upload/image/shouye/kaizhang/(16).jpg",
+    }]
+
+    this.setData({
+      imgUrls: imgUrls,
+    })
+  },
+  onReady: function() {
+
+  },
+  onShow: function() {
+    this.getgroupproduct();
+  },
+  /**砍价/拼团Tab切换 */
+  changeTap: function(e) {
+    var that = this;
+    var index = e.currentTarget.dataset.index;
+    that.setData({
+      curIndex: index
+    })
+  },
+  getgroupproduct: function() {
+    var that = this;
+    var page = that.data.page;
+    var products = that.data.products;
+    wx.showLoading({
+      title: '努力加载中……',
+      mask: true,
+      success: function(res) {
+        App.apiPost({
+          "uri": 'GroupProduct/get_groupproducts.html',
+          "data": {
+            'page': page,
+          },
+          "callback": function(res) {
+            if (!res.error_code) {
+              if (res.data.length > 0) {
+                page++;
+                products = products.concat(res.data)
+              }
+              that.setData({
+                "page": page,
+                "products": products,
+              })
+            }
+            wx.hideLoading();
+          }
+        })
+      }
+    })
+  },
+  /** 跳转到拼团详情页*/
+  goTuan: function(e) {
+    // var product_id = ;
+    wx.navigateTo({
+      url: '/pages/groupdetail/groupdetail?group_product_id=' + e.currentTarget.dataset.group_product_id,
+    })
+  },
+  /**规格选择弹窗 */
+  //弹出
+  modal_show: function(e) {
+    this.setData({
+      choose_modal: true,
+    });
+  },
+  //消失
+  modal_none: function() {
+    this.setData({
+      choose_modal: false,
+    });
+  },
+  /**跳转到砍价进度详情 */
+  goBargainDetail: function(e) {
+    var that = this
+    wx.navigateTo({
+      url: '/pages/personal/bargaindetail/bargaindetail',
+    })
+  },
+  /**跳转到砍价商品详情 */
+  goBargain_detail:function(e){
+    var that = this
+    wx.navigateTo({
+      url: '/pages/bargain_detail/bargain_detail',
+    })
+
+  }
+})

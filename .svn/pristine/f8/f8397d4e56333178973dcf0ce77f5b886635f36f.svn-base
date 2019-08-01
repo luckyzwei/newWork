@@ -1,0 +1,88 @@
+<!--砍价详情.wxml-->
+<view class='bargain global-pageFont '>
+  <!-- 完善收货地址  //砍价规则-->
+  <view class='bar-address global-rowBtw'>
+    <view class='bar-addressLeft'>
+      <block>
+        <text bindtap='goAddressEdit'>砍价成功后即可发货, 去<text class='underline themeColor' >完善收货地址</text> </text>
+      </block>
+      <block wx:if="{{}}">
+        <text>品台用户信息保密.可放心购买</text>
+      </block>
+    </view>
+    <view class='guize global-rowCenter themeColor' bindtap='showRule'>
+      <image src='/images/guize.png' class='guizeIcon'></image>
+      <text>规则</text>
+    </view>
+  </view>
+  <!-- 砍价商品详情 -->
+  <view class='bargain-detail global-column2'>
+    <view class='bargain-product global-rowStart'>
+      <image src='{{bargain_product.thumb}}' class='product-img'></image>
+      <view class='global-column2'>
+        <text class='bar-title global-title'>{{bargain_product.name}}</text>
+        <text class="limit-time">{{bargain_product.limit_time}} 后砍价过期</text>
+        <text class='themeColor'>砍到0元拿</text>
+      </view>
+      <view class='order-status'>
+        <text>待发货</text>
+      </view>
+    </view>
+    <!-- 砍价进度 -->
+    <view class='progress global-column2'>
+      <view class='glonal-rowCenter bar-tips'>
+        已砍
+        <text class='themeColor'>56.5</text>元, 还差
+        <text class='themeColor'>139.00</text> 元
+      </view>
+      <view class='progress-percent'>
+        <progress percent='{{bargain_product.percent}}' activeColor='#ff8284' backgroundColor='lightgray' stroke-width='6' border-radius="30"></progress>
+      </view>
+      <view class='bargain-invited'>
+        <button class='invited-btn' open-type='share'>邀好友帮砍</button>
+      </view>
+      <!-- 帮砍好友 -->
+      <view class='bargain-help global-column2'>
+        <text>好友榜</text>
+        <scroll-view scroll-y="true" class='fixed-heihgt'>
+          <view class='help-lists global-rowStart'>
+            <image src='{{}}' class='list-headimg'></image>
+            <view class='lists-info global-column2 '>
+              <text class=''>微信名</text>
+              <text class='bangkan'>帮砍掉 30.00元</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+  <!-- 商品推荐 -->
+  <view class='is_tui global-column2'>
+    <view class='is_tuiTitle'>大家都在买</view>
+    <view class='adv-items-products'>
+      <!-- 商品信息 -->
+      <view class='global-product'>
+        <image src="{{item.thumb}}" class="product-img" data-product_id="{{item.product_id}}" bindtap='goGoodsDetail'></image>
+        <text class='global-title'>商品名字商品名商品名商品名商品名商品名</text>
+        <view class='global-rowBtw themeColor product-price'>
+          <view class='global-rowStart'>
+            <text class='global-font30 global-price'><text class='global-font22'>¥</text>45.00
+            </text>
+            <text class=' global-market_price'><text class='global-font22'>¥</text>86.00</text>
+          </view>
+          <!-- <image src='/images/shopcart1.png' class='global-cart1' data-product="{{item}}" bindtap='modal_show'></image> -->
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 规则弹窗 -->
+<view class='global-mask' wx:if="{{showRule}}" bindtap='closeRuleModal'></view>
+<view class='rule global-column2' wx:if="{{showRule}}">
+  <scroll-view scroll-y="true">
+    <view class='global-column2'>
+      <text class='rule-title'>活动规则</text>
+      <text class='rule-content'>测试测试测试</text>
+    </view>
+  </scroll-view>
+</view>

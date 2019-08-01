@@ -1,0 +1,196 @@
+<?php
+
+/**
+ * 店铺接口
+ * 
+ * @package	ZMshop
+ * @author	qidazhong@hnzhimo.com
+ * @copyright (c) 2017, 河南知默网络科技有限公司
+ * @link	http://www.hnzhimo.com
+ * @since	Version 1.0.0
+ */
+class Store extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        $this->load->model("storeModel");
+        $this->load->model("storeProductModel");
+        $this->load->model("productModel");
+        $this->load->model("userModel");
+        $this->load->model("userAccountLogModel");
+    }
+
+    /**
+     * 获取用户的店铺信息
+     */
+    public function get_store() {
+        $store_uid = $this->input->post("store_uid");
+        $store = $this->storeModel->getStoreByUser($store_uid);
+        $error_code = 0;
+        if (empty($store)) {
+            $error_code = 1;
+        }
+        $data = array("error_code" => $error_code, "store" => $store);
+        $this->output->set_content_type("json/application")->set_output(json_encode($data));
+    }
+
+    /**
+     * 创建店铺/申请成为分销商
+     */
+    public function create_store() {
+        $error_code=0;
+        if (!$this->save_member_info()) {
+            $error_code = 1;
+        }elseif($this->input->post("agent_status")!=1) {
+            $user_name = $this->input->post("user_name");
+            $phone = $this->input->post("phone");
+            $remarks = "";
+            $data = array("user_phone" => $phone, 'user_name' => $user_name);
+            $hasPhone = $this->userModel->getUsers(array("user_phone" => $phone, "user_id!=" => $this->session->user_id));
+            if (!empty($hasPhone)) {
+                $error_code = 2;
+            } else {
+                $this->userModel->updateUser($data, $this->session->user_id);
+                $storedata = array(
+                    "store_name" => $this->session->user_info['nickname'] . "的旺铺",
+                    "store_content" => $this->systemsetting->get("store_brief"),
+                    "store_uid" => $this->session->user_id,
+                    "store_pid" => (int) $this->session->user_info['parent_user_id'],
+                    "store_addtime" => time(),
+                    "store_banner" => $this->session->user_info['wx_headimg'],
+                    "remarks" => "",
+                    "store_status" => 1,
+                );
+
+                //插入分销商信息表 
+                $agentData = array(
+                    "user_id" => $this->session->user_id,
+                    "agent_group_id" => 1, //默认代理商分组
+                    "dot_mobile" => $phone,
+                    "agent_status" => 1,
+                    "agent_name" => $user_name,
+                    "applytime" => time(),
+                    "remark" => $remarks
+                );
+                //代理商是否需要审核
+                $is_need_check = $this->systemsetting->get("agent_need_check");
+                if ($is_need_check) {
+                    $storedata['store_status'] = 3;
+                    $agentData['agent_status'] = 0;
+                }
+
+                $this->load->model("agentModel");
+                //判断是否已经申请过分销商
+                $agent=$this->agentModel->getAgentByUserId($this->session->user_id);
+                if(empty($agent)){
+                $this->agentModel->addAgent($agentData); //将用户设置为分销商
+
+                }else{
+                    $this->agentModel->updateAgent($agentData,$agent['agent_id']); 
+                }
+                
+
+            }
+        }
+        $result = json_encode(array("error_code" => $error_code));
+        $this->output->set_content_type("json/application")->set_output($result);
+    }
+
+    /**
+     * 更新会员信息
+     */
+    public function up_intergal($data) {
+        $intergal = $data['change_intergal'];
+        $remark = $data['remark'];
+        $change_type = $data['change_type'];
+        $user_id = $this->session->user_id;
+        $user_account = $this->userModel->setUseIntergal($user_id, $intergal);
+        if ($user_account) {
+            $this->userAccountLogModel->addIntergalLog(array("user_id" => $user_id, "change_intergal" => $intergal, "change_cause" => $remark, "createtime" => time(), "change_type" => $change_type));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 保存会员扩展信息
+     */
+    private function save_member_info() {
+        $post_data = $this->input->post();
+        $user_id = $this->session->user_info['user_id'];
+        $error_code = 0;
+        $member_info = $this->userModel->getMemberInfo($user_id);
+        $data = array(
+            "user_id" => $user_id,
+            "user_name" => $post_data['user_name'],
+            "phone" => $post_data['phone'],
+            "pet_type" => $post_data['pet_type'],
+            "province" => $post_data['province'],
+            "city" => $post_data['city'],
+            "pet_name" => $post_data['pet_name'],
+            "pet_breed" => $post_data['pet_breed'],
+            "pet_sex" => $post_data['pet_sex'],
+            "pet_age" => $post_data['pet_age'],
+            "province_id" => $post_data['province_id'],
+            "city_id" => $post_data['city_id'],
+        );
+        if (!$member_info) {
+            $data["create_time"] = time();
+            $error_code = $this->userModel->saveMember($data);
+            if($error_code){
+            $intergalData = array(
+                    'change_intergal' => 100,
+                    'remark' => "成为会员+100积分",
+                    'change_type' => 3
+                );
+                $this->up_intergal($intergalData);
+            }
+        } else {
+            $data['update_time'] = time();
+            $error_code = $this->userModel->upMember($user_id, $data);
+        }
+        return $error_code;
+    }
+
+    /**
+     * 更新店铺信息
+     */
+    public function update_store() {
+        $data = $this->input->post();
+        $error_code = 1;
+        $store_id = $this->input->post("store_id");
+        if ($store_id != $this->session->user_info['store_id']) {
+            $error_code = 2; //参数错误
+        } elseif ($this->storeModel->editStore($data, array("store_id" => $store_id))) {
+            $error_code = 0;
+        }
+        $result = json_encode(array("error_code" => $error_code));
+        $this->output->set_content_type("json/application")->set_output($result);
+    }
+
+    /**
+     * 编辑店铺banner
+     */
+    public function upload_banner() {
+        $config['upload_path'] = './uploads/stores/';
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['max_size'] = 1000;
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('store_banner')) {
+            $error_code = 1;
+            $data = $this->upload->display_errors();
+        } else {
+            $error_code = 0;
+            $upresult = $this->upload->data();
+            //更新用户的店铺信息
+            $banner = "https://" . $_SERVER['HTTP_HOST'] . "/uploads/stores/" . $upresult['file_name'];
+            $this->storeModel->editStore(array("store_banner" => $banner), array("store_id" => $this->session->user_info['store_id']));
+            $data = array("store_banner" => $banner);
+        }
+        $result = json_encode(array("error_code" => $error_code, "data" => $data));
+        $this->output->set_content_type("json/application")->set_output($result);
+    }
+
+}

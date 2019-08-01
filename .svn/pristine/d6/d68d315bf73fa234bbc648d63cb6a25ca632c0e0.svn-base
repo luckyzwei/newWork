@@ -1,0 +1,19 @@
+<!--提现页-->
+<view class='getCash global-pageFont'>
+  <view class='cash-number global-column1 '>
+    <image src='/images/5.png' class="cash-icon"></image>
+    <text>可提现金额</text>
+    <text class='money'>￥ 55.00</text>
+    <view class='btn themeBg' bindtap='getCash'>提现</view>
+  </view>
+  <view class='cash-lists global-column2'>
+    <view class='list-items .global-rowBtw'>
+      <text>收支明细</text>
+      <image src='/images/nav-right.png' class='nav-right'></image>
+    </view>
+    <view class='list-items .global-rowBtw'>
+      <text>提现记录</text>
+      <image src='/images/nav-right.png' class='nav-right'></image>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,36 @@
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+ * 钩子-商品浏览足迹
+ * 此文件主要实现会员浏览商品的足迹
+ */
+
+/**
+ * Description of FootprintProduct
+ *
+ * @author wangxiangayx
+ */
+class FootprintProduct {
+
+    private $CI;
+
+    public function __construct() {
+        $this->CI = &get_instance();  //获取CI对象
+    }
+
+    public function add_product_footprint() {
+        $product_id = $this->CI->input->get_post("product_id");
+        $this->CI->load->model("UserTrailModel");
+        $data = array(
+            "user_id" => $this->CI->session->user_id,
+            "trail" => $this->CI->router->fetch_class() . "-" . $this->CI->router->fetch_method(),
+            "brower" => "wechatapp",
+            "content" => "",
+            "product_id" => $product_id,
+        );
+        if (!empty($product_id)&&$data['trail']=="product-get_product_info")
+            $this->CI->UserTrailModel->addUserTrail($data);
+    }
+
+}

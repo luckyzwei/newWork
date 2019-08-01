@@ -1,0 +1,358 @@
+<?php
+
+/**
+ * 用户模型
+ */
+class UserModel extends CI_Model {
+    /*
+     * 用户信息
+     * @params  $where条件来验证用户存在
+     * @params str/array $table表名或者表数组
+     *          数组格式 array(
+     *                      'from'=>'table1  a',
+     *                      'join'=>array(
+     *                                  array1(
+     *                                      'table'=>'table2 b',
+     *                                      'condition'=>'a.id=b.id',
+     *                                      'associated'=>'left'
+     *                                      )
+     *                                  ......
+     *                            )
+     *                  )
+     * @params str/array $files获取字段名或数组
+     */
+
+    public function getUserinfo($where, $table, $files = '*') {
+        if (is_array($files)) {
+            $this->db->select(implode(',', $files));
+        } else {
+            $this->db->select($files);
+        }
+        if (is_array($table)) {
+            if (empty($table['from']))
+                return;
+            $tablein = array('user', 'user_coupon', 'user_level', 'user_group', 'user_intergal_log', 'user_address',
+                'user_settlentment_log', 'user_like', 'user_collect', 'user_wechat', 'user_raward', 'user_groupbuy', 'user_account_log');
+            $this->db->from($table['from']);
+            foreach ($table['join'] as $value) {
+                $ckeck = explode(" ", $value['table']);
+                if (in_array($ckeck[0], $tablein))
+                    $this->db->join($value['table'], $value['condition'], $value['associated']);
+            }
+        } else {
+            $this->db->from($table);
+        }
+        $query = $this->db->where($where)->get();
+        return $query->row_array();
+    }
+
+    /**
+     * 获取用户排名
+     */
+    public function gerRank($user_id) {
+        $sql = 'SELECT * FROM (SELECT user_id, @curRank := @curRank + 1 AS rank FROM zm_user p,(SELECT @curRank := 0) r ORDER BY user_intergal DESC ) a WHERE a.user_id = ' . $user_id;
+        $query = $this->db->query($sql);
+        return $query->row('rank');
+    }
+
+    /**
+     * 通过$where条件来验证用户存在
+     */
+    public function checkUser($where) {
+        $query = $this->db->select('*')
+                ->from('user')
+                ->where($where)
+                ->get();
+        $result = $query->row_array();
+        if (!empty($result)) {
+            $user = $query->row_array();
+            return $user['user_id'];
+        } else {
+            return false;
+        }
+    }
+
+    public function getUserLogin($where) {
+        $query = $this->db->select('login_times,last_logintime')
+                ->from('user')
+                ->where($where)
+                ->get();
+        return $query->row_array();
+    }
+
+    /**
+     * 登陆结果执行函数
+     * $res 0 执行登陆失败数据 1 执行登陆成功数据
+     *          
+     */
+    public function setLoginLog($user_name, $res = 0) {
+        if (empty($res)) {
+            $this->db->set('login_times', 'login_times+1', FALSE)
+                    ->set('last_logintime', time())
+                    ->where('user_name', $user_name)
+                    ->update('user');
+        } else {
+            $this->db->set('login_times', '0')
+                    ->set('last_logintime', time())
+                    ->where('user_name', $user_name)
+                    ->update('user');
+        }
+    }
+
+    /**
+     * 新增商城用户
+     * @param type $userdata
+     */
+    public function addUser($userdata) {
+        if (!empty($userdata) && $this->db->insert('user', $userdata)) {
+            return $this->db->insert_id();
+        }
+        return false;
+    }
+
+    /**
+     * 更新用户信息表
+     * @param type $data 不含用户积分和用户余额变动
+     * @param type $user_id
+     */
+    public function updateUser($data, $user_id) {
+        $this->db->where('user_id', $user_id)
+                ->update('user', $data);
+    }
+
+    /**
+     * 通过openid获取用户的信息
+     * @param type $openid
+     */
+    public function get_wechat_user_info($openid) {
+        $query = $this->db->select("user.*,user_wechat.*,supplier.supplier_id,supplier.status as supplier_status,store.store_id,agent.agent_id,agent.agent_group_id")
+                ->from("user_wechat")
+                ->join("user", "user_wechat.user_id=user.user_id", "left")
+                ->join("agent", "agent.user_id=user_wechat.user_id", "left")
+                ->join("store", "user_wechat.user_id=store.store_uid", "left")
+                ->join("supplier", "supplier.user_id=user_wechat.user_id", "left")
+                ->where("user_wechat.wx_fun_openid", $openid)
+                ->or_where("user_wechat.wx_public_openid", $openid)
+                ->get();
+        return $query->row_array();
+    }
+
+    public function getUserById($user_id) {
+        $query = $this->db->select("user.*,user_wechat.*,agent.agent_id,agent.agent_group_id")
+                ->from("user_wechat")
+                ->join("user", "user_wechat.user_id=user.user_id", "left")
+                ->join("agent", "user_wechat.user_id=agent.user_id", "left")
+                ->where("user.user_id", $user_id)
+                ->get();
+        return $query->row_array();
+    }
+
+    public function getUsers($where) {
+        $query = $this->db->get_where("user", $where);
+        return $query->result_array();
+    }
+
+    /**
+     * 
+     * @param type $baseinfo 用户信息数组array("openid"=>"","unionid"=>"")
+     * @param type $type wx_fun表示微信小程序，wx_public表示公众号
+     */
+    public function add_wechat_user($wxuserinfo) {
+        return $this->db->insert("user_wechat", $wxuserinfo);
+    }
+
+    public function update_wechat_user($wxuserinfo, $user_id) {
+        return $this->db->where("user_id", $user_id)->update("user_wechat", $wxuserinfo);
+    }
+
+    public function getUserGroup($user_id) {
+        $query = $this->db->select("user_group.*")
+                ->join("user_group", "user_group.user_group_id=user.user_group_id")
+                ->where("user.user_id", $user_id)
+                ->get("user");
+        return $query->row_array();
+    }
+
+    public function getDefaultUserGroup() {
+        $query = $this->db->select("*")
+                ->where("is_default = 1")
+                ->get("user_group");
+        return $query->row_array();
+    }
+
+    /*
+     * 获取用户团队
+     * zu   2018/8/17
+     * 需要的数据    user_id
+     */
+
+    public function getUserFamily($user_id, $limit, $page) {
+        $list = $this->db->select('user.*,user_wechat.wx_headimg')
+                ->from('user')
+                ->join('user_wechat', 'user_wechat.user_id=user.user_id', 'left')
+                ->where('user.parent_user_id', $user_id)
+                ->order_by('user.user_id', 'DESC')
+                ->limit($limit, ($page - 1) * $limit)
+                ->get();
+
+        return $list->result_array();
+    }
+
+    /**
+     * 设置用户积分
+     */
+    public function setUseIntergal($user_id, $intergal) {
+        return $this->db->where("user_id", $user_id)
+                        ->set("user_intergal", "user_intergal+" . $intergal, false)
+                        ->update("user");
+    }
+
+    /**
+     * 设置用户余额
+     * @param type $user_id
+     * @param type $money
+     * @return type
+     */
+    public function setUserMoney($user_id, $money) {
+        return $this->db->where("user_id", $user_id)
+                        ->set("user_money", "user_money+" . $money, false)
+                        ->update("user");
+    }
+
+    /**
+     * 设置用户结算佣金
+     * @param type $user_id
+     * @param type $money
+     * @return type
+     */
+    public function setUserSettlementMoney($user_id, $money) {
+        return $this->db->where("user_id", $user_id)
+                        ->set("settlement_money", "settlement_money+" . $money, false)
+                        ->update("user");
+    }
+
+    /**
+     * 结算用户收益
+     * @param type $user_id
+     * @param type int $cycle结算周期
+     */
+    public function settlementReward($user_id, $cycle) {
+        $ed_time = strtotime('-' . $cycle . ' days');
+
+        //查询所有待结算订单
+        $query = $this->db->select("order_id,order_sn,user_id")
+                ->where("master_order_id=0 and settlement_status=0")
+                ->where("status in(1,2,5) and paytime<" . $ed_time)
+                ->get("order");
+        $orders = $query->result_array();
+//        echo $this->db->last_query();exit;
+        foreach ($orders as $order) {
+            $reward_query = $this->db
+                    ->select("*")
+                    ->where("order_id", $order['order_id'])
+                    ->where("reward_status", 0)
+                    ->get("user_reward");
+            $rewards = $reward_query->result_array();
+            foreach ($rewards as $reward) {
+               
+                //写入结算日志
+                $settle_log = array(
+                    "user_id" => $reward['user_id'],
+                    "settlement_type" => 1,
+                    "remark" => "系统收益结算:".$order['order_id'],
+                    "settlement_money" => $reward['order_reward']
+                );
+                $this->db->insert("settlement_log", $settle_log);
+
+                $this->db->where("user_id", $reward['user_id'])->set("settlement_money", "settlement_money+" . $reward['order_reward'], false)->update("user");
+                //写账户变更更日志
+                $log_data = array(
+                    "user_id" => $reward['user_id'],
+                    "change_money" => $reward['order_reward'],
+                    "change_cause" => "收益结算",
+                    "createtime" => time()
+                );
+                $this->db->insert("user_account_log", $log_data);
+                //更新分成状态
+                $this->db->where("reward_id",$reward['reward_id'])->update("user_reward",array("reward_status"=>1));
+            }
+            //更新订单状态
+            $this->db->where("order_id", $order['order_id'])->update("order", array("settlement_status" => 1));
+        }
+
+        return true;
+    }
+
+    /**
+     * 根据用户id获取用户群组信息
+     * @param type $user_id
+     * @return type
+     */
+    public function getUserGroupByUid($user_id) {
+        $query = $this->db->select("user_group.*")
+                ->where("user.user_id=" . $user_id)
+                ->join("user_group", "user.user_group_id=user_group.user_group_id", "left")
+                ->get("user");
+        return $query->row_array();
+    }
+
+    /**
+     * 获取用户账户信息
+     * @param type $user_id
+     */
+    public function getUserAccount($user_id) {
+        $query = $this->db->select("user_phone,user_money,settlement_money,user_intergal,(user_money+settlement_money) as totalmoney")
+                ->where("user_id", $user_id)
+                ->get("user");
+        $data = $query->row_array();
+        return $data;
+    }
+
+    /**
+     * 获取用户扩展信息
+     * @param type $user_id
+     * @return array Description
+     */
+    public function getUserExtends($user_id) {
+        $query = $this->db->select("extends")->get_where("user", array("user_id" => $user_id));
+        $extends = $query->row_array()['extends'];
+        return unserialize($extends);
+    }
+
+    /**
+     * 获取用户提成收益记录 
+     * @param type $page
+     * @param type $type 0 表示销售佣金，1表示平台奖励（二级佣金）
+     */
+    public function getUserReward($user_id, $page, $type = 0, $limit = 15) {
+        $query = $this->db->select('*')
+                ->join("order", "order.order_id=user_reward.order_id")
+                ->where("order.status in (1,2,5)")
+                ->where('user_reward.reward_type', $type)
+                ->where('user_reward.user_id', $user_id)
+                ->order_by('reward_id', 'DESC')
+                ->limit($limit, ($page - 1) * $limit)
+                ->get("user_reward");
+        return $query->result_array();
+    }
+
+    public function getUserFriendsCount($user_id, $time = 0) {
+        $sqtime = strtotime(date("Y-m-d 00:00:00", time() - $time * 24 * 3600));
+        if ($time == -1) {
+            $sqtime = 0; //全部时间
+        }
+        $query = $this->db->select("*")
+                ->from("user")
+                ->where("parent_user_id", $user_id)
+                ->where("createtime>" . $sqtime)
+                ->count_all_results();
+        return $query;
+    }
+
+    public function getMemberInfo($user_id) {
+         $query = $this->db->select('*')
+                ->where('user_id', $user_id)
+                ->get("user_info");
+        return $query->row_array();
+    } 
+}

@@ -1,0 +1,42 @@
+INFO - 2019-07-09 --> Config Class Initialized
+INFO - 2019-07-09 --> Hooks Class Initialized
+DEBUG - 2019-07-09 --> UTF-8 Support Enabled
+INFO - 2019-07-09 --> Utf8 Class Initialized
+INFO - 2019-07-09 --> URI Class Initialized
+DEBUG - 2019-07-09 --> No URI present. Default controller set.
+INFO - 2019-07-09 --> Router Class Initialized
+INFO - 2019-07-09 --> Output Class Initialized
+INFO - 2019-07-09 --> Security Class Initialized
+DEBUG - 2019-07-09 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-07-09 --> Input Class Initialized
+INFO - 2019-07-09 --> Language Class Initialized
+INFO - 2019-07-09 --> Loader Class Initialized
+DEBUG - 2019-07-09 --> Config file loaded: D:\WWW\SHpets\controllCenter\zmcc\config/menu.php
+DEBUG - 2019-07-09 --> Config file loaded: D:\WWW\SHpets\controllCenter\zmcc\config/pagination.php
+INFO - 2019-07-09 --> Helper loaded: url_helper
+INFO - 2019-07-09 --> Helper loaded: array_helper
+INFO - 2019-07-09 --> Database Driver Class Initialized
+INFO - 2019-07-09 --> Config Class Initialized
+INFO - 2019-07-09 --> Hooks Class Initialized
+DEBUG - 2019-07-09 --> UTF-8 Support Enabled
+INFO - 2019-07-09 --> Utf8 Class Initialized
+INFO - 2019-07-09 --> URI Class Initialized
+INFO - 2019-07-09 --> Router Class Initialized
+INFO - 2019-07-09 --> Output Class Initialized
+INFO - 2019-07-09 --> Security Class Initialized
+DEBUG - 2019-07-09 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-07-09 --> Input Class Initialized
+INFO - 2019-07-09 --> Language Class Initialized
+ERROR - 2019-07-09 --> 404 Page Not Found: Faviconico/index
+INFO - 2019-07-09 --> Config Class Initialized
+INFO - 2019-07-09 --> Hooks Class Initialized
+DEBUG - 2019-07-09 --> UTF-8 Support Enabled
+INFO - 2019-07-09 --> Utf8 Class Initialized
+INFO - 2019-07-09 --> URI Class Initialized
+INFO - 2019-07-09 --> Router Class Initialized
+INFO - 2019-07-09 --> Output Class Initialized
+INFO - 2019-07-09 --> Security Class Initialized
+DEBUG - 2019-07-09 --> Global POST, GET and COOKIE data sanitized
+INFO - 2019-07-09 --> Input Class Initialized
+INFO - 2019-07-09 --> Language Class Initialized
+ERROR - 2019-07-09 --> 404 Page Not Found: Faviconico/index

@@ -1,0 +1,43 @@
+/*累计客户.wxss */
+
+.totalCustomer {
+  width: 95%;
+  margin: 0 auto;
+}
+
+/* 客户列表信息 */
+
+.totalCustomer-list {
+  padding: 15rpx 0;
+  border-bottom: 1px solid #f8f8f8;
+}
+
+/* 客户头像 */
+
+.totalCustomer  .totalCustomer-list .customer-headimg {
+  width: 85rpx;
+  height: 85rpx;
+  border-radius: 50%;
+  border: 1px solid #f8f8f8;
+  margin-right: 20rpx;
+}
+
+/* 空列表 */
+
+.empty {
+  height: 100%;
+  width: 100%;
+  padding: 50% 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  color: #999;
+  font-size: 22rpx;
+}
+
+.empty image {
+  width: 220rpx;
+  height: 220rpx;
+  margin-bottom: 20rpx;
+}

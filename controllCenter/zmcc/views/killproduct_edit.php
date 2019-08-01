@@ -1,0 +1,211 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title><?php echo $title ?></title>
+        <base href = '<?php echo base_url() . "zmcc/views/" ?>'/>
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="plugins/font-awesome-4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="plugins/ionicons-2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" href="plugins/summernote/summernote.css">
+        <link href="plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="dist/css/ZMShop.min.css">
+        <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
+        <link rel="stylesheet" href="dist/css/skins/all-skins.min.css">
+    </head>
+    <body class="hold-transition skin-blue sidebar-mini">
+        <div class="wrapper">
+            <header class="main-header">
+                <?php include 'public_header.php' ?>
+            </header>
+            <aside class="main-sidebar">
+                <?php include 'public_left.php' ?>
+            </aside>
+            <div class="content-wrapper">
+                <section class="content-header">
+                    <h1>
+                        助力砍价管理
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="<?php echo base_url(); ?>"><i class="fa fa-dashboard"></i> 主页</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url("KillProduct/index"); ?>">助力砍价</a>
+                        </li>
+                        <li class="active">编辑助力砍价</li>
+                    </ol>
+                </section>
+                <section class="content">
+                    <?php include 'public_middletips.php'; ?>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-primary">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">添加助力砍价</h3>
+                                </div>
+                                <form role="form" name="KillProduct_form" id="KillProduct" action="" method="post">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <div class="col-md-8">
+                                                <label>砍价名称</label>
+                                                <input type="hidden" class="form-control" value="<?php echo $killproductinfo['kill_product_id'] ?>"  name='kill_product_id' >
+                                                <input  class="form-control" name="kill_product_name" value="<?php echo $killproductinfo['kill_product_name'] ?>" placeholder="砍价名称介绍"/> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-8">
+                                                <label for="">商品名称</label>
+                                                <input type="text" class="form-control" id="" name="product_name" value="<?php echo $killproductinfo['product_name'] ?>" placeholder="此处模糊搜索->请在弹出的列表中选择商品">
+                                                <input type="hidden" class="form-control" value="<?php echo $killproductinfo['product_id'] ?>"  name='product_id' >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <label >砍价允许购买总数量(依旧会减商品库存)</label>
+                                                <input  type="number" class="form-control" name="kill_product_store" value="<?php echo $killproductinfo['kill_product_store'] ?>" placeholder="0不限制直到商品库存购买完,>0当购买这么多数量后团活动会自动截至"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label >砍价最低</label>
+                                                <input  type="number" class="form-control" name="kill_product_min_price" value="<?php echo $killproductinfo['kill_product_min_price'] ?>" placeholder="允许砍到最低价格"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label >砍价人数(2-100)</label>
+                                                <input  type="number" class="form-control" name="kill_price_number" value="<?php echo $killproductinfo['kill_price_number'] ?>" placeholder="需要多少人才能砍到最低价"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label >砍价方式：   </label>
+                                                <input  type="radio" class="form-radio" name="kill_price_type" onclick="price_types(0)" value="0" <?php echo $killproductinfo['kill_price_type'] ? '' : 'checked' ?> />随机
+                                                <input  type="radio" class="form-radio" name="kill_price_type" onclick="price_types(1)" value="1" <?php echo $killproductinfo['kill_price_type'] ? 'checked' : '' ?> />固定金额
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="fixed_price" hidden="">
+                                            <div class="col-md-3">
+                                                <label >固定金额</label>
+                                                <input  type="number" class="form-control" name="kill_fixed_price" value="<?php echo set_value('kill_fixed_price') ?>" placeholder="砍价固定金额"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-2">
+                                                <label>开始时间</label>
+                                                <div class="input-group date">
+                                                    <input type="text" name="kill_product_starttime" value="<?php echo date('Y-m-d', $killproductinfo['kill_product_starttime']) ?>" placeholder="开始日期" data-date-format="YYYY-MM-DD" class="form-control" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-2">
+                                                <label>结束时间</label>
+                                                <div class="input-group date">
+                                                    <input type="text" name="kill_product_endtime" value="<?php echo date('Y-m-d', $killproductinfo['kill_product_endtime']) ?>" placeholder="结束日期(不设置将不限时)" data-date-format="YYYY-MM-DD" class="form-control" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label >等待助力砍价有效期(小时)</label>
+                                                <input  type="number" class="form-control" name="kill_price_time" value="<?php echo $killproductinfo['kill_price_time'] ?>" placeholder="等待助力砍价有效期"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-footer">
+                                        <button type="submit" class="btn btn-primary">保存</button> 
+                                        <button type="button" class="btn btn-prompt" onclick="location.href = '<?php echo site_url('KillProduct/index') ?>'">返回</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <footer class="main-footer">
+                <?php include 'public_footer.php' ?>
+            </footer>
+            <aside class="control-sidebar control-sidebar-dark">
+                <ul class="nav nav-tabs nav-justified control-sidebar-tabs"></ul>
+                <div class="tab-content">
+                    <div class="tab-pane" id="control-sidebar-home-tab"></div>
+                </div>
+            </aside>
+            <div class="control-sidebar-bg"></div>
+        </div>
+        <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <script src="dist/js/app.min.js"></script>
+        <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+        <script src="plugins/iCheck/icheck.min.js"></script>
+        <script src="dist/js/changethemes.js" type="text/javascript" charset="utf-8"></script>
+        <script src="dist/js/common.js"></script>
+        <script src="dist/js/js.cookie-2.1.2.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="plugins/bootstrap-datetimepicker/moment.js"></script>
+        <script src="plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+        <script src="plugins/summernote/summernote.js"></script>
+        <script src="plugins/summernote/lang/summernote-zh-CN.js"></script>
+        <script src="plugins/summernote/upload.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript">
+                                            $(function () {
+                                                var type =<?php echo $killproductinfo['kill_price_type'];?>;
+                                                if(type) {
+                                                    $('#fixed_price').show();
+                                                } else {
+                                                    $('#fixed_price').hide();
+                                                };
+                                            })
+                                            
+                                            function price_types(type){
+                                                if(type){
+                                                    $('#fixed_price').show();
+                                                }else{
+                                                    $('#fixed_price').hide();
+                                                }
+                                            }
+                                            $('input[name=\'product_name\']').autocomplete({
+                                                'source': function (request, response) {
+                                                    $.ajax({
+                                                        url: '<?php echo site_url('Product/autoProduct'); ?>' + '?product_id=' + encodeURIComponent(request),
+                                                        dataType: 'json',
+                                                        success: function (json) {
+                                                            response($.map(json, function (item) {
+                                                                return {
+                                                                    label: item['product_name'],
+                                                                    value: item['product_id']
+                                                                }
+                                                            }));
+                                                        }
+                                                    });
+                                                },
+                                                'select': function (item) {
+                                                    $('input[name=\'product_name\']').val(item['label']);
+                                                    $('input[name=\'product_id\']').val(item['value']);
+                                                }
+                                            });
+
+                                            $('#category-filter').delegate('.fa-minus-circle', 'click', function () {
+                                                $(this).parent().remove();
+                                            });
+                                            $('.date').datetimepicker({
+                                                pickTime: false
+                                            });
+                                            
+                                            
+        </script>
+
+    </body>
+
+</html>

@@ -1,0 +1,52 @@
+// 拼团列表.js
+const App = getApp()
+Page({
+  data: {
+    grouplist: [],
+    showTransport: false,
+    status: 0,
+    express: [],
+    page: 1,
+  },
+
+  onLoad: function(options) {
+    this.get_groupbuys();
+  },
+
+  get_groupbuys: function() {
+    wx.showLoading({
+      title: '努力加载中……'
+    });
+    var that = this;
+    App.apiPost({
+      "uri": 'GroupProduct/get_groupbuys.html',
+      "data": {
+        page: that.data.page,
+      },
+      "callback": function(res) {
+        if (!res.error_code) {
+          var nextpage = that.data.page + 1;
+          that.setData({
+            "page": nextpage
+          });
+          if (nextpage == 2) {
+            var grouplist = res.data;
+          } else {
+            var grouplist = that.data.grouplist.concat(res.data);
+          }
+          that.setData({
+            "grouplist": grouplist,
+          });
+        }
+        wx.hideLoading();
+      }
+    })
+  },
+  onShareAppMessage: function(e) {
+    return {
+      title: "快来参加我的团吧",
+      path: '/pages/default/default?scene=' + that.data.userInfo.user_id + "_" + that.data.qrcodeSign + "_share",
+      imageUrl: "/images/catinvitation.jpg"
+    }
+  },
+})

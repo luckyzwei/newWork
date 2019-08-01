@@ -1,0 +1,136 @@
+//index.js
+const app = getApp()
+Page({
+  data: {
+    imgUrls: [],
+    category: [],
+    advertise: [],
+    shareModal: false,
+    hiddenInput: true,
+    indicatorDots: true, //小点
+    autoplay: true, //是否自动轮播
+    interval: 3000, //间隔时间
+    duration: 3000, //滑动时间
+    cateLevel: 1, //获取分类标识
+    imageKey: 1, //获取轮播图标识
+    advertKey: 2, //获取广告位标识
+    coupons: [], //优惠券
+    keyword: "" //搜索框缓存
+  },
+  onLoad: function() {},
+  onShow: function() {
+    var that = this
+    app.checkAuth();
+    app.initialize(function(res) {
+      that.getHomeData();
+    });
+
+  },
+  /**搜索 */
+  clickSearch: function(e) {
+    var that = this
+    app.globalData.keyword = e.detail.value;
+    wx.navigateTo({
+      url: '/pages/productList/productList'
+    });
+  },
+  /**跳到商品列表 */
+  goproductList: function(e) {
+    var that = this
+    app.globalData.category_id = e.currentTarget.dataset.category_id;
+    console.log(e)
+    wx.navigateTo({
+      url: '/pages/productList/productList'
+    });
+  },
+  goUrl: function(e) {
+    var that = this
+    var ad_url = e.currentTarget.dataset.ad_url;
+    var ad_arr=[];
+    wx.navigateTo({
+      url: ad_url,
+      fail: function(res) {
+        ad_arr=ad_url.split("=");
+        app.globalData.category_id = ad_arr[1];
+        wx.navigateTo({
+          url: '/pages/productList/productList'
+        });
+      }
+    })
+
+  },
+
+  /**广告详情页 */
+  advDetails: function() {
+    var that = this;
+    wx.navigateTo({
+      url: '',
+    })
+  },
+  /**显示分享方式 */
+  shareStyle: function(e) {
+    var that = this;
+    that.setData({
+      shareModal: true,
+      hiddenInput: false
+    })
+  },
+  //**关闭弹层 */
+  closeShare: function() {
+    var that = this;
+    that.setData({
+      shareModal: false,
+      hiddenInput: true
+    })
+  },
+  /**生成海报 */
+  createShareImg: function() {
+
+  },
+  /**获取首页接口数据 */
+  getHomeData: function() {
+    var that = this;
+    var data = {
+      cateLevel: that.data.cateLevel,
+      imageKey: that.data.imageKey,
+      advertKey: that.data.advertKey,
+    };
+    app.apiPost({
+      'uri': 'Index/get_home.html',
+      'data': data,
+      'callback': function(res) {
+        if (!res.error_code) {
+          that.setData({
+            imgUrls: res.data.imageList,
+            category: res.data.categoryList,
+            advertise: res.data.advertList,
+            coupons: res.data.couponList,
+            keyword: app.globalData.keyword
+          })
+        }
+      }
+    });
+  },
+  /*领取优惠券*/
+  getCoupon: function(e) {
+    var that = this
+    var coupon_id = e.currentTarget.dataset.coupon_id;
+    app.apiPost({
+      'uri': 'Coupon/user_recive_coupon.html',
+      'data': {
+        "coupon_id": coupon_id
+      },
+      'callback': function(res) {
+        if (!res.error_code) {
+          that.onShow();
+          wx.showToast({
+            title: '领取成功!',
+            duration: 1500
+          })
+          
+        }
+      }
+    });
+  }
+
+})

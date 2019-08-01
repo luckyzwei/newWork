@@ -1,0 +1,291 @@
+/* 分销中心样式 */
+
+/* 页面宽度 */
+
+.salecenter {
+  width: 100%;
+}
+
+/* 顶部信息包裹层 */
+
+.salecenter .sale-userInfo {
+  position: relative;
+  color: #eee;
+  background: -webkit-linear-gradient(top, #343547, #5c5f70); /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(bottom, #343547, #5c5f70); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(bottom, #343547, #5c5f70); /* Firefox 3.6 - 15 */
+  background: linear-gradient(bottom, #343547, #5c5f70); /* 标准的语法 */
+  padding: 40rpx 20rpx 30rpx 20rpx;
+}
+
+/* 顶部右侧等级展示 */
+
+.salecenter .sale-userInfo .right-level {
+  position: absolute;
+  right: 0;
+  height: 55rpx;
+  line-height: 60rpx;
+  color: #fff;
+  /* font-size: 26rpx; */
+  border-top-left-radius: 30rpx;
+  border-bottom-left-radius: 30rpx;
+}
+
+/* 标签 半透明 */
+
+.salecenter .sale-userInfo .right-level .level-bq {
+  width: 25rpx;
+  height: 25rpx;
+  opacity: 0.3;
+  margin: 0 10rpx;
+}
+
+/* 个人信息头像 */
+
+.salecenter .sale-userInfo .wx_headimg {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 150rpx;
+}
+
+/* 右部分 个人信息 */
+
+.salecenter .sale-userInfo .userInfo-right {
+  margin-left: 20rpx;
+}
+
+/* 用户名 */
+
+.salecenter .sale-userInfo .userInfo-right .wx_nickname {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #fff;
+  padding: 8rpx 0;
+}
+
+/* 分销等级升级提示 */
+
+.level-tips {
+  padding: 53rpx 0 15rpx 0;
+  font-size: 24rpx;
+}
+
+/* 右箭头 */
+
+.level-tips .nav-right {
+  width: 45rpx;
+  height: 35rpx;
+}
+
+/* 收益 */
+
+.Profit {
+  width: 100%;
+  padding: 30rpx 0;
+  color: #999;
+}
+
+.Profit .Profit-total {
+  padding: 8rpx 0 30rpx 0;
+}
+
+.Profit  text {
+  line-height: 45rpx;
+}
+
+.Profit   .tit {
+  font-size: 28rpx;
+}
+
+.Profit  .money {
+  font-size: 50rpx;
+  color: #000;
+  padding: 25rpx 0;
+}
+
+.Profit  .money1 {
+  font-size: 34rpx;
+  color: #000;
+  padding: 8rpx 0;
+}
+
+.Profit  .jiesuan {
+  font-size: 22rpx;
+}
+
+/* 昨日收益/ 访客 */
+
+.Profit .yesterday-profit {
+  width: 100%;
+  padding: 20rpx 0;
+  border-bottom: 5rpx solid #eee;
+}
+
+.Profit .yesterday-profit .yesterday-profit-items {
+  width: 49%;
+}
+
+.Profit .yesterday-profit .yesterday-profit-items:first-child {
+  border-right: 2rpx solid #eee;
+}
+
+/* 提现按钮 */
+
+.getCash {
+  padding: 20rpx;
+  font-size: 24rpx;
+  border-bottom: 20rpx solid #f8f8f8;
+  color: #333;
+}
+
+/* 右箭头 */
+
+.getCash .nav-right {
+  width: 22rpx;
+  height: 20rpx;
+  margin-left: 10rpx;
+}
+
+/* 分销数据展示 */
+
+.sale-data .data-items {
+  width: 33.3%;
+}
+
+.sale-data {
+  font-size: 24rpx;
+  padding: 35rpx 0;
+  border-bottom: 20rpx solid #f8f8f8;
+  color: #333;
+}
+
+.sale-data .data-items .items-txt1 {
+  font-size: 42rpx;
+  color: #ff8284;
+  padding: 8rpx 0;
+}
+
+/* 推广 */
+
+.extend {
+  width: 100%;
+  padding-top: 20rpx;
+}
+
+.extend .extend-items {
+  position: relative;
+  width: 33.3%;
+  color: #fff;
+}
+
+/* 推广txt */
+
+.extend .extend-items .extent-name {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  text-align: center;
+}
+
+/* 推广txt 第一行大字体 */
+
+.extend .extend-items .extent-name .title {
+  font-size: 32rpx;
+}
+
+/* 推广txt 第二行小字体 */
+
+.extend .extend-items .extent-name .sub-title {
+  font-size: 24rpx;
+}
+
+/* 推广方式背景图 */
+
+.extend .extend-items .items-bg {
+  width: 205rpx;
+  height: 122rpx;
+  border-radius: 5px;
+  margin: 15rpx 20rpx;
+}
+
+/* 邀请好友按钮 */
+
+.extend-items .invitedBtn {
+  position: absolute;
+  width: 205rpx;
+  height: 122rpx;
+  opacity: 0;
+  z-index: 2;
+}
+
+/* 去掉button自带边框 */
+
+.extend-items .invitedBtn::after {
+  border: none;
+}
+
+/*海报生成区  */
+
+.poster {
+  width: 100%;
+  position: absolute;
+  z-index: 999;
+  top: 0;
+}
+
+/* 取消弹层按钮 */
+
+.cancel {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.cancel image {
+  width: 66rpx;
+  height: 66rpx;
+  margin-top: 10rpx;
+  padding-right: 15rpx;
+}
+
+/* 海报尺寸 */
+
+.create-post {
+  width: 420rpx;
+  height: 640rpx;
+  margin-top: 105rpx;
+}
+
+/* 海报图片 */
+
+.create-post .create-postImg {
+  width: 420rpx;
+  height: 640rpx;
+  border: 1px solid #aaa;
+}
+
+/* 保存海报到相册 按钮 */
+
+.save-post {
+  text-align: center;
+  margin-top: 60rpx;
+  color: #fff;
+  font-size: 28rpx;
+}
+
+.save-post  .save-btn {
+  width: 430rpx;
+  line-height: 60rpx;
+  border-radius: 20rpx;
+}
+
+.global-mask {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* 提示分享 */
+
+.save-tips {
+  margin-top: 22rpx;
+}

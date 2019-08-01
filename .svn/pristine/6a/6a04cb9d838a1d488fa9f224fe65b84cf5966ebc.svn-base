@@ -1,0 +1,69 @@
+//砍价详情.js
+const App = getApp()
+Page({
+  data: {
+    bargain_product: {},
+    showRule: false,
+  },
+  onLoad: function(options) {
+    var that = this;
+    App.initialize(function(res) {
+      that.setData({
+        "userInfo": wx.getStorageSync("user_data"),
+      });
+    });
+    var bargain_product = {
+      thumb: "http://admin.cutepetxb.cn/upload/image/shouye/kaizhang/(16).jpg",
+      name: "商品测试名称",
+      limit_time: "12:31:45",
+      price: "86",
+      left_price: "180",
+      percent: "43"
+    }
+    that.setData({
+      bargain_product: bargain_product
+    })
+
+  },
+  onReady: function() {
+
+  },
+  onShow: function() {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function() {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function() {
+
+  },
+  /**完善收货地址 */
+  goAddressEdit: function() {
+    console.log("2222222")
+    wx.navigateTo({
+      url: '/pages/personal/addressedit/addressedit',
+    })
+  },
+  /**显示砍价规则弹窗 */
+  showRule: function(e) {
+    var that = this;
+    that.setData({
+      showRule: true
+    })
+  },
+  /**关闭弹窗 */
+  closeRuleModal: function(e) {
+    var that = this;
+    that.setData({
+      showRule: false
+    })
+  }
+})

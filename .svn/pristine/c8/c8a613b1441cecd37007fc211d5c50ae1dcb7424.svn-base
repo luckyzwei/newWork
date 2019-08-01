@@ -1,0 +1,35 @@
+<!--商品评论页-->
+<form bindsubmit="bindFormSubmit" report-submit='true'>
+  <view class='reviews global-pageFont'>
+    <!-- 商品信息 -->
+    <view class="reviews-goods" wx:for='{{products}}' wx:key='' wx:for-item="item" wx:for-index="index">
+      <view class="goods_product">
+        <image src="{{item.product_thumb}}"></image>
+        <view class='goods_info'>
+          <text>{{item.product_name}} </text>
+          <!-- <text wx:if='{{item.product_special_name}}'>{{item.product_special_name}}</text> -->
+        </view>
+        <input type='text' hidden='true' name="product_score[{{index}}]" value='{{item.product_score}}'></input>
+        <input type='text' hidden='true' name="product_id[{{index}}]" value='{{item.product_id}}'></input>
+      </view>
+      <!-- 等级星标 -->
+      <view class="reviews-star">
+        <view class="starT"> 星级评价:</view>
+        <view class="reviews-starIcon" bindtap="myStarChoose">
+          <block wx:for="{{starMap}}" wx:for-item="staritem" wx:key='' wx:for-index="starindex">
+            <image wx:if="{{item.product_score>=starindex+1}}" src="/images/star.png" class=" selected" data-index='{{index}}' data-star="{{starindex+1}}"></image>
+            <image wx:if="{{item.product_score<starindex+1}}" src="/images/star0.png" class=" unselected" data-index='{{index}}' data-star="{{starindex+1}}"></image>
+          </block>
+        </view>
+        <!-- 星标级别 -->
+        <!-- <view class="reviews-score">{{starMap[item.product_score-1]}}4</view> -->
+      </view>
+      <!-- 填写评价 -->
+      <view class="reviews-comment ">
+        <text>您的评价:</text>
+        <textarea placeholder="请输入您的评价 " name="detailReviews[{{index}}]" maxlength="140 " />
+      </view>
+    </view>
+  </view>
+  <button form-type="submit" class='button'> 提交 </button>
+</form>

@@ -1,0 +1,78 @@
+<!--商品列表页-->
+<view class='global-pageFont product-list'>
+</view>
+<scroll-view style="height: 100%;" scroll-y="true" scroll-top="{{scrollTop.scroll_top}}" bindscroll="scrollTopFun" bindscrolltolower="onReachBottom">
+  <!-- <view class="goods-tab-box">
+    <view class="goods-tab-nav {{curIndex === 0 ?'on':''}}" bindtap="bindTap" data-index="0">综合</view>
+    <view class="goods-tab-nav {{curIndex === 1 ?'on':''}}" bindtap="bindTap" data-index="1">销量</view>
+    <view class="goods-tab-nav {{curIndex === 3 ?'on':''}}" bindtap="bindTap" data-index="3">新品</view>
+    <view class="goods-tab-nav {{curIndex === 2 ?'on':''}}" bindtap="bindTap" data-index="2">
+      价格
+      <image src='/images/default.png' wx:if="{{curIndex != 2}}" class='priceIcon'></image>
+      <image src='/images/up.png' wx:if="{{curIndex == 2}}" hidden='{{is_showUp}}' class='priceIcon'></image>
+      <image src='/images/down.png' wx:if="{{curIndex == 2}}" hidden='{{!is_showUp}}' class='priceIcon'></image>
+    </view>
+  </view> -->
+  <!-- 商品列表1 -->
+  <view class="pList-product">
+    <view class='global-product' wx:for="{{products}}" wx:key="">
+      <!--秒杀图标 -->
+      <!-- <block wx:if="{{item.timelimit}}">
+      </block> -->
+      <image src='/images/reduce.png' class='timeLimit1'></image>
+      <!-- 商品图片 -->
+      <image src='{{item.thumb}}' class="product-img" da ta-product_id="{{item.product_id}}" bindtap='goGoodsDetail'></image>
+      <text class='global-title'>{{item.product_name}}</text>
+      <block wx:if="{{item.timelimit}}">
+        <text class='limit-txt themeColor'>限时秒杀</text>
+      </block>
+      <view class='global-rowBtw themeColor product-price'>
+        <view class='global-rowStart'>
+          <block wx:if="{{item.timelimit}}">
+            <text class='global-font30 global-price'><text class='global-font22'>¥</text>{{item.timelimit.timelimit_price}}
+            </text>
+          </block>
+          <block wx:else>
+            <text class='global-font30 global-price'><text class='global-font22'>¥</text>{{item.price}}
+            </text>
+          </block>
+          <text class=' global-market_price'><text class='global-font22'>¥</text>{{item.market_price}}</text>
+        </view>
+        <image src='/images/shopcart1.png' class='global-cart1' data-product="{{item}}" bindtap='modal_show'></image>
+      </view>
+    </view>
+  </view>
+  <!-- 回顶部 -->
+  <view class="backTop" wx:if="{{scrollTop.goTop_show}}" catchtap="goTopFun">
+    <image src='/images/gotop.png' class='backTop-img'></image>
+  </view>
+</scroll-view>
+<!--数量规格选择栏-->
+<view class='global-mask' style="display:{{choose_modal}}"></view>
+<view class="global-guige global-pageFont " style="display:{{choose_modal}}">
+  <view class="spec_img_container">
+    <image src="{{chooseProduct.thumb}}"></image>
+    <view class='guige-name global-overHidden'>{{chooseProduct.product_name}}</view>
+    <block wx:if='{{chooseProduct.timelimit}}'>
+      <view class="guige-number themeColor">限时秒杀价 ￥{{chooseProduct.timelimit.timelimit_price}}</view>
+    </block>
+    <block wx:else>
+      <view class="guige-number themeColor">￥{{chooseProduct.price}}</view>
+    </block>
+    <icon class="guige-delete" type='clear' bindtap="modal_none" size='17' color='#ff8284'></icon>
+  </view>
+  <!--选择购买数量 -->
+  <view class='product-acount'>
+    <view class="font_num">购买数量：</view>
+    <view class="buy_num">
+      <view class="stepper">
+        <text class="{{minusStatus}}" bindtap="bindMinus">-</text>
+        <input type="number" bindchange="bindManual" value="{{num}}" />
+        <text class="normal" bindtap="bindPlus">+</text>
+      </view>
+    </view>
+  </view>
+  <view class="bottom-button">
+    <view class='modal_button2  btn' bindtap='addToCart'>确定</view>
+  </view>
+</view>

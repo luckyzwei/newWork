@@ -1,0 +1,149 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of KillProductModel
+ *
+ * @author wangxiangshuai
+ */
+class KillProductModel extends CI_Model {
+
+    //put your code here
+    public function getKillProducts($page = 1, $limit = 10, $where = '') {
+        $this->db->select('kp.*,p.description,p.thumb,p.price,p.product_name,p.market_price')
+                ->from('kill_product kp')
+                ->join('product p', 'p.product_id=kp.product_id', 'left');
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
+        //这里筛选掉已结束的
+        $this->db->where('(kp.kill_product_endtime > ' . time() . ' or kp.kill_product_endtime = 0)');
+        $query = $this->db->order_by('kill_product_starttime', 'asc')
+                ->limit($limit, ($page - 1) * $limit)
+                ->get();
+        $result_data = $query->result_array();
+        foreach ($result_data as &$data) {
+            $data['kill_number'] = $this->db->select('count(*) as kill_number')
+                            ->from('order')
+                            ->where('order_type="K"')
+                            ->get()
+                            ->row_array()['kill_number'];
+        }
+        return $data;
+    }
+
+    public function getKillProduct($kill_product_id) {
+        $query = $this->db->select('kp.*,p.description,p.thumb,p.product_name,p.price,p.weight as product_weight,p.market_price,p.images')
+                ->from('kill_product kp')
+                ->join('product p', 'p.product_id=kp.product_id', 'left')
+                ->where('kp.kill_product_id = ' . $kill_product_id)
+                ->get();
+        $data = $query->row_array();
+        $data['kill_number'] = $this->db->select('count(*) as kill_number')
+                        ->from('order')
+                        ->where('order_type="K"')
+                        ->get()
+                        ->row_array()['kill_number'];
+
+        return $data;
+    }
+
+    public function getKillProductByproduct_id($product_id) {
+        $query = $this->db->select('kp.*,p.description,p.thumb,p.product_name,p.price,p.weight as product_weight,p.market_price,p.images')
+                ->from('kill_product kp')
+                ->join('product p', 'p.product_id=kp.product_id', 'left')
+                ->where('kp.product_id = ' . $product_id)
+                ->where('(kp.kill_product_starttime<"' . time() . '" or kp.kill_product_starttime="0")')
+                ->where('(kp.kill_product_endtime>"' . time() . '" or kp.kill_product_endtime="0")')
+                ->get();
+        $data = $query->row_array();
+        return $data;
+    }
+
+    //检查用户是否在该活动中下单
+    public function checkKillOrder($user_id, $kill_product_id) {
+        $num = $this->db->select('*')
+                ->from('kill_log kl')
+                ->join('order o', '(o.order_id=kl.order_id and kl.user_id=o.user_id and o.status = 0)')
+                ->where('kl.user_id = ' . $user_id . '  and kl.kill_product_id=' . $kill_product_id)
+                ->get()
+                ->num_rows();
+        return $num > 0 ? true : false;
+    }
+
+    /**
+     * 获取砍价订单操作日志
+     * @param type $order_id
+     * @return type
+     */
+    public function getKillOrderLog($order_id, $user_id = 0) {
+        $this->db->select('kl.*,uw.wx_headimg,uw.wx_nickname')
+                ->from('kill_log kl')
+                ->join('user_wechat uw', 'uw.user_id = kl.user_id')
+                ->where('kl.order_id=' . $order_id)
+                ->order_by('kl.creatime', 'ASC');
+        if (!empty($user_id)) {
+            $this->db->where('kl.user_id', $user_id);
+        }
+        $orderlog = $this->db->get();
+        return $orderlog->result_array();
+    }
+
+    //检查用户是否在该订单中砍价
+    public function checkKillLog($user_id, $kill_product_id) {
+        $num = $this->db->select('*')
+                ->from('kill_log kl')
+                ->join('order o', 'o.order_id=kl.order_id', 'left')
+                ->where('kl.user_id = ' . $user_id . '  and kl.kill_product_id=' . $kill_product_id)
+                ->get()
+                ->num_rows();
+        return $num > 0 ? true : false;
+    }
+
+    public function kill_Price($data) {
+        $this->db->trans_begin();
+
+        //插入砍价记录
+        $inster_data = array(
+            'reduced_price' => $data['reduced_price'],
+            'original_price' => $data['original_price'],
+            'order_id' => $data['order_id'],
+            'user_id' => $data['user_id'],
+            'kill_product_id' => $data['kill_product_id'],
+            'creatime' => time()
+        );
+        $this->db->insert('kill_log', $inster_data);
+        $this->db->set('order_amount', 'order_amount-' . $data['reduced_price'], FALSE)
+                ->where('order_id', $data['order_id'])
+                ->update('order');
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback(); //回滚
+            return FALSE;
+        } else {
+            $this->db->trans_commit(); //提交
+            return true;
+        }
+    }
+
+    //put your code here
+    public function getKillLits($where = array(), $page = 1, $limit = 2) {
+
+        $query = $this->db->select('o.*')
+                ->select('op.product_thumb,op.product_name')
+                ->select('kp.kill_product_id,kp.kill_product_min_price,kp.kill_product_endtime,kp.kill_price_time')
+                ->from('order o')
+                ->join('order_product op', 'op.master_order_id = o.order_id', 'left')
+                ->join('kill_product kp', '((kp.product_id=op.product_id) and (kp.kill_product_starttime<"' . time() . '" or kp.kill_product_starttime="0") and (kp.kill_product_endtime>"' . time() . '" or kp.kill_product_endtime="0"))', 'left')
+                ->order_by("order_id", "DESC")
+                ->where('o.master_order_id = 0 and o.user_id = ' . $where['user_id'] . ' and o.order_type="K"')
+                ->limit($limit, ($page - 1) * $limit)
+                ->get();
+        return $query->result_array();
+    }
+
+}

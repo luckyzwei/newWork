@@ -1,0 +1,327 @@
+<?php
+
+class OrderModel extends CI_Model {
+
+    /**
+     * 订单列表
+     * @param type $page
+     * @param type $limit
+     * @param type $selectdata
+     * @return type
+     */
+    public function getOrderList($page = 0, $limit = 20, $selectdata = '') {
+        $this->db->select('o.order_id,o.order_sn,o.pay_money,o.user_id,o.status,o.order_type,o.createtime,o.order_amount')->from('order o')->where('o.status!=-1')->where('o.master_order_id', '0');
+
+        if (!empty($selectdata['start_time'])) {
+            $this->db->where("o.createtime > '" . $selectdata['start_time'] . "'");
+            unset($selectdata['start_time']);
+        }
+        if (!empty($selectdata['end_time'])) {
+            $this->db->where("o.createtime < '" . $selectdata['end_time'] . "'");
+            unset($selectdata['end_time']);
+        }
+        if (!empty($selectdata['product_keywods'])) {
+            $this->db->join('order_product', 'order_product.order_id = o.order_id ', 'left')
+                    ->like(array('order_product.product_name' => $selectdata['product_keywods']));
+            unset($selectdata['product_keywods']);
+        }
+        if (!empty($selectdata)) {
+            $this->db->like($selectdata);
+        }
+        $count_db = clone($this->db);
+        $rownum = $count_db->count_all_results();
+        $query = $this->db
+                ->select('u.nickname,u.user_name,u.user_phone,user_wechat.wx_headimg')
+                ->join('user u', 'u.user_id=o.user_id', 'left')
+                ->join('user_wechat', 'user_wechat.user_id=o.user_id', 'left')
+                ->order_by('o.order_id', 'DESC')
+                ->limit($limit, ($page - 1) * $limit)
+                ->get();
+        return array("count" => $rownum, "result" => $query->result_array());
+    }
+
+    /**
+     * 获取主订单信息
+     * @param type $order_id
+     * @return type
+     */
+    public function getOrderInfo($order_id) {
+        $data = array();
+        //订单信息
+        $orderinfo = $this->db->select('o.*,u.nickname,u.user_name,u.email,c.coupon_name,uw.wx_nickname,uw.wx_headimg')
+                ->from('order o')
+                ->join('user u', 'u.user_id=o.user_id', 'left')//会员信息
+                ->join('user_wechat uw', 'uw.user_id=o.user_id', 'left')//会员信息
+                ->join('coupon c', 'c.coupon_id=o.coupon_id', 'left')//红包信息
+                ->where('o.order_id=' . $order_id)
+                ->get();
+        $data['orderinfo'] = $orderinfo->row_array();
+
+        $mproduct_query = $this->db->select('op.*')
+                ->from('order_product op')
+                ->where('op.master_order_id=' . $data['orderinfo']['order_id'])
+                ->get();
+        //查询主订单所有商品
+        $data['orderinfo']['products'] = $mproduct_query->result_array();
+
+        $suborders = $this->getSubOrder($order_id);
+        foreach ($suborders as &$sorder) {
+            $orderproduct = $this->db->select('op.*')
+                    ->from('order_product op')
+                    ->where('op.order_id=' . $sorder['order_id'])
+                    ->get();
+            $sorder['products'] = $orderproduct->result_array();
+            //查询子订单供货商
+            $sup_query = $this->db->select("*")->where("supplier_id", $sorder['supplier_id'])->get("supplier");
+            $supplier = $sup_query->row_array();
+            $sorder['supplier'] = $supplier;
+        }
+
+        $data['suborders'] = $suborders;
+
+        $marketing_query = $this->db->select("order_marketing.*,sale_marketing.marketing_name")
+                ->join("sale_marketing", "sale_marketing.marketing_id=order_marketing.marketing_id", "left")
+                ->where("order_marketing.order_id", $order_id)
+                ->get("order_marketing");
+        $marketings = $marketing_query->result_array();
+
+        $data['marketings'] = $marketings;
+        $coupon_query = $this->db->select("user_coupon.*,coupon.coupon_name")
+                ->join("coupon","coupon.coupon_id=user_coupon.coupon_id","left")
+                ->where("order_id", $order_id)
+                ->where("user_id", $data['orderinfo']['user_id'])
+                ->get("user_coupon");
+        $data['coupon'] = $coupon_query->row_array();
+
+        //订单日志
+        $data['orderlog'] = $this->getOrderLog($order_id);
+        return $data;
+    }
+
+    /**
+     * 获取子订单信息
+     * @param type $order_id
+     */
+    public function getSubOrderInfo($order_id) {
+        $order_query = $this->db->select("*")->where("order_id", $order_id)->get("order");
+        $subOrder = $order_query->row_array();
+        //获取订单主信息
+        $master_info = $this->db->select('o.*,u.nickname,u.user_name,u.email,uw.wx_nickname,uw.wx_headimg')
+                ->from('order o')
+                ->join('user u', 'u.user_id=o.user_id', 'left')//会员信息
+                ->join('user_wechat uw', 'uw.user_id=o.user_id', 'left')//会员信息
+                ->where('o.order_id=' . $subOrder['master_order_id'])
+                ->get();
+        $subOrder['master_info'] = $master_info->row_array();
+
+        $orderproduct = $this->db->select('op.*')
+                ->from('order_product op')
+                ->where('op.order_id=' . $subOrder['order_id'])
+                ->get();
+        $subOrder['products'] = $orderproduct->result_array();
+        //查询子订单供货商
+        $sup_query = $this->db->select("*")->where("supplier_id", $subOrder['supplier_id'])->get("supplier");
+        $supplier = $sup_query->row_array();
+        $subOrder['supplier'] = $supplier;
+
+        return $subOrder;
+    }
+
+    /**
+     * 获取用户订单
+     * @param type $user_id
+     */
+    public function getUserOrdres($user_id) {
+        $query = $this->db->select("*")
+                ->where("user_id", $user_id)
+                ->where("master_order_id", 0)
+                ->limit(10)
+                ->get("order");
+        return $query->result_array();
+    }
+
+    /**
+     * 获取订单操作日志
+     * @param type $order_id
+     * @return type
+     */
+    public function getOrderLog($order_id) {
+        $orderlog = $this->db->select('oo.*')
+                ->from('order_log oo')
+                ->where('order_id=' . $order_id)
+                ->order_by('oo.createtime', 'DESC')
+                ->get();
+        return $orderlog->result_array();
+    }
+
+    public function editOrderStatus($data, $order_id) {
+        $updata = array('status' => $data['status'],"shipping_code" => $data['shipping_code'],'shippingtime'=>time());
+        if (!empty($data['shipping_code'])) {
+            $updata['shipping_code'] = $data['shipping_code'];
+        }
+         if (!empty($data['shipping_type'])) {
+            $updata['shipping_type'] = $data['shipping_type'];
+        }
+        if ($this->db->update("order", $updata, 'order_id=' . $order_id)) {
+            $insdata['content'] = $data['content'];
+            $insdata['order_id'] = $order_id;
+            $insdata['createtime'] = time();
+            $insdata['operator_id'] = $data['operator_id'];
+            $this->db->insert("order_log", $insdata);
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    public function editOrderRefundsStatus($data, $order_id) {
+        if ($this->db->update("order", array('refunds_status' => $data['refunds_status']), 'order_id=' . $order_id)) {
+            $insdata['content'] = $data['content'];
+            $insdata['order_id'] = $order_id;
+            $insdata['createtime'] = time();
+            $insdata['operator_id'] = $data['operator_id'];
+            $this->db->insert("order_log", $insdata);
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    public function delectOrder($where) {
+        return $this->db->update("order", array('status' => '-1'), $where);
+    }
+
+    /**
+     * 统计订单金额
+     * @param type $starttime 数据开始时间
+     * @param type $endtime 数据结束时间
+     * @param int $orderstatus 订单状态
+     */
+    public function statisticsOrderAmount($starttime = 0, $endtime = 0, $orderstatus = 1) {
+        $query = $this->db->select("count(1) as order_count,sum(order_amount) as order_amount,sum(product_amount) as product_amount,sum(pay_money) as pay_money")
+                ->where("createtime between '" . $starttime . "' and '" . $endtime . "' and status>=" . $orderstatus)
+                ->get("order");
+        return $query->row_array();
+    }
+
+    /*
+     * 根据供货商id获取订单数据
+     * 祖    2018/8/9
+     */
+
+    public function getOrderBySupplierId($page, $limit, $where, $supplier_id) {
+        $this->db
+                ->from('order o')
+                ->join('user u', 'u.user_id=o.user_id', 'left')
+                ->select('o.*,u.nickname')
+                ->where('o.supplier_id', $supplier_id);
+        if (!empty($where['order_sn'])) {
+            $this->db->like('o.order_sn', $where['order_sn'], 'both');
+        }
+        if (!empty($where['bg_time'])) {
+            $bg_time = strtotime($where['bg_time']);
+            $this->db->where('o.createtime>' . $bg_time);
+        }
+        if (!empty($where['ed_time'])) {
+            $ed_time = strtotime($where['ed_time']);
+            $this->db->where('o.createtime<' . $ed_time);
+        }
+        if (!empty($where['filter_status'])) {
+            $this->db->where('o.status', $where['filter_status']);
+        }
+
+        $count_db = clone($this->db);
+        $rownum = $count_db->count_all_results();
+        $res = $this->db
+                ->order_by('o.order_id', 'DESC')
+                ->limit($limit, ($page - 1) * $limit)
+                ->get()
+                ->result_array();
+        return array("count" => $rownum, "result" => $res);
+    }
+
+    /*
+     * 获取统计数据
+     * 祖    2018/8/9
+     */
+
+    public function getTotleModelBySupplierId($supplier_id, $where) {
+        //获取配置提现周期
+        $cycle = $this->zmsetting->get("settlement_cycle");
+        //获取已支付的营业额
+        $this->db
+                ->from('order o')
+                ->select('sum(o.pay_money) as totle,count(o.order_id) as order_num')
+                ->where('o.supplier_id', $supplier_id);
+        if (!empty($where['order_sn'])) {
+            $this->db->like('o.order_sn', $where['order_sn'], 'both');
+        }
+        if (!empty($where['bg_time'])) {
+            $bg_time = strtotime($where['bg_time']);
+            $this->db->where('o.createtime>' . $bg_time);
+        }
+        if (!empty($where['ed_time'])) {
+            $ed_time = strtotime($where['ed_time']);
+            $this->db->where('o.createtime<' . $ed_time);
+        }
+        if (!empty($where['filter_status'])) {
+            $this->db->where('o.status', $where['filter_status']);
+        }
+        //获取所有订单总数
+        $cloneSql1 = clone($this->db);
+        $order_num = $cloneSql1->get()->row_array()['order_num'];
+        $order_num = $order_num ? $order_num : 0;
+        $this->db->where('o.status > 0');
+        //获取已支付订单总额
+        $cloneSql2 = clone($this->db);
+        $all = $cloneSql2->get()->row_array()['totle'];
+        $all = $all ? $all : 0;
+        //获取可提现的营业额
+        //发货时间在x天之前，且settlement_status为0（未结算）的订单
+        //如果选择了开始日期， 开始日期为开始日期，结束日期为七天前，，如果只选了结束日期，判断结束日期是否小于七天前，如果小于，结束日期按结束日期算，如果不小于，结束日期按七天前算，
+        $ed_time = strtotime('-' . $cycle . ' day');
+        if (!empty($where['bg_time'])) {
+            $bg_time = strtotime($where['bg_time']);
+            $this->db->where('o.shippingtime >' . $bg_time);
+        }
+        if (!empty($where['ed_time'])) {
+            $ed_time2 = strtotime($where['ed_time']);
+            if ($ed_time2 < $ed_time) {
+                $ed_time = $ed_time2;
+            }
+        }
+        $this->db->where('o.shippingtime < ' . $ed_time)
+                ->where('o.settlement_status=0');
+        $withdraw_all = $this->db->get()->row_array();
+        $withdraw_order_num = $withdraw_all['order_num'] ? $withdraw_all['order_num'] : 0;
+        $withdraw = $withdraw_all['totle'] ? $withdraw_all['totle'] : 0;
+        return array('all' => $all, 'order_num' => $order_num, 'withdraw' => $withdraw, 'withdraw_order_num' => $withdraw_order_num);
+    }
+
+    /**
+     * 获取子订单信息
+     * @param type $master_order_id
+     * @return type
+     */
+    public function getSubOrder($master_order_id) {
+        $res = $this->db
+                ->select('o.*,s.name,s.supplier_id,u.user_name,u.nickname')
+                ->from('order o')
+                ->join('supplier s', 's.supplier_id=o.supplier_id', 'left')
+                ->join('user u', 'u.user_id=o.user_id', 'left')
+                ->where('o.status!=-1')
+                ->where(['o.master_order_id' => $master_order_id])
+                ->get()
+                ->result_array();
+        return $res;
+    }
+
+    /**
+     * 根据订单编号获取订单的基本信息
+     * @param type $order_sn
+     * @return type
+     */
+    public function getOrderBySn($order_sn) {
+        $query = $this->db->select("*")->where("order_sn", $order_sn)->get("order");
+        return $query->row_array();
+    }
+
+}

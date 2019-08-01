@@ -1,0 +1,118 @@
+// 分销中心
+const App = getApp()
+Page({
+  data: {
+    userInfo: {},
+    agentData: {}
+  },
+  onLoad: function(options) {
+    var that = this;
+    App.initialize(function(res) {
+      that.setData({
+        "userInfo": res.userInfo,
+      });
+    });
+  },
+  onShow: function() {
+    that.agentAccount();
+  },
+
+  /**分销统计 */
+  agentAccount: function() {
+    var that = this;
+    App.apiPost({
+      "uri": "storeCtrl/get_store_count.html",
+      "data": {},
+      "callback": function(res) {
+        that.setData({
+          "agentData": res.data
+        })
+      }
+    })
+  },
+
+  /**跳转到商品列表 */
+  goProductList: function() {
+    wx.navigateTo({
+      url: '/pages/productList/productList',
+    })
+  },
+  /**跳转到提现页*/
+  goGetCash: function(e) {
+    var that = this;
+    wx.navigateTo({
+      url: '/pages/personal/getcash/getcash',
+    })
+  },
+
+  
+  /**生成海报 */
+  bindPost: function(e) {
+    //创建分享图片
+    wx.showLoading({
+      title: '海报努力生成中',
+    });
+    App.apiPost({
+      "uri": "storeProduct/create_share_img.html",
+      "data": {
+        "product_id": that.data.product_id
+      },
+      "callback": function (res) {
+        if (!res.error_code) {
+          that.setData({ "posturl": res.data[0] });
+          /**显示海报区 */
+          that.setData({
+            "showPoster": true,
+            "shareModal": false,
+          })
+        }
+        wx.hideLoading()
+      }
+    })
+  },
+  /**保存图片到相册 */
+  savePictureToAlbum: function () {
+    var that = this;
+    wx.showLoading({
+      title: '正在下载图片',
+    });
+    wx.downloadFile({
+      url: that.data.posturl,
+      success: function (res) {
+        //图片保存到本地
+        wx.saveImageToPhotosAlbum({
+          filePath: res.tempFilePath,
+          success: function (data) {
+            wx.hideLoading();
+            wx.showToast({
+              title: '保存成功',
+              icon: 'success',
+              duration: 2000,
+              success: function () {
+                that.setData({
+                  "showPoster": false,
+                  "shareModal": false,
+                })
+              }
+            })
+          },
+          fail: function (err) {
+            wx.hideLoading();
+            if (err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
+              wx.openSetting({
+                success(settingdata) {
+                  if (settingdata.authSetting['scope.writePhotosAlbum']) { } else {
+                    wx.showToast({
+                      title: '请授权相册',
+                    })
+                  }
+                }
+              })
+            }
+          },
+          complete(res) { }
+        })
+      }
+    })
+  }
+})

@@ -1,0 +1,69 @@
+<?php
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of GroupOrder
+ *
+ * @author wangxiangshuai
+ */
+class GroupOrder extends CI_Model {
+
+    //put your code here
+    public function getGroupLits($where = array(), $page = 1, $limit = 2) {
+        $this->db->select('ug.*,uw.wx_nickname,uw.wx_headimg,count(ug.groupbuy_sn) as group_in_number')
+                ->from('user_groupbuy ug')
+                ->join('user_wechat uw', 'uw.user_id = ug.user_id');
+        if (!empty($where['group_produt_id'])) {
+            $this->db->where('ug.group_product_id', $where['group_produt_id']);
+        }
+        if (!empty($where['status'])) {
+            $this->db->where('ug.status', $where['status']);
+        }
+        if (!empty($where['endtime'])) {
+            $this->db->where('ug.endtime <' . $where['endtime']);
+        }
+
+        $query = $this->db
+                ->group_by('ug.groupbuy_sn')
+                ->order_by('ug.createtime', 'asc')
+                ->limit($limit, ($page - 1) * $limit)
+                ->get();
+        return $query->result_array();
+    }
+
+    /**
+     * 查询团列表
+     * @param type $groupbuy_sn
+     */
+    public function getGroupbuyBysn($groupbuy_sn) {
+        $this->db->select('ug.*,uw.wx_headimg,uw.wx_nickname')
+                ->from('user_groupbuy ug')
+                ->join('user_wechat uw', 'uw.user_id = ug.user_id');
+        if (!empty($groupbuy_sn)) {
+            $this->db->where('ug.groupbuy_sn', $groupbuy_sn);
+        }
+        $query = $this->db
+                ->order_by('ug.createtime', 'asc')
+                ->get();
+        return $query->result_array();
+    }
+
+    /**
+     * 创建订单号
+     * @return string
+     */
+    public function getOrderSn() {
+        $sn = "GN" . time() . mt_rand(1000, 9999);
+        $has = $this->GroupOrder->getGroupbuyBysn($sn);
+        if (!empty($has)) {
+            $this->getOrderSn();
+        }
+        return $sn;
+    }
+
+}

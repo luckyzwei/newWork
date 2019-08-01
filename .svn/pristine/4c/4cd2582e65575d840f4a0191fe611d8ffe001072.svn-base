@@ -1,0 +1,45 @@
+<!--提现页-->
+<view class='getCash global-pageFont'>
+  <view class='cash-number global-column1 '>
+    <image src='/images/5.png' class="cash-icon"></image>
+    <text>可提现金额</text>
+    <text class='money'>￥ 55.00</text>
+    <view class='btn themeBg' bindtap='showCashModal'>提现</view>
+  </view>
+  <view class='cash-lists global-column2'>
+    <navigator url='/pages/personal/incomedetail/incomedetail' hover-class='none'>
+      <view class='list-items .global-rowBtw'>
+        <text>收支明细</text>
+        <image src='/images/nav-right.png' class='nav-right'></image>
+      </view>
+    </navigator>
+    <navigator url='/pages/personal/recordlist/recordlist' hover-class='none'>
+      <view class='list-items .global-rowBtw'>
+        <text>提现记录</text>
+        <image src='/images/nav-right.png' class='nav-right'></image>
+      </view>
+    </navigator>
+  </view>
+</view>
+<!-- 提现弹窗层 -->
+<view class='global-mask' wx:if="{{showCashModal}}"></view>
+<modal wx:if="{{showCashModal}}" title="请输入提现金额" confirm-text="提交" cancel-text="取消" bindcancel="cancel" bindconfirm="confirm">
+  <view class="dialog-content">
+    <view class="item-input">
+      <view class="withdraw-title">提现金额</view>
+      <view class="withdraw-group">
+        <view class="control-label">¥</view>
+        <input  class="input_money" type='digit' bindinput='getCashMoney' value='{{cashMoney}}' />
+      </view>
+      <view class="horizontal-line"></view>
+      <view class="withdraw-money-header">
+        <view class="input-tips">
+          可提金额 ¥{{account.settlement_money}}
+        </view>
+        <view class="withdraw-all" bindtap="getAllWithdraw">
+          全部提现
+        </view>
+      </view>
+    </view>
+  </view>
+</modal>

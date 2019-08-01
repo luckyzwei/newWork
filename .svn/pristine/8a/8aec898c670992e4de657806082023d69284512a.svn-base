@@ -1,0 +1,17 @@
+<!--邀请推广.wxml-->
+<view class='global-pageFont invited'>
+  <view class='global-rowStart invited-list'  wx:for="{{customer}}">
+    <image src='{{item.wx_headimg}}' class='invited-headimg'></image>
+    <view class='global-column2'>
+      <text>{{item.wx_nickname}}</text>
+      <text class='invited-time'>{{item.time}}</text>
+    </view>
+  </view>
+  <!-- 空 -->
+  <view class='global-rowStart' wx:if="{{customer.length==0}}">
+    <view class='empty'>
+      <image src='/images/d1.png'></image>
+      <text>您还没有邀请到推广者,加油哦</text>
+    </view>
+  </view>
+</view>

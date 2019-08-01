@@ -1,0 +1,130 @@
+/* 积分规则.wxss */
+
+.integralRule {
+  width: 100%;
+}
+
+/* 积分规则标题提示 */
+
+.integralRule-title {
+  width: 100%;
+  height: 185rpx;
+  background: -webkit-linear-gradient(top, #f3b2b3, #ff8284);
+  background: linear-gradient(bottom, #f3b2b3, #ff8284);
+  color: #fff;
+  text-align: center;
+  font-size: 34rpx;
+  font-weight: 600;
+}
+
+.integralRule-title > text {
+  line-height: 130rpx;
+}
+
+/* 积分规则内容包裹层 */
+
+.integralRule-content {
+  position: relative;
+  width: 100%;
+  border-top-left-radius: 18rpx;
+  border-top-right-radius: 18rpx;
+  background: #fff;
+  margin-top: -30rpx;
+  padding: 20rpx 0;
+}
+
+/* 积分内容左边固定标题*/
+
+.integralRule-content .fixed-left {
+  width: 250rpx;
+  line-height: 63rpx;
+  text-align: center;
+  color: #fff;
+  font-weight: 600;
+  font-size: 30rpx;
+  margin-top: 15rpx;
+  border-top-right-radius: 40rpx;
+  border-bottom-right-radius: 40rpx;
+  background: -webkit-linear-gradient(left, #f59c9e, #ff8284);
+  background: linear-gradient(right, #f59c9e, #ff8284);
+}
+
+/* 积分内容副标题*/
+
+.content-subTitle {
+  color: #343547;
+  line-height: 38rpx;
+  font-size: 29rpx;
+  font-weight: 600;
+  padding: 10rpx 0 25rpx 0;
+}
+
+/*  */
+
+.content-items {
+  width: 94%;
+  padding: 15rpx 3%;
+  margin-top: 20rpx;
+}
+
+/* 副标题前面的修饰竖边框 */
+
+.content-items .content-subTitle::before {
+  content: " ";
+  position: absolute;
+  margin-top: 5rpx;
+  left: 25rpx;
+  margin-right: 20rpx;
+  background: #ff8284;
+  height: 35rpx;
+  width: 7rpx;
+  /* line-height: 50rpx; */
+}
+
+/*  */
+
+.content-items  .items-list {
+  width: 90%;
+  margin: 20rpx auto;
+}
+.content-items  .items-list1 {
+  width: 94%;
+  margin:  15rpx auto;
+  padding: 30rpx 3%;
+  background: #f8f8f8;
+  border-radius: 15rpx;
+}
+
+
+/* 图片大小*/
+
+.content-items  .items-list-img {
+  width: 58rpx;
+  height: 58rpx;
+}
+/* 红点大小 */
+.content-items   .items-list-img1 {
+  width: 20rpx;
+  height: 20rpx;
+}
+
+.content-items  .items-listInfo {
+  margin-left: 20rpx;
+}
+
+.content-items .items-list-txt1 {
+  font-size: 25rpx;
+  color: #666;
+}
+
+.content-items  .items-list-txt2 {
+  color: #ccc;
+  font-size: 20rpx;
+}
+.font28{
+  font-size: 24rpx;
+  margin-bottom: 10rpx;
+}
+.margin{
+  margin: 15rpx 0;
+}

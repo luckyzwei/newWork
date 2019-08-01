@@ -1,0 +1,150 @@
+<!--商品列表页-->
+<view class='global-pageFont product-list'>
+  <!--列表顶部  -->
+  <view class='pList-nav'>
+    <!-- 左侧分类菜单 -->
+    <view class='nav-tabList' bindtap="showCategory">
+      <image src='/images/list.png' class='listIcon'></image>
+      <text class='text-cate'>分类</text>
+    </view>
+    <!--分类侧边栏 start -->
+    <view class='pList-menu'>
+      <view class='global-mask' bindtap="showCategory" data-statu="close" wx:if="{{showNavOrder}}"></view>
+      <scroll-view class='pList-menuLeft' wx:if="{{showNavOrder}}" animation="{{animationData1}}" scroll-y>
+        <view class='menuLeft-cate' bindtap='filterByCate' data-category="">
+          <view class='cate-title spec-font'> 全部分类</view>
+        </view>
+        <view class='menuLeft-cate' wx:for="{{categories}}" wx:for-item="category" wx:key="categorykey" >
+          <view class='cate-title {{category.category_id==category_id?"themeColor":""}}' data-category="{{category.category_id}}" bindtap='filterByCate' data-index="{{index}}">{{category.name}} </view>
+          <view class='cate-cont' data-category="{{item.category_id}}" bindtap='filterByCate' wx:for="{{category.categorylist}}" wx:key=""> {{item.name}} </view>
+        </view>
+      </scroll-view>
+    </view>
+    <!--分类侧边栏 end -->
+    <!-- 商品列表搜索框 -->
+    <view class='nav-search defaultBg'>
+      <form report-submit='true'>
+        <input placeholder='请输入您要搜索的商品' placeholder-class='defaultColor' confirm-type='search' bindconfirm="clickSearch" value="{{keyword}}"></input>
+      </form>
+    </view>
+    <!-- 右部商品列表样式切换 -->
+    <!-- <view class='nav-tabList' bindtap='changeStyle'>
+      <image src='{{changeStatus?"/images/list2.png":"/images/list3.png"}}' class='listIcon'></image>
+      <text>列表</text>
+    </view> -->
+  </view>
+</view>
+<scroll-view style="height: 100%;" scroll-y="true" scroll-top="{{scrollTop.scroll_top}}" bindscroll="scrollTopFun" bindscrolltolower="onReachBottom">
+  <view class="goods-tab-box">
+    <view class="goods-tab-nav {{curIndex === 0 ?'on':''}}" bindtap="bindTap" data-index="0">综合</view>
+    <view class="goods-tab-nav {{curIndex === 1 ?'on':''}}" bindtap="bindTap" data-index="1">销量</view>
+    <view class="goods-tab-nav {{curIndex === 3 ?'on':''}}" bindtap="bindTap" data-index="3">新品</view>
+    <view class="goods-tab-nav {{curIndex === 2 ?'on':''}}" bindtap="bindTap" data-index="2">
+      价格
+      <image src='/images/default.png' wx:if="{{curIndex != 2}}" class='priceIcon'></image>
+      <image src='/images/up.png' wx:if="{{curIndex == 2}}" hidden='{{is_showUp}}' class='priceIcon'></image>
+      <image src='/images/down.png' wx:if="{{curIndex == 2}}" hidden='{{!is_showUp}}' class='priceIcon'></image>
+    </view>
+  </view>
+  <!-- 分类商品为空 -->
+  <view class="cont-empty" wx:if="{{products.length<1}}" >
+    <image class="icon" src="/images/empty.png"></image>
+    <view class="msg">该分类暂无商品</view>
+  </view>
+
+  <!-- 商品列表1 -->
+  <view class="pList-product" wx:if="{{!changeStatus}}">
+    <view class='global-product' wx:for="{{products}}" wx:key="">
+      <!--秒杀图标 -->
+      <block wx:if="{{item.timelimit}}">
+        <image src='/images/timeSale.png' class='timeLimit1'></image>
+      </block>
+       <block else:if="{{item.is_market.is_market && !item.timelimit }}">
+        <image src='/images/reduce.png' class='timeLimit1'></image>
+      </block>
+      
+      <!-- 商品图片 -->
+      <image src='{{item.thumb}}' class="product-img" data-product_id="{{item.product_id}}" bindtap='goGoodsDetail'></image>
+      <text class='global-title'>{{item.product_name}}</text>
+      <block wx:if="{{item.timelimit}}">
+        <text class='limit-txt themeColor'>限时秒杀</text>
+      </block>
+      <view class='global-rowBtw themeColor product-price'>
+        <view class='global-rowStart'>
+          <block wx:if="{{item.timelimit}}">
+            <text class='global-font30 global-price'><text class='global-font22'>¥</text>{{item.timelimit.timelimit_price}}
+            </text>
+          </block>
+          <block wx:else>
+            <text class='global-font30 global-price'><text class='global-font22'>¥</text>{{item.price}}
+            </text>
+          </block>
+          <text class=' global-market_price'><text class='global-font22'>¥</text>{{item.market_price}}</text>
+        </view>
+        <image src='/images/shopcart1.png' class='global-cart1' data-product="{{item}}" bindtap='modal_show'></image>
+      </view>
+    </view>
+  </view>
+  <!-- 商品列表2 -->
+  <view class="pList-product" wx:if="{{changeStatus}}">
+    <view class='pList-items' wx:for="{{products}}" wx:key="">
+      <!-- 秒杀图标 -->
+      <block wx:if="{{item.timelimit}}">
+        <image src='/images/timeSale.png' class='timeLimit2'></image>
+      </block>
+      <!-- 商品图片 -->
+      <image src='{{item.thumb}}' class="items-img" data-product_id="{{item.product_id}}" bindtap='goGoodsDetail'></image>
+      <view class='items-info'>
+        <text class="info-title">{{item.product_name}}</text>
+        <view class='global-rowBtw themeColor product-price'>
+          <view class='global-rowStart'>
+            <block wx:if="{{item.timelimit}}">
+              <text class='global-font30 global-price'><text class='global-font22'>限时秒杀价 ¥</text>{{item.timelimit.timelimit_price}}
+              </text>
+            </block>
+            <block wx:else>
+              <text class='global-font30 global-price'><text class='global-font22'>¥</text>{{item.user_price.product_price}}
+              </text>
+            </block>
+            <text class=' global-market_price'><text class='global-font22'>¥</text>{{item.user_price.user_price}}</text>
+          </view>
+          <image src='/images/shopcart1.png' class='cart1' data-product="{{item}}" bindtap='modal_show'></image>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 回顶部 -->
+  <view class="backTop" wx:if="{{scrollTop.goTop_show}}" catchtap="goTopFun">
+    <image src='/images/gotop.png' class='backTop-img'></image>
+  </view>
+  <view class='endLoading' wx:if="{{footerstatus}}">上滑加载更多</view>
+</scroll-view>
+<!--数量规格选择栏-->
+<view class='global-mask' style="display:{{choose_modal}}"></view>
+<view class="global-guige global-pageFont " style="display:{{choose_modal}}">
+  <view class="spec_img_container">
+    <image src="{{chooseProduct.thumb}}"></image>
+    <view class='guige-name global-overHidden'>{{chooseProduct.product_name}}</view>
+    <block wx:if='{{chooseProduct.timelimit}}'>
+      <view class="guige-number themeColor">限时秒杀价 ￥{{chooseProduct.timelimit.timelimit_price}}</view>
+    </block>
+    <block wx:else>
+      <view class="guige-number themeColor">￥{{chooseProduct.price}}</view>
+    </block>
+    <icon class="guige-delete" type='clear' bindtap="modal_none" size='17' color='#ff8284'></icon>
+  </view>
+  <!--选择购买数量 -->
+  <view class='product-acount'>
+    <view class="font_num">购买数量：</view>
+    <view class="buy_num">
+      <view class="stepper">
+        <text class="{{minusStatus}}" bindtap="bindMinus">-</text>
+        <input type="number" bindchange="bindManual" value="{{num}}" />
+        <text class="normal" bindtap="bindPlus">+</text>
+      </view>
+    </view>
+  </view>
+  <view class="bottom-button">
+    <view class='modal_button2  btn' bindtap='addToCart'>确定</view>
+  </view>
+</view>

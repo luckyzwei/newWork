@@ -1,0 +1,46 @@
+/* 推广订单列表.wxss */
+
+.extendList {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/*推广订单列表信息 */
+
+.extendList-list {
+  width: 96%;
+  margin: 0 auto;
+  padding: 20rpx 2%;
+  border-bottom: 1px solid #f8f8f8;
+}
+
+.extendList-list text {
+  display: block;
+  width: 33.3%;
+  text-align: center;
+}
+
+.bg {
+  background: #f8f8f8;
+  border-top: 1px solid #fff;
+}
+
+/* 空列表 */
+
+.empty {
+  height: 100%;
+  width: 100%;
+  padding: 50% 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  color: #999;
+  font-size: 22rpx;
+}
+
+.empty image {
+  width: 220rpx;
+  height: 220rpx;
+  margin-bottom: 20rpx;
+}

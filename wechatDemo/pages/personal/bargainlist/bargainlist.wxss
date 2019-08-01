@@ -1,0 +1,188 @@
+/* 砍价列表样式.wxss */
+
+/* 商品信息 */
+
+.bargain  .bargain-product {
+  position: relative;
+  width: 98%;
+  margin: 10rpx atuo;
+  border-radius: 15rpx;
+  padding: 15rpx 1.5%;
+  font-size: 27rpx;
+  border-bottom: 1px solid #f8f8f8;
+}
+
+/* 商品图片 */
+
+.bargain  .bargain-product .product-img {
+  width: 150rpx;
+  height: 150rpx;
+  margin-right: 15rpx;
+  border-radius: 15rpx;
+}
+
+/* 砍价商品标题 */
+
+.bargain  .bargain-product .bar-title {
+  font-size: 29rpx;
+  color: #666;
+  font-weight: 600;
+}
+
+/*  砍价商品倒计时 */
+
+.bargain .limit-time {
+  color: #999;
+  margin: 10rpx 0;
+}
+
+.bargain .limit-time1 {
+  color: #999;
+}
+
+/* 商品状态 */
+
+.bargain  .order-status {
+  position: absolute;
+  right: 0;
+  width: 95rpx;
+  line-height: 40rpx;
+  color: #fff;
+  background: #ff8284;
+  border-top-left-radius: 15rpx;
+  border-bottom-left-radius: 15rpx;
+  text-align: center;
+  font-size: 22rpx;
+  margin-top: 40rpx;
+}
+
+/* 继续砍价按钮 */
+
+.bargain  .goOn {
+  position: absolute;
+  right: 25rpx;
+  margin-top: 37rpx;
+  width: 120rpx;
+  line-height: 46rpx;
+  color: #fff;
+  background: #ff8284;
+  border-radius: 15rpx;
+  text-align: center;
+  font-size: 24rpx;
+}
+
+.margin {
+  margin-right: 130rpx;
+}
+
+.gray {
+  color: #000;
+  background: gray !important;
+}
+
+/* 物流弹层样式 */
+
+.drawer_box {
+  width: 575rpx;
+  position: fixed;
+  top: 40%;
+  left: 2%;
+  z-index: 9999;
+  margin: -370rpx 75rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer_info {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 15rpx 0 5rpx 0;
+}
+
+/*关闭按钮大小 */
+
+.drawer_info image {
+  width: 40rpx;
+  height: 40rpx;
+  padding-right: 23rpx;
+}
+
+.drawer_content {
+  width: 100%;
+  padding: 6rpx 30rpx;
+}
+
+/* 物流标题 */
+
+.drawer_content .drawer_title {
+  color: black;
+  font-size: 34rpx;
+  font-weight: 650;
+  margin-bottom: 5rpx;
+}
+
+.drawer_content .drawer_txt {
+  color: gray;
+}
+
+/* 物流提示信息 */
+
+.drawer_box .waring {
+  background: #e6e6e9;
+  padding: 13rpx 35rpx;
+  color: #ff8284;
+  font-size: 25rpx;
+}
+
+/* 上下可滚动 */
+
+.drawer_box scroll-view {
+  width: 95%;
+  height: 675rpx;
+  padding: 10rpx 35rpx;
+  color: gray;
+}
+
+.drawer_box scroll-view .wuliu-info {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 物流时间字体 */
+
+.drawer_box scroll-view .wuliu-info .getTime {
+  font-size: 29rpx;
+  padding: 10rpx 0;
+}
+
+/* 物流所在地字体 */
+
+.drawer_box scroll-view .wuliu-info .getInfo {
+  font-size: 26rpx;
+}
+
+/* 物流 end */
+
+/* 空列表 */
+
+.empty {
+  height: 100%;
+  width: 100%;
+  padding: 50% 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  color: #999;
+  font-size: 22rpx;
+}
+
+.empty image {
+  width: 220rpx;
+  height: 220rpx;
+}

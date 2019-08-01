@@ -1,0 +1,31 @@
+﻿商城系统简单实用版
+前端API域名 https://shopbaseapi.zzzzshop.com
+后台地址：shopbaseadmin.zzzzshop.com 账号：root 密码：admin_root
+数据库：47.92.33.81 shopbase_db 远程账号：zhimo 密码：zhandi1949
+
+svn地址
+svn://47.92.33.81/shopbase
+
+账号密码和以前一样
+
+
+
+//-------------------------------------------------------
+系统更新
+1.在控制器的getModuleInfo方法增加hidden属性，如果该属性为真，则在权限分配中隐藏该模块eg.:
+public static function getModuleInfo() {
+        return array(
+            "moduleName" => "博客管理",
+            "controller" => "BlogController",
+            "author" => "知默科技-liujiaqi@hnzhimo.com",
+            //"hidden"=>true,
+            "operation" => array(
+                "index" => "博客列表",
+                "addblog" => "博客添加",
+                "deleteblog" => "博客删除",
+                "editblog" => "博客修改",
+            )
+        );
+    }
+
+

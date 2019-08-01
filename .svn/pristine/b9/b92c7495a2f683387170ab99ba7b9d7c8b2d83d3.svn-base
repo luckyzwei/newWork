@@ -1,0 +1,87 @@
+<!--订单状态列表页-->
+<view class='global-pageFont '>
+  <view class='empty' wx:if="{{orderlist.length<1}}">
+    <image src='/images/empty.png'></image>
+    <block wx:if="{{status==5}}">
+      <text>暂无需评价商品</text>
+    </block>
+    <block wx:if="{{status==0}}">
+      <text>暂无待付款商品</text>
+    </block>
+    <block wx:if="{{status==1}}">
+      <text>暂无待发货商品</text>
+    </block>
+    <block wx:if="{{status==2}}">
+      <text>暂无待收货商品</text>
+    </block>
+    <block wx:if="{{status=='all'}}">
+      <text>暂无待收货商品</text>
+    </block>
+  </view>
+  <view class='order-unempty' wx:if="{{orderlist}}">
+    <view class="order-list global-column2" wx:for="{{orderlist}}" wx:key="" wx:for-item="order">
+      <view class="header-sn"   bindtap='goDetail' data-order_id='{{order.order_id}}'>订单详情
+       <image src='/images/nav-right.png' class='nav-right'></image></view>
+     
+      <!-- 商品列表-->
+      <view wx:for="{{order.product}}" wx:key=""   bindtap='goDetail' data-order_id='{{order.order_id}}'>
+        <!-- <navigator url='/pages/goodsdetail/goodsdetail?product_id={{item.product_id}}' hover-class='none'> -->
+          <view class='order-items'>
+            <image src='{{item.product_thumb}}' class="items-img"></image>
+            <view class='items-info'>
+              <text class="info-title">{{item.product_name}}</text>
+              <view class='global-rowBtw  product-price'>
+                <view class='global-rowStart'>
+                  <text class='global-price'><text class='global-font22'>¥</text>{{item.product_price}}
+                  </text>
+                  <text class='product-acount '>×{{item.product_number}}</text>
+                </view>
+                <view class="header-status themeColor">{{order.statusname}}</view>
+              </view>
+            </view>
+          </view>
+        <!-- </navigator> -->
+      </view>
+      <view class="item-footer">
+        <view class='item-footer-row'>
+          <text class="sum">合计：￥{{order.order_amount}}</text>
+          <view class="footer-button themeBg" wx:if='{{order.status==0}}' bindtap='payorder' data-order_id='{{order.order_id}}'> 支付订单 </view>
+          <block wx:if="{{order.status==2}}">
+            <view class="footer-button themeBg" bindtap='clickreceipt' data-order_id='{{order.order_id}}'> 确认收货</view>
+            <!-- <view class="footer-button themeBg" bindtap="showTransport" data-order_id='{{order.order_id}}' data-statu="open">查看物流</view> -->
+          </block>
+          <block wx:if="{{order.status==5}}">
+            <!-- <view class="footer-button themeBg"> 已收货</view> -->
+            <view class="footer-button themeBg" bindtap='comment' data-order_id='{{order.order_id}}'>去评价</view>
+          </block>
+          <block wx:if="{{order.status>0 && order.status<5}}">
+            <view class="footer-button themeBg" bindtap='refundorder' data-order_id='{{order.order_id}}'> 退款</view>
+          </block>
+          <block wx:if="{{order.status==7}}">
+            <view class="footer-button themeBg" bindtap='refundCancel' data-order_id='{{order.order_id}}'> 取消退款</view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!--物流信息弹出层  -->
+  <view class='global-mask' wx:if="{{showTransport}}" catchtouchmove="preventTouchMove" data-statu="close" bindtap="showTransport"></view>
+  <view class="drawer_box" wx:if="{{showTransport}}">
+    <view class='drawer_info'>
+      <image src="/images/delete.png" data-statu="close" bindtap="showTransport"></image>
+    </view>
+    <view class="drawer_content">
+      <view class="drawer_title ">物流编号：{{express.expressid}} </view>
+    </view>
+    <view class='waring'>如对物流信息产生疑问,请联系客服哟~~</view>
+    <scroll-view scroll-y="true">
+      <view class='wuliu-info' wx:for='{{express.list}}' wx:key="">
+        <view class='getTime'>{{item.time}}</view>
+        <view class='getInfo'>{{item.content}} </view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class='allLoading' wx:if="{{orderlist.length>0}}">
+    <text>全部加载完毕</text>
+  </view>
+</view>

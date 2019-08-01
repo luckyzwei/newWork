@@ -1,0 +1,35 @@
+<!--pages/payment/payment.wxml-->
+<view class='max'>
+  <view class='container'>
+    <view class='container-top'>
+      <view class='left'>
+        <text class='left1'>付款给：{{storeInfo.store_name}}</text>
+        <text class='left2'>昵称:{{storeInfo.wx_nickname}}</text>
+      </view>
+      <view class='right'>
+        <image src='{{storeInfo.wx_headimg}}'></image>
+      </view>
+    </view>
+    <view class='paymoney'>
+     <text wx:if="{{userInfo.user_money>0}}">可用余额：{{userInfo.user_money}}</text>
+      <text class='jiner'>金额：</text>
+      <view class='inputmoney'>
+        <span>¥</span>
+        <input type='digit' auto-focus="true" bindblur='setmoney' bindconfirm='setmoney'></input>
+      </view>
+    </view>
+    <view class='btn'>
+      <view bindtap='showSuccess'>付款</view>
+    </view>
+  </view>
+</view>
+<view class='mask' wx:if="{{paySuccess}}"></view>
+<view class='outpage' wx:if="{{paySuccess}}">
+  <text class='green'>支付成功!</text>
+  <text class='black'>¥  {{money}}</text>
+ <view>
+  <span class='extro' wx:if="{{paymoneyinfo.use_user_money>0}}">余额支付{{paymoneyinfo.use_user_money}}</span>
+  <span class='extro' wx:if="{{paymoneyinfo.remaining>0}}">微信支付{{paymoneyinfo.remaining}}</span>
+ </view>
+ <view class='finished' bindtap='finished'>完成</view>
+</view>

@@ -1,0 +1,30 @@
+/* 邀请推广.wxss */
+
+.invited {
+  width: 95%;
+  margin: 0 auto;
+}
+
+/*邀请推广 列表信息 */
+
+.invited-list {
+  padding: 15rpx 0;
+  border-bottom: 1px solid #f8f8f8;
+}
+
+/* 邀请到的客户头像 */
+
+.invited  .invited-list .invited-headimg {
+  width: 85rpx;
+  height: 85rpx;
+  border-radius: 50%;
+  border: 1px solid #f8f8f8;
+  margin-right: 20rpx;
+}
+
+/* 邀请时间 */
+
+.invited  .invited-list .invited-time {
+  color: #999;
+  font-size: 24rpx;
+}

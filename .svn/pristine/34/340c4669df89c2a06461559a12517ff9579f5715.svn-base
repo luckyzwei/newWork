@@ -1,0 +1,116 @@
+<!-- 商品首页 -->
+<view class="global-pageFont">
+  <!-- 首页轮播 -->
+  <view class="index-banner">
+    <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}">
+      <block wx:for="{{imgUrls}}" wx:key="">
+        <swiper-item bindtap='goUrl' data-ad_url="{{item.ad_url}}">
+          <image src="{{item.ad_source}}" class="banner-img" />
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <!-- 首页搜索 -->
+  <view class='index-search'>
+    <input placeholder='请输入您要搜索的商品' placeholder-class='unselectColor' confirm-type='search' bindconfirm="clickSearch" value="{{keyword}}" wx:if="{{hiddenInput}}"></input>
+  </view>
+  <!--首页 商品分类 -->
+  <view class="index-category global-flexWrap">
+    <view class='category-items global-column1 ' wx:for="{{category}}" wx:key="" bindtap='goproductList' data-category_id="{{item.category_id}}">
+      <image src='{{item.image}}' class="items-img"></image>
+      <text class='items-txt'>{{item. name}}</text>
+    </view>
+  </view>
+  <!-- 首页广告位 -->
+  <view class='index-adv'>
+    <!-- 首页优惠券 -->
+    <view class='index-coupon'>
+      <scroll-view scroll-x="true">
+        <view class='coupon-items' wx:for="{{coupons}}" wx:key="" data-coupon_id="{{coupon_id}}">
+          <image src='/images/coupon.png' class='coupon'></image>
+          <view class='coupon-info'>
+            <view class='coupon-info-left'>
+              <view class='coupon-marginTop'>
+                <text class='price-icon'>¥<text class='coupon-price'>{{item.coupon_denomination}}</text></text>
+              </view>
+              <text class='coupon-endtime'>满{{item.limit_order_amount}}可用</text>
+            </view>
+            <block wx:if="{{item.hasRec==0}}">
+              <view class='coupon-info-right' bindtap='getCoupon' data-coupon_id='{{item.coupon_id}}'>
+                <text class='getCoupon'>点击领取</text>
+                <image class='nav-img' src='/images/nav-right1.png'></image>
+              </view>
+            </block>
+            <block wx:else>
+              <view class='coupon-info-right'>
+                <text class='getCoupon'>已领取</text>
+                <!-- <image class='nav-img' src='/images/nav-right1.png'></image> -->
+              </view>
+            </block>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+    <!--广告位/关联商品 -->
+    <view class="adv-items" wx:for="{{advertise}}" wx:key="" wx:for-item="advertise">
+      <image src='{{advertise.ad_source}}' class='item-img' bindtap='goUrl' data-ad_url="{{advertise.ad_url}}"></image>
+      <view class='adv-items-products'>
+      <!---------------------- 广告位推荐商品------------------------ -->
+        <view class='global-product' wx:for="{{advertise.recommendList}}" wx:key="" wx:for-item="item">
+          <image src="{{item.thumb}}" class="product-img"></image>
+          <text class='global-title'>{{item.product_name}}</text>
+          <view class='global-rowBtw themeColor product-price'>
+            <view class='global-rowStart'>
+              <text class='global-font30 global-price'><text class='global-font22'>¥</text>{{item.user_price.product_price}}
+              </text>
+              <text class=' global-market_price'><text class='global-font22'>¥</text>{{item.item.user_price.user_price}}</text>
+            </view>
+            <image src='/images/shopcart1.png' class='global-cart1' data-product="{{item}}" bindtap='modal_show'></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 分享按钮-->
+  <view class='index-share fixed-btn global-column1' bindtap="shareStyle">
+    <button open-type='share' class="share1-btn fixed-btn">分享</button>
+    <image src='/images/share.png' class='fixed-img '></image>
+    <text>分享</text>
+  </view>
+  <!-- 客服按钮 -->
+  <view class="index-contact fixed-btn global-column1">
+    <button open-type='contact' class="contact-btn fixed-btn">客服</button>
+    <image src='/images/contact.png' class=' fixed-img'></image>
+    <text>客服</text>
+  </view>
+  <!-- 显示分享方式弹层 -->
+  <!-- <view class='mask' bindtap="closeShare" wx:if="{{shareModal}}"></view>
+  <view class='share-modal' wx:if="{{shareModal}}">
+    <button class='share-btn' open-type='share'>立即分享</button>
+    <button class='share-btn' bindtap="createShareImg">生成海报分享</button>
+  </view> -->
+  <!--数量规格选择栏-->
+  <view class='global-mask' style="display:{{choose_modal}}"></view>
+  <view class="global-guige global-pageFont " style="display:{{choose_modal}}">
+    <view class="spec_img_container">
+      <image src="{{chooseProduct.thumb}}"></image>
+      <view class='guige-name global-overHidden'>{{chooseProduct.product_name}}</view>
+      <view class="guige-number themeColor">￥{{chooseProduct.price}}</view>
+      <icon class="guige-delete" type='clear' bindtap="modal_none" size='17' color='#ff8284'></icon>
+    </view>
+    <!--选择购买数量 -->
+    <view class='product-acount'>
+      <view class="font_num">购买数量：</view>
+      <view class="buy_num">
+        <view class="stepper">
+          <text class="{{minusStatus}}" bindtap="bindMinus">-</text>
+          <input type="number" bindchange="bindManual" value="{{num}}" />
+          <text class="normal" bindtap="bindPlus">+</text>
+        </view>
+      </view>
+    </view>
+    <view class="bottom-button">
+      <view class='modal_button2  btn' bindtap='addToCart'>确定</view>
+    </view>
+  </view>
+</view>

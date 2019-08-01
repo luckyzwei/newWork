@@ -1,0 +1,11 @@
+
+<!-- 授权登录 -->
+<view class='global-mask' >
+</view>
+<view class='content1' >
+  <view class='txt-top'>需要您的授权</view>
+  <text>为了提供更好的服务</text>
+  <text>请在稍后的提示框中点击 "允许"</text>
+  <image src='/images/allow.png'></image>
+  <button open-type="getUserInfo" bindgetuserinfo="authorization">点击授权</button>
+</view>

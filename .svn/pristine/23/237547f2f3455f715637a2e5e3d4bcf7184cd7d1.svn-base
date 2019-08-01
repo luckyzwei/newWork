@@ -1,0 +1,40 @@
+// 拼团列表.js
+const App = getApp()
+Page({
+  data: {
+    grouplist: [],
+    showTransport: false,
+    status: 0,
+    express: [],
+  },
+
+  onLoad: function(options) {
+    var grouplist = [{
+      product: [{
+        product_thumb: "/images/3.png",
+        product_name: "拼团抢购商品",
+        product_price: "33",
+        product_number: "2"
+      }],
+      statusname: "未发货"
+    }]
+    this.setData({
+      grouplist: grouplist
+    })
+  },
+
+  onReady: function() {
+
+  },
+  onShow: function() {
+
+  },
+  /**团订单 详情 */
+  goDetail: function(e) {
+    var that = this;
+    var group_id = e.currentTarget.dataset.group_id;
+    wx.navigateTo({
+      url: '/pages/group_orderdetail/group_orderdetail?group_id=' + group_id,
+    })
+  }
+})
